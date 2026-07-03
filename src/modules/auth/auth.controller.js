@@ -10,11 +10,18 @@ const { success, error } = require('../../utils/response')
 // Schema validasi dengan Zod
 // Zod akan otomatis throw error jika input tidak sesuai
 const registerSchema = z.object({
+  name: z.string().min(2, 'Nama minimal 2 karakter.').max(100, 'Nama terlalu panjang.'),
   email: z.string().email('Format email tidak valid.'),
+  phone_number: z
+    .string()
+    .min(8, 'Nomor HP/WA tidak valid.')
+    .max(20, 'Nomor HP/WA terlalu panjang.'),
   password: z
     .string()
     .min(8, 'Password minimal 8 karakter.')
     .max(100, 'Password terlalu panjang.'),
+  // Dikirim dari layar "pilih bahasa" — opsional, contoh: "id" atau "en"
+  language_code: z.string().min(2).max(5).optional(),
 })
 
 const loginSchema = z.object({
@@ -90,6 +97,7 @@ const me = async (req, res, next) => {
       select: {
         id: true,
         email: true,
+        phone_number: true,
         is_onboarded: true,
         language_id: true,
         created_at: true,

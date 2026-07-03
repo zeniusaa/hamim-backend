@@ -42,11 +42,13 @@ app.get('/health', (req, res) => {
 })
 
 // ─── Routes ──────────────────────────────────────────────────
-app.use('/auth',     require('./modules/auth/auth.route'))
-app.use('/audio',    require('./modules/audio/audio.route'))
-app.use('/assets',   require('./modules/assets/assets.route'))
-app.use('/progress', require('./modules/progress/progress.route'))
-app.use('/level',    require('./modules/level/level.route'))
+app.use('/auth',      require('./modules/auth/auth.route'))
+app.use('/languages', require('./modules/language/language.route'))
+app.use('/profile',   require('./modules/profile/profile.route'))
+app.use('/audio',     require('./modules/audio/audio.route'))
+app.use('/assets',    require('./modules/assets/assets.route'))
+app.use('/progress',  require('./modules/progress/progress.route'))
+app.use('/level',     require('./modules/level/level.route'))
 // Modul lain akan didaftarkan di sini seiring pengembangan:
 // app.use('/user', require('./modules/user/user.route'))
 // app.use('/quran', require('./modules/quran/quran.route'))

@@ -7,33 +7,56 @@ const { generateTokens, verifyRefreshToken } = require('../../utils/jwt')
 // Semua proses data (DB, hash, token) ada di service.
 // Ini membuat kode lebih rapi dan mudah di-test.
 
-const register = async ({ email, password }) => {
+const register = async ({ name, email, phone_number, password, language_code }) => {
   // Cek apakah email sudah terdaftar
-  const existing = await prisma.user.findUnique({ where: { email } })
-  if (existing) {
+  const existingEmail = await prisma.user.findUnique({ where: { email } })
+  if (existingEmail) {
     const err = new Error('Email sudah terdaftar.')
     err.statusCode = 409
     throw err
+  }
+
+  // Cek apakah nomor HP/WA sudah dipakai akun lain
+  const existingPhone = await prisma.user.findUnique({ where: { phone_number } })
+  if (existingPhone) {
+    const err = new Error('Nomor HP/WA sudah terdaftar.')
+    err.statusCode = 409
+    throw err
+  }
+
+  // language_code opsional — dikirim dari layar "pilih bahasa" sebelum daftar.
+  // Kalau tidak dikirim atau kodenya tidak dikenal, language_id dibiarkan null.
+  let language_id = null
+  if (language_code) {
+    const language = await prisma.language.findUnique({ where: { code: language_code } })
+    language_id = language?.id ?? null
   }
 
   // Hash password — JANGAN pernah simpan password plaintext ke DB
   // Salt rounds 10 = keseimbangan antara keamanan dan kecepatan
   const password_hash = await bcrypt.hash(password, 10)
 
-  // Buat user + profile sekaligus dalam satu transaksi Prisma
+  // Buat user + profile sekaligus dalam satu transaksi Prisma.
+  // display_name langsung diisi dari nama yang diinput saat daftar;
+  // field onboarding lain (avatar, learning_start, dst) diisi belakangan
+  // lewat endpoint PATCH /profile/onboarding.
   const user = await prisma.user.create({
     data: {
       email,
+      phone_number,
       password_hash,
+      language_id,
       profile: {
-        create: {}, // profile kosong dulu, diisi saat onboarding
+        create: { display_name: name },
       },
     },
     select: {
       id: true,
       email: true,
+      phone_number: true,
       is_onboarded: true,
       created_at: true,
+      profile: { select: { display_name: true } },
     },
   })
 

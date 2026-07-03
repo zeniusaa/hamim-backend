@@ -12,7 +12,7 @@ model User {
   email                String                @unique @db.VarChar(255)
   password_hash        String?               @db.Text
   google_id            String?               @unique @db.VarChar(255)
-  phone_number         String?               @db.VarChar(20)
+  phone_number         String?               @unique @db.VarChar(20)
   phone_verified       Boolean               @default(false)
   is_onboarded         Boolean               @default(false)
   language_id          Int?
