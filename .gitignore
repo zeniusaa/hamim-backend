@@ -1,0 +1,38 @@
+# Dependencies
+node_modules/
+
+# Environment variables (JANGAN pernah commit .env asli)
+.env
+.env.local
+.env.development
+.env.production
+.env.*.local
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# nodemon / process
+.nyc_output/
+coverage/
+
+# Uploaded / generated files (jika ada folder audio/asset lokal di luar repo)
+uploads/
+tmp/
+temp/
+
+# ngrok
+.ngrok/
+ngrok.yml

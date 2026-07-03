@@ -1,0 +1,325 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                   String                @id @default(uuid()) @db.VarChar(36)
+  email                String                @unique @db.VarChar(255)
+  password_hash        String?               @db.Text
+  google_id            String?               @unique @db.VarChar(255)
+  phone_number         String?               @db.VarChar(20)
+  phone_verified       Boolean               @default(false)
+  is_onboarded         Boolean               @default(false)
+  language_id          Int?
+  created_at           DateTime              @default(now())
+  updated_at           DateTime              @updatedAt
+  leaderboard_snapshot LeaderboardSnapshot?
+  activity_logs        UserActivityLog[]
+  downloaded_assets    UserDownloadedAsset[]
+  user_levels          UserLevel[]
+  profile              UserProfile?
+  progress             UserProgress[]
+  quiz_attempts        UserQuizAttempt[]
+  language             Language?             @relation(fields: [language_id], references: [id])
+
+  @@index([language_id], map: "users_language_id_fkey")
+  @@map("users")
+}
+
+model UserProfile {
+  id                   Int           @id @default(autoincrement())
+  user_id              String        @unique @db.VarChar(36)
+  display_name         String?       @db.VarChar(100)
+  avatar_url           String?       @db.Text
+  learning_start       LearningStart @default(juz_akhir)
+  daily_target_minutes Int           @default(15)
+  audio_repeat_count   Int           @default(3)
+  motivation_text      String?       @db.Text
+  referral_source      String?       @db.VarChar(100)
+  current_level        Int           @default(1)
+  updated_at           DateTime      @updatedAt
+  user                 User          @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@map("user_profiles")
+}
+
+model Language {
+  id             Int            @id @default(autoincrement())
+  code           String         @unique @db.VarChar(5)
+  name           String         @db.VarChar(50)
+  is_active      Boolean        @default(true)
+  quiz_questions QuizQuestion[]
+  users          User[]
+
+  @@map("languages")
+}
+
+model Surah {
+  id                   Int               @id @default(autoincrement())
+  number               Int               @unique
+  name_arabic          String            @db.VarChar(100)
+  name_transliteration String            @db.VarChar(100)
+  name_translation_id  String            @db.VarChar(100)
+  name_translation_en  String            @db.VarChar(100)
+  juz_start            Int
+  total_ayah           Int
+  revelation_type      RevelationType
+  ayahs                Ayah[]
+  activity_logs        UserActivityLog[]
+
+  @@map("surahs")
+}
+
+model Ayah {
+  id              Int            @id @default(autoincrement())
+  surah_id        Int
+  ayah_number     Int
+  juz_number      Int
+  text_arabic     String         @db.Text
+  text_uthmani    String         @db.Text
+  translation_id  String?        @db.Text
+  translation_en  String?        @db.Text
+  transliteration String?        @db.Text
+  audio_files     AudioFile[]
+  surah           Surah          @relation(fields: [surah_id], references: [id])
+  quiz_questions  QuizQuestion[]
+  progress        UserProgress[]
+
+  @@unique([surah_id, ayah_number])
+  @@map("ayahs")
+}
+
+model AudioFile {
+  id               Int     @id @default(autoincrement())
+  ayah_id          Int
+  ayah_end_number  Int?
+  audio_order      Int     @default(1)
+  qari_name        String  @default("Maqdis") @db.VarChar(100)
+  file_url         String  @db.Text
+  duration_seconds Float?
+  file_size_bytes  BigInt?
+  ayah             Ayah    @relation(fields: [ayah_id], references: [id])
+
+  @@index([ayah_id], map: "audio_files_ayah_id_fkey")
+  @@map("audio_files")
+}
+
+model AssetIcon {
+  id              Int          @id @default(autoincrement())
+  name            String       @unique @db.VarChar(100)
+  category        IconCategory
+  file_url        String       @db.Text
+  file_size_bytes BigInt?
+  version         Int          @default(1)
+
+  @@map("assets_icon")
+}
+
+model AssetBackground {
+  id              Int     @id @default(autoincrement())
+  name            String  @unique @db.VarChar(100)
+  theme           String  @default("default") @db.VarChar(50)
+  file_url        String  @db.Text
+  file_size_bytes BigInt?
+  version         Int     @default(1)
+
+  @@map("assets_background")
+}
+
+model AssetMusic {
+  id               Int       @id @default(autoincrement())
+  name             String    @unique @db.VarChar(100)
+  type             MusicType
+  file_url         String    @db.Text
+  duration_seconds Float?
+  file_size_bytes  BigInt?
+  version          Int       @default(1)
+
+  @@map("assets_music")
+}
+
+model AssetBundle {
+  id                  Int                   @id @default(autoincrement())
+  name                String                @unique @db.VarChar(100)
+  version             Int                   @default(1)
+  total_size_bytes    BigInt?
+  description         String?               @db.Text
+  bundle_items        AssetBundleItem[]
+  downloaded_by_users UserDownloadedAsset[]
+
+  @@map("asset_bundles")
+}
+
+model AssetBundleItem {
+  id         Int         @id @default(autoincrement())
+  bundle_id  Int
+  asset_type AssetType
+  asset_id   Int
+  file_url   String      @db.Text
+  bundle     AssetBundle @relation(fields: [bundle_id], references: [id], onDelete: Cascade)
+
+  @@index([bundle_id], map: "asset_bundle_items_bundle_id_fkey")
+  @@map("asset_bundle_items")
+}
+
+model UserDownloadedAsset {
+  id            Int         @id @default(autoincrement())
+  user_id       String      @db.VarChar(36)
+  bundle_id     Int
+  downloaded_at DateTime    @default(now())
+  app_version   String?     @db.VarChar(20)
+  bundle        AssetBundle @relation(fields: [bundle_id], references: [id])
+  user          User        @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@unique([user_id, bundle_id])
+  @@index([bundle_id], map: "user_downloaded_assets_bundle_id_fkey")
+  @@map("user_downloaded_assets")
+}
+
+model UserProgress {
+  id            Int           @id @default(autoincrement())
+  user_id       String        @db.VarChar(36)
+  ayah_id       Int
+  stage         LearningStage
+  is_completed  Boolean       @default(false)
+  completed_at  DateTime?
+  attempt_count Int           @default(0)
+  ayah          Ayah          @relation(fields: [ayah_id], references: [id])
+  user          User          @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@unique([user_id, ayah_id, stage])
+  @@index([ayah_id], map: "user_progress_ayah_id_fkey")
+  @@map("user_progress")
+}
+
+model QuizQuestion {
+  id            Int               @id @default(autoincrement())
+  ayah_id       Int
+  type          QuizType
+  question_text String            @db.Text
+  language_id   Int
+  options       QuizOption[]
+  ayah          Ayah              @relation(fields: [ayah_id], references: [id])
+  language      Language          @relation(fields: [language_id], references: [id])
+  attempts      UserQuizAttempt[]
+
+  @@index([ayah_id], map: "quiz_questions_ayah_id_fkey")
+  @@index([language_id], map: "quiz_questions_language_id_fkey")
+  @@map("quiz_questions")
+}
+
+model QuizOption {
+  id          Int               @id @default(autoincrement())
+  question_id Int
+  option_text String            @db.Text
+  is_correct  Boolean
+  order_index Int               @default(0)
+  question    QuizQuestion      @relation(fields: [question_id], references: [id], onDelete: Cascade)
+  attempts    UserQuizAttempt[]
+
+  @@index([question_id], map: "quiz_options_question_id_fkey")
+  @@map("quiz_options")
+}
+
+model UserQuizAttempt {
+  id                 Int          @id @default(autoincrement())
+  user_id            String       @db.VarChar(36)
+  question_id        Int
+  selected_option_id Int?
+  is_correct         Boolean
+  time_taken_seconds Float?
+  attempted_at       DateTime     @default(now())
+  question           QuizQuestion @relation(fields: [question_id], references: [id])
+  selected_option    QuizOption?  @relation(fields: [selected_option_id], references: [id])
+  user               User         @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@index([question_id], map: "user_quiz_attempts_question_id_fkey")
+  @@index([selected_option_id], map: "user_quiz_attempts_selected_option_id_fkey")
+  @@index([user_id], map: "user_quiz_attempts_user_id_fkey")
+  @@map("user_quiz_attempts")
+}
+
+model UserLevel {
+  id          Int      @id @default(autoincrement())
+  user_id     String   @db.VarChar(36)
+  level       Int
+  achieved_at DateTime @default(now())
+  user        User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@index([user_id], map: "user_levels_user_id_fkey")
+  @@map("user_levels")
+}
+
+model LeaderboardSnapshot {
+  id                  Int      @id @default(autoincrement())
+  user_id             String   @unique @db.VarChar(36)
+  total_juz_completed Int      @default(0)
+  current_level       Int      @default(1)
+  updated_at          DateTime @default(now()) @updatedAt
+  user                User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@map("leaderboard_snapshots")
+}
+
+model UserActivityLog {
+  id               Int      @id @default(autoincrement())
+  user_id          String   @db.VarChar(36)
+  surah_id         Int
+  ayah_id          Int?
+  activity_type    String   @db.VarChar(30)
+  score            Int?
+  duration_seconds Float?
+  created_at       DateTime @default(now())
+  surah            Surah    @relation(fields: [surah_id], references: [id])
+  user             User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@index([surah_id], map: "user_activity_logs_surah_id_fkey")
+  @@index([user_id], map: "user_activity_logs_user_id_fkey")
+  @@map("user_activity_logs")
+}
+
+enum LearningStart {
+  juz_awal
+  juz_akhir
+}
+
+enum RevelationType {
+  makkiyah
+  madaniyah
+}
+
+enum QuizType {
+  multiple_choice
+  drag_ayat
+}
+
+enum LearningStage {
+  listening
+  reading
+  quiz
+}
+
+enum AssetType {
+  audio
+  icon
+  background
+  music
+}
+
+enum MusicType {
+  bgm
+  sfx
+  notification
+}
+
+enum IconCategory {
+  ui
+  game
+  badge
+  avatar
+}
