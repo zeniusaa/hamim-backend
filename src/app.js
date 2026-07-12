@@ -72,3 +72,5 @@ app.listen(PORT, () => {
 })
 
 module.exports = app
+
+app.use('/quiz', require('./modules/quiz/quiz.route'))

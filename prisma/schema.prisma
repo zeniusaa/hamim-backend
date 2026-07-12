@@ -10,14 +10,14 @@ datasource db {
 model User {
   id                   String                @id @default(uuid()) @db.VarChar(36)
   email                String                @unique @db.VarChar(255)
-  password_hash        String?               @db.Text
-  google_id            String?               @unique @db.VarChar(255)
-  phone_number         String?               @unique @db.VarChar(20)
-  phone_verified       Boolean               @default(false)
-  is_onboarded         Boolean               @default(false)
-  language_id          Int?
-  created_at           DateTime              @default(now())
-  updated_at           DateTime              @updatedAt
+  password_hash        String?               @map("kata_sandi_hash") @db.Text
+  google_id            String?               @unique @map("id_google") @db.VarChar(255)
+  phone_number         String?               @unique @map("nomor_telepon") @db.VarChar(20)
+  phone_verified       Boolean               @default(false) @map("telepon_terverifikasi")
+  is_onboarded         Boolean               @default(false) @map("sudah_onboarding")
+  language_id          Int?                  @map("id_bahasa")
+  created_at           DateTime              @default(now()) @map("dibuat_pada")
+  updated_at           DateTime              @updatedAt @map("diperbarui_pada")
   leaderboard_snapshot LeaderboardSnapshot?
   activity_logs        UserActivityLog[]
   downloaded_assets    UserDownloadedAsset[]
@@ -27,260 +27,260 @@ model User {
   quiz_attempts        UserQuizAttempt[]
   language             Language?             @relation(fields: [language_id], references: [id])
 
-  @@index([language_id], map: "users_language_id_fkey")
-  @@map("users")
+  @@index([language_id])
+  @@map("pengguna")
 }
 
 model UserProfile {
   id                   Int           @id @default(autoincrement())
-  user_id              String        @unique @db.VarChar(36)
-  display_name         String?       @db.VarChar(100)
-  avatar_url           String?       @db.Text
-  learning_start       LearningStart @default(juz_akhir)
-  daily_target_minutes Int           @default(15)
-  audio_repeat_count   Int           @default(3)
-  motivation_text      String?       @db.Text
-  referral_source      String?       @db.VarChar(100)
-  current_level        Int           @default(1)
-  updated_at           DateTime      @updatedAt
+  user_id              String        @unique @map("id_pengguna") @db.VarChar(36)
+  display_name         String?       @map("nama_tampilan") @db.VarChar(100)
+  avatar_url           String?       @map("url_avatar") @db.Text
+  learning_start       LearningStart @default(juz_akhir) @map("mulai_belajar")
+  daily_target_minutes Int           @default(15) @map("target_menit_harian")
+  audio_repeat_count   Int           @default(3) @map("jumlah_pengulangan_audio")
+  motivation_text      String?       @map("teks_motivasi") @db.Text
+  referral_source      String?       @map("sumber_referensi") @db.VarChar(100)
+  current_level        Int           @default(1) @map("level_saat_ini")
+  updated_at           DateTime      @updatedAt @map("diperbarui_pada")
   user                 User          @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
-  @@map("user_profiles")
+  @@map("profil_pengguna")
 }
 
 model Language {
   id             Int            @id @default(autoincrement())
-  code           String         @unique @db.VarChar(5)
-  name           String         @db.VarChar(50)
-  is_active      Boolean        @default(true)
+  code           String         @unique @map("kode") @db.VarChar(5)
+  name           String         @map("nama") @db.VarChar(50)
+  is_active      Boolean        @default(true) @map("aktif")
   quiz_questions QuizQuestion[]
   users          User[]
 
-  @@map("languages")
+  @@map("bahasa")
 }
 
 model Surah {
   id                   Int               @id @default(autoincrement())
-  number               Int               @unique
-  name_arabic          String            @db.VarChar(100)
-  name_transliteration String            @db.VarChar(100)
-  name_translation_id  String            @db.VarChar(100)
-  name_translation_en  String            @db.VarChar(100)
-  juz_start            Int
-  total_ayah           Int
-  revelation_type      RevelationType
+  number               Int               @unique @map("nomor")
+  name_arabic          String            @map("nama_arab") @db.VarChar(100)
+  name_transliteration String            @map("nama_transliterasi") @db.VarChar(100)
+  name_translation_id  String            @map("nama_terjemahan_id") @db.VarChar(100)
+  name_translation_en  String            @map("nama_terjemahan_en") @db.VarChar(100)
+  juz_start            Int               @map("juz_mulai")
+  total_ayah           Int               @map("total_ayat")
+  revelation_type      RevelationType    @map("tempat_turun")
   ayahs                Ayah[]
   activity_logs        UserActivityLog[]
 
-  @@map("surahs")
+  @@map("surah")
 }
 
 model Ayah {
   id              Int            @id @default(autoincrement())
-  surah_id        Int
-  ayah_number     Int
-  juz_number      Int
-  text_arabic     String         @db.Text
-  text_uthmani    String         @db.Text
-  translation_id  String?        @db.Text
-  translation_en  String?        @db.Text
-  transliteration String?        @db.Text
+  surah_id        Int            @map("id_surah")
+  ayah_number     Int            @map("nomor_ayat")
+  juz_number      Int            @map("nomor_juz")
+  text_arabic     String         @map("teks_arab") @db.Text
+  text_uthmani    String         @map("teks_utsmani") @db.Text
+  translation_id  String?        @map("terjemahan_id") @db.Text
+  translation_en  String?        @map("terjemahan_en") @db.Text
+  transliteration String?        @map("transliterasi") @db.Text
   audio_files     AudioFile[]
   surah           Surah          @relation(fields: [surah_id], references: [id])
   quiz_questions  QuizQuestion[]
   progress        UserProgress[]
 
   @@unique([surah_id, ayah_number])
-  @@map("ayahs")
+  @@map("ayat")
 }
 
 model AudioFile {
   id               Int     @id @default(autoincrement())
-  ayah_id          Int
-  ayah_end_number  Int?
-  audio_order      Int     @default(1)
-  qari_name        String  @default("Maqdis") @db.VarChar(100)
-  file_url         String  @db.Text
-  duration_seconds Float?
-  file_size_bytes  BigInt?
+  ayah_id          Int     @map("id_ayat")
+  ayah_end_number  Int?    @map("nomor_ayat_akhir")
+  audio_order      Int     @default(1) @map("urutan_audio")
+  qari_name        String  @default("Maqdis") @map("nama_qari") @db.VarChar(100)
+  file_url         String  @map("url_berkas") @db.Text
+  duration_seconds Float?  @map("durasi_detik")
+  file_size_bytes  BigInt? @map("ukuran_berkas_byte")
   ayah             Ayah    @relation(fields: [ayah_id], references: [id])
 
-  @@index([ayah_id], map: "audio_files_ayah_id_fkey")
-  @@map("audio_files")
+  @@index([ayah_id])
+  @@map("berkas_audio")
 }
 
 model AssetIcon {
   id              Int          @id @default(autoincrement())
-  name            String       @unique @db.VarChar(100)
-  category        IconCategory
-  file_url        String       @db.Text
-  file_size_bytes BigInt?
-  version         Int          @default(1)
+  name            String       @unique @map("nama") @db.VarChar(100)
+  category        IconCategory @map("kategori")
+  file_url        String       @map("url_berkas") @db.Text
+  file_size_bytes BigInt?      @map("ukuran_berkas_byte")
+  version         Int          @default(1) @map("versi")
 
-  @@map("assets_icon")
+  @@map("aset_ikon")
 }
 
 model AssetBackground {
   id              Int     @id @default(autoincrement())
-  name            String  @unique @db.VarChar(100)
-  theme           String  @default("default") @db.VarChar(50)
-  file_url        String  @db.Text
-  file_size_bytes BigInt?
-  version         Int     @default(1)
+  name            String  @unique @map("nama") @db.VarChar(100)
+  theme           String  @default("default") @map("tema") @db.VarChar(50)
+  file_url        String  @map("url_berkas") @db.Text
+  file_size_bytes BigInt? @map("ukuran_berkas_byte")
+  version         Int     @default(1) @map("versi")
 
-  @@map("assets_background")
+  @@map("aset_latar")
 }
 
 model AssetMusic {
   id               Int       @id @default(autoincrement())
-  name             String    @unique @db.VarChar(100)
-  type             MusicType
-  file_url         String    @db.Text
-  duration_seconds Float?
-  file_size_bytes  BigInt?
-  version          Int       @default(1)
+  name             String    @unique @map("nama") @db.VarChar(100)
+  type             MusicType @map("jenis")
+  file_url         String    @map("url_berkas") @db.Text
+  duration_seconds Float?    @map("durasi_detik")
+  file_size_bytes  BigInt?   @map("ukuran_berkas_byte")
+  version          Int       @default(1) @map("versi")
 
-  @@map("assets_music")
+  @@map("aset_musik")
 }
 
 model AssetBundle {
   id                  Int                   @id @default(autoincrement())
-  name                String                @unique @db.VarChar(100)
-  version             Int                   @default(1)
-  total_size_bytes    BigInt?
-  description         String?               @db.Text
+  name                String                @unique @map("nama") @db.VarChar(100)
+  version             Int                   @default(1) @map("versi")
+  total_size_bytes    BigInt?               @map("total_ukuran_byte")
+  description         String?               @map("deskripsi") @db.Text
   bundle_items        AssetBundleItem[]
   downloaded_by_users UserDownloadedAsset[]
 
-  @@map("asset_bundles")
+  @@map("paket_aset")
 }
 
 model AssetBundleItem {
   id         Int         @id @default(autoincrement())
-  bundle_id  Int
-  asset_type AssetType
-  asset_id   Int
-  file_url   String      @db.Text
+  bundle_id  Int         @map("id_paket")
+  asset_type AssetType   @map("jenis_aset")
+  asset_id   Int         @map("id_aset")
+  file_url   String      @map("url_berkas") @db.Text
   bundle     AssetBundle @relation(fields: [bundle_id], references: [id], onDelete: Cascade)
 
-  @@index([bundle_id], map: "asset_bundle_items_bundle_id_fkey")
-  @@map("asset_bundle_items")
+  @@index([bundle_id])
+  @@map("item_paket_aset")
 }
 
 model UserDownloadedAsset {
   id            Int         @id @default(autoincrement())
-  user_id       String      @db.VarChar(36)
-  bundle_id     Int
-  downloaded_at DateTime    @default(now())
-  app_version   String?     @db.VarChar(20)
+  user_id       String      @map("id_pengguna") @db.VarChar(36)
+  bundle_id     Int         @map("id_paket")
+  downloaded_at DateTime    @default(now()) @map("diunduh_pada")
+  app_version   String?     @map("versi_aplikasi") @db.VarChar(20)
   bundle        AssetBundle @relation(fields: [bundle_id], references: [id])
   user          User        @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
   @@unique([user_id, bundle_id])
-  @@index([bundle_id], map: "user_downloaded_assets_bundle_id_fkey")
-  @@map("user_downloaded_assets")
+  @@index([bundle_id])
+  @@map("unduhan_aset_pengguna")
 }
 
 model UserProgress {
   id            Int           @id @default(autoincrement())
-  user_id       String        @db.VarChar(36)
-  ayah_id       Int
-  stage         LearningStage
-  is_completed  Boolean       @default(false)
-  completed_at  DateTime?
-  attempt_count Int           @default(0)
+  user_id       String        @map("id_pengguna") @db.VarChar(36)
+  ayah_id       Int           @map("id_ayat")
+  stage         LearningStage @map("tahap")
+  is_completed  Boolean       @default(false) @map("selesai")
+  completed_at  DateTime?     @map("selesai_pada")
+  attempt_count Int           @default(0) @map("jumlah_percobaan")
   ayah          Ayah          @relation(fields: [ayah_id], references: [id])
   user          User          @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
   @@unique([user_id, ayah_id, stage])
-  @@index([ayah_id], map: "user_progress_ayah_id_fkey")
-  @@map("user_progress")
+  @@index([ayah_id])
+  @@map("progres_pengguna")
 }
 
 model QuizQuestion {
   id            Int               @id @default(autoincrement())
-  ayah_id       Int
-  type          QuizType
-  question_text String            @db.Text
-  language_id   Int
+  ayah_id       Int               @map("id_ayat")
+  type          QuizType          @map("jenis")
+  question_text String            @map("teks_soal") @db.Text
+  language_id   Int               @map("id_bahasa")
   options       QuizOption[]
   ayah          Ayah              @relation(fields: [ayah_id], references: [id])
   language      Language          @relation(fields: [language_id], references: [id])
   attempts      UserQuizAttempt[]
 
-  @@index([ayah_id], map: "quiz_questions_ayah_id_fkey")
-  @@index([language_id], map: "quiz_questions_language_id_fkey")
-  @@map("quiz_questions")
+  @@index([ayah_id])
+  @@index([language_id])
+  @@map("soal_kuis")
 }
 
 model QuizOption {
   id          Int               @id @default(autoincrement())
-  question_id Int
-  option_text String            @db.Text
-  is_correct  Boolean
-  order_index Int               @default(0)
+  question_id Int               @map("id_soal")
+  option_text String            @map("teks_opsi") @db.Text
+  is_correct  Boolean           @map("benar")
+  order_index Int               @default(0) @map("urutan")
   question    QuizQuestion      @relation(fields: [question_id], references: [id], onDelete: Cascade)
   attempts    UserQuizAttempt[]
 
-  @@index([question_id], map: "quiz_options_question_id_fkey")
-  @@map("quiz_options")
+  @@index([question_id])
+  @@map("opsi_kuis")
 }
 
 model UserQuizAttempt {
   id                 Int          @id @default(autoincrement())
-  user_id            String       @db.VarChar(36)
-  question_id        Int
-  selected_option_id Int?
-  is_correct         Boolean
-  time_taken_seconds Float?
-  attempted_at       DateTime     @default(now())
+  user_id            String       @map("id_pengguna") @db.VarChar(36)
+  question_id        Int          @map("id_soal")
+  selected_option_id Int?         @map("id_opsi_dipilih")
+  is_correct         Boolean      @map("benar")
+  time_taken_seconds Float?       @map("waktu_detik")
+  attempted_at       DateTime     @default(now()) @map("dicoba_pada")
   question           QuizQuestion @relation(fields: [question_id], references: [id])
   selected_option    QuizOption?  @relation(fields: [selected_option_id], references: [id])
   user               User         @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
-  @@index([question_id], map: "user_quiz_attempts_question_id_fkey")
-  @@index([selected_option_id], map: "user_quiz_attempts_selected_option_id_fkey")
-  @@index([user_id], map: "user_quiz_attempts_user_id_fkey")
-  @@map("user_quiz_attempts")
+  @@index([question_id])
+  @@index([selected_option_id])
+  @@index([user_id])
+  @@map("percobaan_kuis_pengguna")
 }
 
 model UserLevel {
   id          Int      @id @default(autoincrement())
-  user_id     String   @db.VarChar(36)
-  level       Int
-  achieved_at DateTime @default(now())
+  user_id     String   @map("id_pengguna") @db.VarChar(36)
+  level       Int      @map("level")
+  achieved_at DateTime @default(now()) @map("dicapai_pada")
   user        User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
-  @@index([user_id], map: "user_levels_user_id_fkey")
-  @@map("user_levels")
+  @@index([user_id])
+  @@map("level_pengguna")
 }
 
 model LeaderboardSnapshot {
   id                  Int      @id @default(autoincrement())
-  user_id             String   @unique @db.VarChar(36)
-  total_juz_completed Int      @default(0)
-  current_level       Int      @default(1)
-  updated_at          DateTime @default(now()) @updatedAt
+  user_id             String   @unique @map("id_pengguna") @db.VarChar(36)
+  total_juz_completed Int      @default(0) @map("total_juz_selesai")
+  current_level       Int      @default(1) @map("level_saat_ini")
+  updated_at          DateTime @default(now()) @updatedAt @map("diperbarui_pada")
   user                User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
-  @@map("leaderboard_snapshots")
+  @@map("papan_peringkat")
 }
 
 model UserActivityLog {
   id               Int      @id @default(autoincrement())
-  user_id          String   @db.VarChar(36)
-  surah_id         Int
-  ayah_id          Int?
-  activity_type    String   @db.VarChar(30)
-  score            Int?
-  duration_seconds Float?
-  created_at       DateTime @default(now())
+  user_id          String   @map("id_pengguna") @db.VarChar(36)
+  surah_id         Int      @map("id_surah")
+  ayah_id          Int?     @map("id_ayat")
+  activity_type    String   @map("jenis_aktivitas") @db.VarChar(30)
+  score            Int?     @map("skor")
+  duration_seconds Float?   @map("durasi_detik")
+  created_at       DateTime @default(now()) @map("dibuat_pada")
   surah            Surah    @relation(fields: [surah_id], references: [id])
   user             User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
-  @@index([surah_id], map: "user_activity_logs_surah_id_fkey")
-  @@index([user_id], map: "user_activity_logs_user_id_fkey")
-  @@map("user_activity_logs")
+  @@index([surah_id])
+  @@index([user_id])
+  @@map("log_aktivitas_pengguna")
 }
 
 enum LearningStart {

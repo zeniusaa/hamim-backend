@@ -29,6 +29,11 @@ const loginSchema = z.object({
   password: z.string().min(1, 'Password tidak boleh kosong.'),
 })
 
+// Body dari Flutter: cuma idToken hasil google_sign_in SDK
+const googleNativeSchema = z.object({
+  idToken: z.string().min(10, 'idToken tidak boleh kosong.'),
+})
+
 // POST /auth/register
 const register = async (req, res, next) => {
   try {
@@ -66,7 +71,7 @@ const refresh = async (req, res, next) => {
 }
 
 // GET /auth/google/callback
-// Dipanggil setelah Google redirect balik ke app kita.
+// Dipanggil setelah Google redirect balik ke app kita (flow WEB via browser).
 // Passport sudah proses user-nya, kita tinggal buat token.
 const googleCallback = async (req, res, next) => {
   try {
@@ -80,9 +85,23 @@ const googleCallback = async (req, res, next) => {
     // Tim mobile bisa tangkap ini via deep link
     // const redirectUrl = `hamim://auth/callback?accessToken=${tokens.accessToken}&refreshToken=${tokens.refreshToken}`
 
-    // GANTI SEMENTARA (untuk testing di browser/Postman) 
+    // GANTI SEMENTARA (untuk testing di browser/Postman)
     return res.json({ accessToken: tokens.accessToken, refreshToken: tokens.refreshToken })
     return res.redirect(redirectUrl)
+  } catch (err) {
+    next(err)
+  }
+}
+
+// POST /auth/google/native
+// Dipanggil dari Flutter (flow NATIVE, tanpa buka browser).
+// Body: { idToken } hasil Google Sign-In SDK di sisi mobile.
+const googleNative = async (req, res, next) => {
+  try {
+    const { idToken } = googleNativeSchema.parse(req.body)
+    const result = await authService.loginWithGoogleIdToken(idToken)
+
+    return success(res, 'Login Google berhasil.', result)
   } catch (err) {
     next(err)
   }
@@ -120,4 +139,4 @@ const me = async (req, res, next) => {
   }
 }
 
-module.exports = { register, login, refresh, googleCallback, me }
+module.exports = { register, login, refresh, googleCallback, googleNative, me }

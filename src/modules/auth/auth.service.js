@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs')
 const prisma = require('../../config/database')
 const { generateTokens, verifyRefreshToken } = require('../../utils/jwt')
+const { verifyGoogleIdToken } = require('../../utils/googleAuth')
 
 // SERVICE = tempat business logic.
 // Controller hanya terima request dan kirim response.
@@ -124,4 +125,58 @@ const refresh = async (refreshToken) => {
   return tokens
 }
 
-module.exports = { register, login, refresh }
+// Dipakai bareng oleh flow web (passport, browser) dan flow native (Flutter).
+// Supaya logic "cari atau buat user dari data Google" tidak duplikat di 2 tempat.
+const findOrCreateGoogleUser = async ({ googleId, email, displayName, avatarUrl }) => {
+  // Sudah pernah login Google sebelumnya?
+  let user = await prisma.user.findUnique({ where: { google_id: googleId } })
+  if (user) return user
+
+  // Email sudah ada (misal daftar manual pakai email/password)? Tautkan google_id-nya.
+  user = await prisma.user.findUnique({ where: { email } })
+  if (user) {
+    return prisma.user.update({
+      where: { email },
+      data: { google_id: googleId },
+    })
+  }
+
+  // Belum ada sama sekali → buat akun baru
+  return prisma.user.create({
+    data: {
+      email,
+      google_id: googleId,
+      profile: {
+        create: {
+          display_name: displayName,
+          avatar_url: avatarUrl ?? null,
+        },
+      },
+    },
+  })
+}
+
+// POST /auth/google/native — dipanggil dari Flutter setelah dapat idToken
+// dari Google Sign-In SDK native (bukan lewat browser/redirect).
+const loginWithGoogleIdToken = async (idToken) => {
+  const payload = await verifyGoogleIdToken(idToken)
+  const user = await findOrCreateGoogleUser(payload)
+  const tokens = generateTokens({ id: user.id, email: user.email })
+
+  return {
+    user: {
+      id: user.id,
+      email: user.email,
+      is_onboarded: user.is_onboarded,
+    },
+    ...tokens,
+  }
+}
+
+module.exports = {
+  register,
+  login,
+  refresh,
+  findOrCreateGoogleUser,
+  loginWithGoogleIdToken,
+}
