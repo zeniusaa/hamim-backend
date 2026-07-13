@@ -29,7 +29,7 @@ router.post('/login', authLimiter, controller.login)
 // POST /auth/refresh  — minta access token baru pakai refresh token
 router.post('/refresh', controller.refresh)
 
-// ─── Google OAuth ────────────────────────────────────────────
+// ─── Google OAuth (Web — browser redirect) ───────────────────
 // GET /auth/google — redirect user ke halaman login Google
 router.get(
   '/google',
@@ -50,6 +50,10 @@ router.get(
 router.get('/google/failed', (req, res) => {
   res.status(401).json({ success: false, message: 'Login Google gagal.' })
 })
+
+// ─── Google OAuth (Native — Flutter, google_sign_in SDK) ─────
+// POST /auth/google/native — Flutter kirim idToken hasil sign-in native
+router.post('/google/native', authLimiter, controller.googleNative)
 
 // ─── Protected ───────────────────────────────────────────────
 // GET /auth/me — endpoint untuk cek token masih valid + ambil data user

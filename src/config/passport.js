@@ -1,12 +1,10 @@
 const passport = require('passport')
 const GoogleStrategy = require('passport-google-oauth20').Strategy
-const prisma = require('./database')
+const authService = require('../modules/auth/auth.service')
 
-// Strategy Google OAuth dipanggil setiap kali user login via Google.
-// Alur:
-//   1. Cek apakah google_id sudah ada di DB → return user
-//   2. Kalau belum, cek apakah email sudah terdaftar → link google_id ke akun lama
-//   3. Kalau email juga baru → buat akun baru otomatis
+// Strategy Google OAuth dipanggil setiap kali user login via Google (flow web/browser).
+// Logic cari/buat user-nya sekarang pakai findOrCreateGoogleUser di auth.service.js,
+// yang sama persis dipakai oleh flow native (Flutter) — jadi tidak ada logic ganda.
 passport.use(
   new GoogleStrategy(
     {
@@ -16,36 +14,11 @@ passport.use(
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
-        const email = profile.emails[0].value
-
-        // Sudah pernah login Google?
-        let user = await prisma.user.findUnique({
-          where: { google_id: profile.id },
-        })
-        if (user) return done(null, user)
-
-        // Email sudah ada (akun email/password)?
-        user = await prisma.user.findUnique({ where: { email } })
-        if (user) {
-          user = await prisma.user.update({
-            where: { email },
-            data: { google_id: profile.id },
-          })
-          return done(null, user)
-        }
-
-        // Buat akun baru
-        user = await prisma.user.create({
-          data: {
-            email,
-            google_id: profile.id,
-            profile: {
-              create: {
-                display_name: profile.displayName,
-                avatar_url: profile.photos?.[0]?.value ?? null,
-              },
-            },
-          },
+        const user = await authService.findOrCreateGoogleUser({
+          googleId: profile.id,
+          email: profile.emails[0].value,
+          displayName: profile.displayName,
+          avatarUrl: profile.photos?.[0]?.value ?? null,
         })
 
         return done(null, user)

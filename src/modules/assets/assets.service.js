@@ -72,4 +72,15 @@ const checkUpdates = async (versionsParam) => {
   return { has_updates: updates.length > 0, updates, up_to_date }
 }
 
-module.exports = { listBundles, getBundleDetail, confirmDownload, checkUpdates }
+// GET /assets/icons | /assets/backgrounds | /assets/music
+// Dipakai kalau app butuh detail 1-1 (bukan lewat bundle), misal buat halaman "Ganti Ikon"/"Toko Tema".
+const listIcons = () =>
+  prisma.assetIcon.findMany({ orderBy: { name: 'asc' } })
+
+const listBackgrounds = () =>
+  prisma.assetBackground.findMany({ orderBy: { name: 'asc' } })
+
+const listMusic = () =>
+  prisma.assetMusic.findMany({ orderBy: { name: 'asc' } })
+
+module.exports = { listBundles, getBundleDetail, confirmDownload, checkUpdates, listIcons, listBackgrounds, listMusic }
