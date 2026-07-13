@@ -27,7 +27,7 @@ const errorHandler = (err, req, res, next) => {
     return res.status(422).json({
       success: false,
       message: 'Data yang dikirim tidak valid.',
-      errors: err.errors.map((e) => ({
+      errors: err.issues.map((e) => ({
         field: e.path.join('.'),
         message: e.message,
       })),

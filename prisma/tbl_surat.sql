@@ -1,0 +1,923 @@
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (1,'1-5','https://api.maqdisacademy.com/assets/raw/audio_surat/1_alfatihah/Al-Fatihah1-5.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/1_alfatihah/alfatihah1.5/alfatihah1.5.m3u8',1,5000),
+	 (78,'1-4','https://api.maqdisacademy.com/assets/raw/audio_surat/78_annaba/ayat1-4.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/78_annaba/78naba1.4/78naba1.4.m3u8',1,5000),
+	 (78,'5-8','https://api.maqdisacademy.com/assets/raw/audio_surat/78_annaba/ayat5-8.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/78_annaba/78naba5.8/78naba5.8.m3u8',1,5000),
+	 (78,'1-8','https://api.maqdisacademy.com/assets/raw/audio_surat/78_annaba/ayat-gabung-1-8.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/78_annaba/78naba1.8/78naba1.8.m3u8',2,5000),
+	 (78,'9-12','https://api.maqdisacademy.com/assets/raw/audio_surat/78_annaba/ayat9-12.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/78_annaba/78naba9.12/78naba9.12.m3u8',1,5000),
+	 (78,'13-16','https://api.maqdisacademy.com/assets/raw/audio_surat/78_annaba/ayat13-16.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/78_annaba/78naba13.16/78naba13.16.m3u8',1,5000),
+	 (78,'9-16','https://api.maqdisacademy.com/assets/raw/audio_surat/78_annaba/ayat-gabung-9-16.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/78_annaba/78naba9.16/78naba9.16.m3u8',2,5000),
+	 (78,'1-16','https://api.maqdisacademy.com/assets/raw/audio_surat/78_annaba/ayat-gabung-1-16.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/78_annaba/78naba1.16/78naba1.16.m3u8',2,5000),
+	 (78,'17-20','https://api.maqdisacademy.com/assets/raw/audio_surat/78_annaba/ayat17-20.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/78_annaba/78naba17.20/78naba17.20.m3u8',1,5000),
+	 (78,'21-24','https://api.maqdisacademy.com/assets/raw/audio_surat/78_annaba/ayat21-24.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/78_annaba/78naba21.24/78naba21.24.m3u8',1,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (78,'17-24','https://api.maqdisacademy.com/assets/raw/audio_surat/78_annaba/ayat-gabung-17-24.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/78_annaba/78naba17.24/78naba17.24.m3u8',2,5000),
+	 (78,'25-30','https://api.maqdisacademy.com/assets/raw/audio_surat/78_annaba/ayat25-30.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/78_annaba/78naba25.30/78naba25.30.m3u8',1,5000),
+	 (78,'31-34','https://api.maqdisacademy.com/assets/raw/audio_surat/78_annaba/ayat31-34.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/78_annaba/78naba31.34/78naba31.34.m3u8',1,5000),
+	 (78,'25-34','https://api.maqdisacademy.com/assets/raw/audio_surat/78_annaba/ayat-gabung-25-34.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/78_annaba/78naba25.34/78naba25.34.m3u8',2,5000),
+	 (78,'17-34','https://api.maqdisacademy.com/assets/raw/audio_surat/78_annaba/ayat-gabung-17-34.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/78_annaba/78naba17.34/78naba17.34.m3u8',2,5000),
+	 (78,'35-37','https://api.maqdisacademy.com/assets/raw/audio_surat/78_annaba/ayat35-37.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/78_annaba/78naba35.37/78naba35.37.m3u8',1,5000),
+	 (78,'38-40','https://api.maqdisacademy.com/assets/raw/audio_surat/78_annaba/ayat38-40.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/78_annaba/78naba38.40/78naba38.40.m3u8',1,5000),
+	 (78,'35-40','https://api.maqdisacademy.com/assets/raw/audio_surat/78_annaba/ayat-gabung-35-40.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/78_annaba/78naba35.40/78naba35.40.m3u8',2,5000),
+	 (78,'1-40','https://api.maqdisacademy.com/assets/raw/audio_surat/78_annaba/ayat-gabung-1-40.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/78_annaba/78naba1.40/78naba1.40.m3u8',2,5000),
+	 (79,'1-4','https://api.maqdisacademy.com/assets/raw/audio_surat/79_annazi''at/Ayat1-4.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/79_annazi''at/79naziat1.4/79naziat1.4.m3u8',1,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (79,'5-8','https://api.maqdisacademy.com/assets/raw/audio_surat/79_annazi''at/Ayat5-8.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/79_annazi''at/79naziat5.8/79naziat5.8.m3u8',1,5000),
+	 (1,'6-7','https://api.maqdisacademy.com/assets/raw/audio_surat/1_alfatihah/Al-Fatihah6-7.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/1_alfatihah/alfatihah6.7/alfatihah6.7.m3u8',1,5000),
+	 (1,'1-7','https://api.maqdisacademy.com/assets/raw/audio_surat/1_alfatihah/alfatihah.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/1_alfatihah/alfatihah/alfatihah.m3u8',2,5000),
+	 (79,'1-8','https://api.maqdisacademy.com/assets/raw/audio_surat/79_annazi''at/Ayat-gabung-1-8.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/79_annazi''at/79naziat1.8/79naziat1.8.m3u8',2,5000),
+	 (79,'9-12','https://api.maqdisacademy.com/assets/raw/audio_surat/79_annazi''at/Ayat9-12.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/79_annazi''at/79naziat9.12/79naziat9.12.m3u8',1,5000),
+	 (79,'13-16','https://api.maqdisacademy.com/assets/raw/audio_surat/79_annazi''at/Ayat13-16.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/79_annazi''at/79naziat13.16/79naziat13.16.m3u8',1,5000),
+	 (79,'9-16','https://api.maqdisacademy.com/assets/raw/audio_surat/79_annazi''at/Ayat-gabung-9-16.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/79_annazi''at/79naziat9.16/79naziat9.16.m3u8',2,5000),
+	 (79,'1-16','https://api.maqdisacademy.com/assets/raw/audio_surat/79_annazi''at/Ayat-gabung-1-16.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/79_annazi''at/79naziat1.16/79naziat1.16.m3u8',2,5000),
+	 (79,'17-20','https://api.maqdisacademy.com/assets/raw/audio_surat/79_annazi''at/Ayat17-20.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/79_annazi''at/79naziat17.20/79naziat17.20.m3u8',1,5000),
+	 (79,'21-24','https://api.maqdisacademy.com/assets/raw/audio_surat/79_annazi''at/Ayat21-24.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/79_annazi''at/79naziat21.24/79naziat21.24.m3u8',1,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (79,'17-24','https://api.maqdisacademy.com/assets/raw/audio_surat/79_annazi''at/Ayat-gabung-17-24.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/79_annazi''at/79naziat17.24/79naziat17.24.m3u8',2,5000),
+	 (79,'25-28','https://api.maqdisacademy.com/assets/raw/audio_surat/79_annazi''at/Ayat25-28.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/79_annazi''at/79naziat25.28/79naziat25.28.m3u8',1,5000),
+	 (79,'29-32','https://api.maqdisacademy.com/assets/raw/audio_surat/79_annazi''at/Ayat29-32.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/79_annazi''at/79naziat29.32/79naziat29.32.m3u8',1,5000),
+	 (79,'25-32','https://api.maqdisacademy.com/assets/raw/audio_surat/79_annazi''at/Ayat-gabung-25-32.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/79_annazi''at/79naziat25.32/79naziat25.32.m3u8',2,5000),
+	 (79,'17-32','https://api.maqdisacademy.com/assets/raw/audio_surat/79_annazi''at/Ayat-gabung-17-32.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/79_annazi''at/79naziat17.32/79naziat17.32.m3u8',2,5000),
+	 (79,'1-32','https://api.maqdisacademy.com/assets/raw/audio_surat/79_annazi''at/Ayat-gabung-1-32.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/79_annazi''at/79naziat1.32/79naziat1.32.m3u8',2,5000),
+	 (79,'33-36','https://api.maqdisacademy.com/assets/raw/audio_surat/79_annazi''at/Ayat33-36.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/79_annazi''at/79naziat33.36/79naziat33.36.m3u8',1,5000),
+	 (79,'37-40','https://api.maqdisacademy.com/assets/raw/audio_surat/79_annazi''at/Ayat37-40.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/79_annazi''at/79naziat37.40/79naziat37.40.m3u8',1,5000),
+	 (79,'33-40','https://api.maqdisacademy.com/assets/raw/audio_surat/79_annazi''at/Ayat-gabung-33-40.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/79_annazi''at/79naziat33.40/79naziat33.40.m3u8',2,5000),
+	 (79,'41-44','https://api.maqdisacademy.com/assets/raw/audio_surat/79_annazi''at/Ayat41-44.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/79_annazi''at/79naziat41.44/79naziat41.44.m3u8',1,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (79,'45-46','https://api.maqdisacademy.com/assets/raw/audio_surat/79_annazi''at/Ayat45-46.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/79_annazi''at/79naziat45.46/79naziat45.46.m3u8',1,5000),
+	 (79,'41-46','https://api.maqdisacademy.com/assets/raw/audio_surat/79_annazi''at/Ayat-gabung-41-46.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/79_annazi''at/79naziat41.46/79naziat41.46.m3u8',2,5000),
+	 (79,'33-46','https://api.maqdisacademy.com/assets/raw/audio_surat/79_annazi''at/Ayat-gabung-33-46.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/79_annazi''at/79naziat33.46/79naziat33.46.m3u8',2,5000),
+	 (79,'1-46','https://api.maqdisacademy.com/assets/raw/audio_surat/79_annazi''at/Ayat-gabung-1-46.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/79_annazi''at/79naziat1.46/79naziat1.46.m3u8',2,5000),
+	 (114,'1-6','https://api.maqdisacademy.com/assets/raw/audio_surat/114_annas/An-Nas.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/114_annas/114nas/114nas.m3u8',1,5000),
+	 (113,'1-5','https://api.maqdisacademy.com/assets/raw/audio_surat/113_alfalaq/Alfalaq_rev.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/113_alfalaq/113falaq/113falaq.m3u8',1,5000),
+	 (112,'1-4','https://api.maqdisacademy.com/assets/raw/audio_surat/112_alikhlas/Al-Ikhlas.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/112_alikhlas/112ikhlas/112ikhlas.m3u8',1,5000),
+	 (111,'1-5','https://api.maqdisacademy.com/assets/raw/audio_surat/111_allahab/Al-Lahab.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/111_allahab/111lahab/111lahab.m3u8',1,5000),
+	 (110,'1-3','https://api.maqdisacademy.com/assets/raw/audio_surat/110_annasr/An-Nasr.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/110_annasr/110nasr/110nasr.m3u8',1,5000),
+	 (109,'1-6','https://api.maqdisacademy.com/assets/raw/audio_surat/109_alkafirun/Al-Kafirun.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/109_alkafirun/109kafirun/109kafirun.m3u8',1,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (108,'1-3','https://api.maqdisacademy.com/assets/raw/audio_surat/108_alkautsar/Al-Kautsar.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/108_alkautsar/108kautsar/108kautsar.m3u8',1,5000),
+	 (107,'1-7','https://api.maqdisacademy.com/assets/raw/audio_surat/107_alma''un/Al-Ma''un.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/107_alma''un/107maun/107maun.m3u8',1,5000),
+	 (106,'1-4','https://api.maqdisacademy.com/assets/raw/audio_surat/106_quraisy/Quraisy.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/106_quraisy/106quraisy/106quraisy.m3u8',1,5000),
+	 (105,'1-5','https://api.maqdisacademy.com/assets/raw/audio_surat/105_alfiil/Al-Fiil.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/105_alfil/105fil/105fil.m3u8',1,5000),
+	 (104,'1-4','https://api.maqdisacademy.com/assets/raw/audio_surat/104_alhumazah/ayat1-4.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/104_alhumazah/104humazah1.4/104humazah1.4.m3u8',1,5000),
+	 (104,'5-9','https://api.maqdisacademy.com/assets/raw/audio_surat/104_alhumazah/ayat5-9.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/104_alhumazah/104humazah5.9/104humazah5.9.m3u8',1,5000),
+	 (104,'1-9','https://api.maqdisacademy.com/assets/raw/audio_surat/104_alhumazah/ayat-gabung-1-9.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/104_alhumazah/104humazah1.9/104humazah1.9.m3u8',2,5000),
+	 (103,'1-3','https://api.maqdisacademy.com/assets/raw/audio_surat/103_al''asr/ayat1-3.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/103_al''asr/103asr/103asr.m3u8',1,5000),
+	 (102,'1-4','https://api.maqdisacademy.com/assets/raw/audio_surat/102_attakatsur/Ayat1-4.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/102_attakatsur/102takasur1.4/102takasur1.4.m3u8',1,5000),
+	 (102,'5-8','https://api.maqdisacademy.com/assets/raw/audio_surat/102_attakatsur/Ayat5-8.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/102_attakatsur/102takasur5.8/102takasur5.8.m3u8',1,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (102,'1-8','https://api.maqdisacademy.com/assets/raw/audio_surat/102_attakatsur/Ayat-Gabung-1-8.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/102_attakatsur/102takasur1.8/102takasur1.8.m3u8',2,5000),
+	 (101,'1-5','https://api.maqdisacademy.com/assets/raw/audio_surat/101_qori''ah/Ayat1-5.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/101_alqoriah/101qoriah1.5/101qoriah1.5.m3u8',1,5000),
+	 (101,'6-11','https://api.maqdisacademy.com/assets/raw/audio_surat/101_qori''ah/Ayat6-11.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/101_alqoriah/101qoriah6.11/101qoriah6.11.m3u8',1,5000),
+	 (101,'1-11','https://api.maqdisacademy.com/assets/raw/audio_surat/101_qori''ah/Ayat-Gabung-1-11.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/101_alqoriah/101qoriah1.11/101qoriah1.11.m3u8',2,5000),
+	 (100,'1-4','https://api.maqdisacademy.com/assets/raw/audio_surat/100_al''adiyat/Ayat1-4.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/100_al''adiyat/100adiyat1.4/100adiyat1.4.m3u8',1,5000),
+	 (100,'5-8','https://api.maqdisacademy.com/assets/raw/audio_surat/100_al''adiyat/Ayat5-8.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/100_al''adiyat/100adiyat5.8/100adiyat5.8.m3u8',1,5000),
+	 (100,'9-11','https://api.maqdisacademy.com/assets/raw/audio_surat/100_al''adiyat/Ayat9-11.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/100_al''adiyat/100adiyat9.11/100adiyat9.11.m3u8',1,5000),
+	 (100,'1-11','https://api.maqdisacademy.com/assets/raw/audio_surat/100_al''adiyat/Ayat-Gabung-1-11.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/100_al''adiyat/100adiyat1.11/100adiyat1.11.m3u8',2,5000),
+	 (99,'1-4','https://api.maqdisacademy.com/assets/raw/audio_surat/99_azzalzalah/Ayat1-4.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/99_azzalzalah/99azzalzalah1.4/azzalzalah1.4.m3u8',1,5000),
+	 (99,'5-8','https://api.maqdisacademy.com/assets/raw/audio_surat/99_azzalzalah/Ayat5-8.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/99_azzalzalah/99azzalzalah5.8/azzalzalah5.8.m3u8',1,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (99,'1-8','https://api.maqdisacademy.com/assets/raw/audio_surat/99_azzalzalah/Ayat-Gabung-1-8.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/99_azzalzalah/99azzalzalah1.8/azzalzalah1.8.m3u8',2,5000),
+	 (98,'1-3','https://api.maqdisacademy.com/assets/raw/audio_surat/98_albayyinah/Ayat1-3.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/98_albayyinah/98bayyinah1.3/98bayyinah1.3.m3u8',1,5000),
+	 (98,'4-5','https://api.maqdisacademy.com/assets/raw/audio_surat/98_albayyinah/Ayat4-5.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/98_albayyinah/98bayyinah4.5/98bayyinah4.5.m3u8',1,5000),
+	 (98,'1-5','https://api.maqdisacademy.com/assets/raw/audio_surat/98_albayyinah/Ayat-Gabung-1-5.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/98_albayyinah/98bayyinah1.5/98bayyinah1.5.m3u8',2,5000),
+	 (98,'6','https://api.maqdisacademy.com/assets/raw/audio_surat/98_albayyinah/Ayat6.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/98_albayyinah/98bayyinah6/98bayyinah6.m3u8',1,5000),
+	 (98,'7-8','https://api.maqdisacademy.com/assets/raw/audio_surat/98_albayyinah/Ayat7-8.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/98_albayyinah/98bayyinah7.8/98bayyinah7.8.m3u8',1,5000),
+	 (98,'6-8','https://api.maqdisacademy.com/assets/raw/audio_surat/98_albayyinah/Ayat-Gabung-6-8.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/98_albayyinah/98bayyinah6.8/98bayyinah6.8.m3u8',2,5000),
+	 (98,'1-8','https://api.maqdisacademy.com/assets/raw/audio_surat/98_albayyinah/Ayat-Gabung-1-8.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/98_albayyinah/98bayyinah1.8/98bayyinah1.8.m3u8',2,5000),
+	 (97,'1-5','https://api.maqdisacademy.com/assets/raw/audio_surat/97_alqadr/ayat1-5.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/97_alqadr/97qadr1.5/97qadr1.5.m3u8',1,5000),
+	 (96,'1-4','https://api.maqdisacademy.com/assets/raw/audio_surat/96_al''alaq/Ayat1-4.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/96_al''alaq/96alaq1.4/96alaq1.4.m3u8',1,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (96,'5-8','https://api.maqdisacademy.com/assets/raw/audio_surat/96_al''alaq/Ayat5-8.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/96_al''alaq/96alaq5.8/96alaq5.8.m3u8',1,5000),
+	 (96,'1-8','https://api.maqdisacademy.com/assets/raw/audio_surat/96_al''alaq/Ayat-Gabung-1-8.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/96_al''alaq/96alaq1.8/96alaq1.8.m3u8',2,5000),
+	 (96,'9-12','https://api.maqdisacademy.com/assets/raw/audio_surat/96_al''alaq/Ayat9-12.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/96_al''alaq/96alaq9.12/96alaq9.12.m3u8',1,5000),
+	 (96,'13-16','https://api.maqdisacademy.com/assets/raw/audio_surat/96_al''alaq/Ayat13-16.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/96_al''alaq/96alaq13.16/96alaq13.16.m3u8',1,5000),
+	 (96,'9-16','https://api.maqdisacademy.com/assets/raw/audio_surat/96_al''alaq/Ayat-Gabung-9-16.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/96_al''alaq/96alaq9.16/96alaq9.16.m3u8',2,5000),
+	 (96,'1-16','https://api.maqdisacademy.com/assets/raw/audio_surat/96_al''alaq/Ayat-Gabung-1-16.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/96_al''alaq/96alaq1.16/96alaq1.16.m3u8',2,5000),
+	 (96,'17-19','https://api.maqdisacademy.com/assets/raw/audio_surat/96_al''alaq/Ayat17-19.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/96_al''alaq/96alaq17.19/96alaq17.19.m3u8',1,5000),
+	 (96,'1-19','https://api.maqdisacademy.com/assets/raw/audio_surat/96_al''alaq/Ayat-Gabung-1-19.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/96_al''alaq/96alaq1.19/96alaq1.19.m3u8',2,5000),
+	 (95,'1-4','https://api.maqdisacademy.com/assets/raw/audio_surat/95_attin/Ayat1-4.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/95_attin/95tin1.4/95tin1.4.m3u8',1,5000),
+	 (95,'5-8','https://api.maqdisacademy.com/assets/raw/audio_surat/95_attin/Ayat5-8.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/95_attin/95tin5.8/95tin5.8.m3u8',1,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (95,'1-8','https://api.maqdisacademy.com/assets/raw/audio_surat/95_attin/Ayat-Gabung-1-8.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/95_attin/95tin1.8/95tin1.8.m3u8',2,5000),
+	 (94,'1-4','https://api.maqdisacademy.com/assets/raw/audio_surat/94_alinsyirah/Ayat1-4.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/94_alinsyirah/94insyirah1.4/94insyirah1.4.m3u8',1,5000),
+	 (94,'5-8','https://api.maqdisacademy.com/assets/raw/audio_surat/94_alinsyirah/Ayat5-8.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/94_alinsyirah/94insyirah5.8/94insyirah5.8.m3u8',1,5000),
+	 (94,'1-8','https://api.maqdisacademy.com/assets/raw/audio_surat/94_alinsyirah/Ayat-Gabung-1-8.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/94_alinsyirah/94insyirah1.8/94insyirah1.8.m3u8',2,5000),
+	 (93,'1-4','https://api.maqdisacademy.com/assets/raw/audio_surat/93_adduha/Ayat1-4.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/93_adduha/93duha1.4/93duha1.4.m3u8',1,5000),
+	 (93,'5-8','https://api.maqdisacademy.com/assets/raw/audio_surat/93_adduha/Ayat5-8.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/93_adduha/93duha5.8/93duha5.8.m3u8',1,5000),
+	 (93,'1-8','https://api.maqdisacademy.com/assets/raw/audio_surat/93_adduha/Ayat-Gabung-1-8.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/93_adduha/93duha1.8/93duha1.8.m3u8',2,5000),
+	 (93,'9-11','https://api.maqdisacademy.com/assets/raw/audio_surat/93_adduha/Ayat9-11.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/93_adduha/93duha9.11/93duha9.11.m3u8',1,5000),
+	 (93,'1-11','https://api.maqdisacademy.com/assets/raw/audio_surat/93_adduha/Ayat-Gabung-1-11.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/93_adduha/93duha1.11/93duha1.11.m3u8',2,5000),
+	 (92,'1-4','https://api.maqdisacademy.com/assets/raw/audio_surat/92_allail/Ayat1-4.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/92_allail/92lail1.4/92lail1.4.m3u8',1,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (92,'5-8','https://api.maqdisacademy.com/assets/raw/audio_surat/92_allail/Ayat5-8.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/92_allail/92lail5.8/92lail5.8.m3u8',1,5000),
+	 (92,'1-8','https://api.maqdisacademy.com/assets/raw/audio_surat/92_allail/Ayat-Gabung-1-8.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/92_allail/92lail1.8/92lail1.8.m3u8',2,5000),
+	 (92,'9-12','https://api.maqdisacademy.com/assets/raw/audio_surat/92_allail/Ayat9-12.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/92_allail/92lail9.12/92lail9.12.m3u8',1,5000),
+	 (92,'13-16','https://api.maqdisacademy.com/assets/raw/audio_surat/92_allail/Ayat13-16.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/92_allail/92lail13.16/92lail13.16.m3u8',1,5000),
+	 (92,'9-16','https://api.maqdisacademy.com/assets/raw/audio_surat/92_allail/Ayat-gabung-9-16.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/92_allail/92lail9.16/92lail9.16.m3u8',2,5000),
+	 (92,'1-16','https://api.maqdisacademy.com/assets/raw/audio_surat/92_allail/Ayat-Gabung-1-16.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/92_allail/92lail1.16/92lail1.16.m3u8',2,5000),
+	 (92,'17-21','https://api.maqdisacademy.com/assets/raw/audio_surat/92_allail/Ayat17-21.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/92_allail/92lail17.21/92lail17.21.m3u8',1,5000),
+	 (92,'1-21','https://api.maqdisacademy.com/assets/raw/audio_surat/92_allail/Ayat-Gabung-1-21.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/92_allail/92lail1.21/92lail1.21.m3u8',2,5000),
+	 (91,'1-4','https://api.maqdisacademy.com/assets/raw/audio_surat/91_asysyams/Ayat1-4.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/91_asysyams/91syams1.4/91syams1.4.m3u8',1,5000),
+	 (91,'5-8','https://api.maqdisacademy.com/assets/raw/audio_surat/91_asysyams/Ayat5-8.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/91_asysyams/91syams5.8/91syams5.8.m3u8',1,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (91,'1-8','https://api.maqdisacademy.com/assets/raw/audio_surat/91_asysyams/Ayat-Gabung-1-8.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/91_asysyams/91syams1.8/91syams1.8.m3u8',2,5000),
+	 (91,'9-12','https://api.maqdisacademy.com/assets/raw/audio_surat/91_asysyams/Ayat9-12.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/91_asysyams/91syams9.12/91syams9.12.m3u8',1,5000),
+	 (91,'13-15','https://api.maqdisacademy.com/assets/raw/audio_surat/91_asysyams/Ayat13-15.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/91_asysyams/91syams13.15/91syams13.15.m3u8',1,5000),
+	 (91,'9-15','https://api.maqdisacademy.com/assets/raw/audio_surat/91_asysyams/Ayat-Gabung-9-15.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/91_asysyams/91syams9.15/91syams9.15.m3u8',2,5000),
+	 (91,'1-15','https://api.maqdisacademy.com/assets/raw/audio_surat/91_asysyams/Ayat-Gabung-1-15.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/91_asysyams/91syams1.15/91syams1.15.m3u8',2,5000),
+	 (90,'1-4','https://api.maqdisacademy.com/assets/raw/audio_surat/90_albalad/Ayat1-4.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/90_albalad/90balad1.4/90balad1.4.m3u8',1,5000),
+	 (90,'5-8','https://api.maqdisacademy.com/assets/raw/audio_surat/90_albalad/Ayat5-8.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/90_albalad/90balad5.8/90balad5.8.m3u8',1,5000),
+	 (90,'1-8','https://api.maqdisacademy.com/assets/raw/audio_surat/90_albalad/Ayat-Gabung-1-8.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/90_albalad/90balad1.8/90balad1.8.m3u8',2,5000),
+	 (90,'9-12','https://api.maqdisacademy.com/assets/raw/audio_surat/90_albalad/Ayat9-12.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/90_albalad/90balad9.12/90balad9.12.m3u8',1,5000),
+	 (89,'1-5','https://api.maqdisacademy.com/assets/raw/audio_surat/89_alfajr/Ayat1-5.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/89_alfajr/89fajr1.5/89fajr1.5.m3u8',1,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (89,'6-9','https://api.maqdisacademy.com/assets/raw/audio_surat/89_alfajr/Ayat6-9.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/89_alfajr/89fajr6.9/89fajr6.9.m3u8',1,5000),
+	 (89,'1-9','https://api.maqdisacademy.com/assets/raw/audio_surat/89_alfajr/Ayat-Gabung-1-9.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/89_alfajr/89fajr1.9/89fajr1.9.m3u8',2,5000),
+	 (89,'10-13','https://api.maqdisacademy.com/assets/raw/audio_surat/89_alfajr/Ayat10-13.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/89_alfajr/89fajr10.13/89fajr10.13.m3u8',1,5000),
+	 (89,'14-16','https://api.maqdisacademy.com/assets/raw/audio_surat/89_alfajr/Ayat14-16.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/89_alfajr/89fajr14.16/89fajr14.16.m3u8',1,5000),
+	 (89,'10-16','https://api.maqdisacademy.com/assets/raw/audio_surat/89_alfajr/Ayat-Gabung-10-16.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/89_alfajr/89fajr10.16/89fajr10.16.m3u8',2,5000),
+	 (89,'1-16','https://api.maqdisacademy.com/assets/raw/audio_surat/89_alfajr/Ayat-Gabung-1-16.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/89_alfajr/89fajr1.16/89fajr1.16.m3u8',2,5000),
+	 (89,'17-20','https://api.maqdisacademy.com/assets/raw/audio_surat/89_alfajr/Ayat17-20.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/89_alfajr/89fajr17.20/89fajr17.20.m3u8',1,5000),
+	 (89,'21-23','https://api.maqdisacademy.com/assets/raw/audio_surat/89_alfajr/Ayat21-23.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/89_alfajr/89fajr21.23/89fajr21.23.m3u8',1,5000),
+	 (89,'17-23','https://api.maqdisacademy.com/assets/raw/audio_surat/89_alfajr/Ayat-Gabung-17-23.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/89_alfajr/89fajr17.23/89fajr17.23.m3u8',2,5000),
+	 (89,'24-26','https://api.maqdisacademy.com/assets/raw/audio_surat/89_alfajr/Ayat24-26.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/89_alfajr/89fajr24.26/89fajr24.26.m3u8',1,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (89,'27-30','https://api.maqdisacademy.com/assets/raw/audio_surat/89_alfajr/Ayat27-30.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/89_alfajr/89fajr27.30/89fajr27.30.m3u8',1,5000),
+	 (89,'24-30','https://api.maqdisacademy.com/assets/raw/audio_surat/89_alfajr/Ayat-Gabung-24-30.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/89_alfajr/89fajr24.30/89fajr24.30.m3u8',2,5000),
+	 (89,'1-30','https://api.maqdisacademy.com/assets/raw/audio_surat/89_alfajr/Ayat-Gabung-1-30.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/89_alfajr/89fajr1.30/89fajr1.30.m3u8',2,5000),
+	 (88,'1-4','https://api.maqdisacademy.com/assets/raw/audio_surat/88_alghasyiyah/Ayat1-4.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/88_alghasyiyah/88ghasiyah1.4/88ghasiyah1.4.m3u8',1,5000),
+	 (88,'5-7','https://api.maqdisacademy.com/assets/raw/audio_surat/88_alghasyiyah/Ayat5-7.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/88_alghasyiyah/88ghasiyah5.7/88ghasiyah5.7.m3u8',1,5000),
+	 (88,'1-7','https://api.maqdisacademy.com/assets/raw/audio_surat/88_alghasyiyah/Ayat-Gabung-1-7.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/88_alghasyiyah/88ghasiyah1.7/88ghasiyah1.7.m3u8',2,5000),
+	 (88,'8-11','https://api.maqdisacademy.com/assets/raw/audio_surat/88_alghasyiyah/Ayat8-11.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/88_alghasyiyah/88ghasiyah8.11/88ghasiyah8.11.m3u8',1,5000),
+	 (88,'12-16','https://api.maqdisacademy.com/assets/raw/audio_surat/88_alghasyiyah/Ayat12-16.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/88_alghasyiyah/88ghasiyah12.16/88ghasiyah12.16.m3u8',1,5000),
+	 (88,'8-16','https://api.maqdisacademy.com/assets/raw/audio_surat/88_alghasyiyah/Ayat-Gabung-8-16.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/88_alghasyiyah/88ghasiyah8.16/88ghasiyah8.16.m3u8',2,5000),
+	 (88,'17-20','https://api.maqdisacademy.com/assets/raw/audio_surat/88_alghasyiyah/Ayat17-20.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/88_alghasyiyah/88ghasiyah17.20/88ghasiyah17.20.m3u8',1,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (88,'21-24','https://api.maqdisacademy.com/assets/raw/audio_surat/88_alghasyiyah/Ayat21-24.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/88_alghasyiyah/88ghasiyah21.24/88ghasiyah21.24.m3u8',1,5000),
+	 (88,'17-24','https://api.maqdisacademy.com/assets/raw/audio_surat/88_alghasyiyah/Ayat-Gabung-17-24.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/88_alghasyiyah/88ghasiyah17.24/88ghasiyah17.24.m3u8',2,5000),
+	 (88,'25-26','https://api.maqdisacademy.com/assets/raw/audio_surat/88_alghasyiyah/Ayat25-26.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/88_alghasyiyah/88ghasiyah25.26/88ghasiyah25.26.m3u8',1,5000),
+	 (88,'1-26','https://api.maqdisacademy.com/assets/raw/audio_surat/88_alghasyiyah/Ayat-Gabung-1-26.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/88_alghasyiyah/88ghasiyah1.26/88ghasiyah1.26.m3u8',2,5000),
+	 (87,'1-4','https://api.maqdisacademy.com/assets/raw/audio_surat/87_ala''la/Ayat1-4.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/87_ala''la/87ala1.4/87ala1.4.m3u8',1,5000),
+	 (87,'5-7','https://api.maqdisacademy.com/assets/raw/audio_surat/87_ala''la/Ayat5-7.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/87_ala''la/87ala5.7/87ala5.7.m3u8',1,5000),
+	 (87,'1-7','https://api.maqdisacademy.com/assets/raw/audio_surat/87_ala''la/Ayat-Gabung-1-7.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/87_ala''la/87ala1.7/87ala1.7.m3u8',2,5000),
+	 (87,'8-11','https://api.maqdisacademy.com/assets/raw/audio_surat/87_ala''la/Ayat8-11.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/87_ala''la/87ala8.11/87ala8.11.m3u8',1,5000),
+	 (87,'12-15','https://api.maqdisacademy.com/assets/raw/audio_surat/87_ala''la/Ayat12-15.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/87_ala''la/87ala12.15/87ala12.15.m3u8',1,5000),
+	 (87,'8-15','https://api.maqdisacademy.com/assets/raw/audio_surat/87_ala''la/Ayat-Gabung-8-15.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/87_ala''la/87ala8.15/87ala8.15.m3u8',2,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (87,'1-15','https://api.maqdisacademy.com/assets/raw/audio_surat/87_ala''la/Ayat-Gabung-1-15.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/87_ala''la/87ala1.15/87ala1.15.m3u8',2,5000),
+	 (87,'16-19','https://api.maqdisacademy.com/assets/raw/audio_surat/87_ala''la/Ayat16-19.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/87_ala''la/87ala16.19/87ala16.19.m3u8',1,5000),
+	 (87,'1-19','https://api.maqdisacademy.com/assets/raw/audio_surat/87_ala''la/Ayat-Gabung-1-19.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/87_ala''la/87ala1.19/87ala1.19.m3u8',2,5000),
+	 (86,'1-4','https://api.maqdisacademy.com/assets/raw/audio_surat/86_atthariq/Ayat1-4.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/86_attariq/86thariq1.4/86thariq1.4.m3u8',1,5000),
+	 (86,'5-8','https://api.maqdisacademy.com/assets/raw/audio_surat/86_atthariq/Ayat5-8.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/86_attariq/86thariq5.8/86thariq5.8.m3u8',1,5000),
+	 (86,'1-8','https://api.maqdisacademy.com/assets/raw/audio_surat/86_atthariq/Ayat-Gabung-1-8.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/86_attariq/86thariq1.8/86thariq1.8.m3u8',2,5000),
+	 (86,'9-12','https://api.maqdisacademy.com/assets/raw/audio_surat/86_atthariq/Ayat9-12.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/86_attariq/86thariq9.12/86thariq9.12.m3u8',1,5000),
+	 (86,'13-17','https://api.maqdisacademy.com/assets/raw/audio_surat/86_atthariq/Ayat13-17.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/86_attariq/86thariq13.17/86thariq13.17.m3u8',1,5000),
+	 (86,'9-17','https://api.maqdisacademy.com/assets/raw/audio_surat/86_atthariq/Ayat-Gabung-9-17.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/86_attariq/86thariq9.17/86thariq9.17.m3u8',2,5000),
+	 (86,'1-17','https://api.maqdisacademy.com/assets/raw/audio_surat/86_atthariq/Ayat-Gabung-1-17.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/86_attariq/86thariq1.17/86thariq1.17.m3u8',2,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (85,'1-4','https://api.maqdisacademy.com/assets/raw/audio_surat/85_alburuj/Ayat1-4.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/85_alburuj/85buruj1.4/85buruj1.4.m3u8',1,5000),
+	 (85,'5-7','https://api.maqdisacademy.com/assets/raw/audio_surat/85_alburuj/Ayat5-7.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/85_alburuj/85buruj5.7/85buruj5.7.m3u8',1,5000),
+	 (85,'1-7','https://api.maqdisacademy.com/assets/raw/audio_surat/85_alburuj/Ayat-Gabung-1-7.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/85_alburuj/85buruj1.7/85buruj1.7.m3u8',2,5000),
+	 (85,'8-9','https://api.maqdisacademy.com/assets/raw/audio_surat/85_alburuj/Ayat8-9.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/85_alburuj/85buruj8.9/85buruj8.9.m3u8',1,5000),
+	 (85,'10','https://api.maqdisacademy.com/assets/raw/audio_surat/85_alburuj/Ayat10.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/85_alburuj/85buruj10/85buruj10.m3u8',1,5000),
+	 (85,'8-10','https://api.maqdisacademy.com/assets/raw/audio_surat/85_alburuj/Ayat-Gabung-8-10.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/85_alburuj/85buruj8.10/85buruj8.10.m3u8',2,5000),
+	 (85,'1-10','https://api.maqdisacademy.com/assets/raw/audio_surat/85_alburuj/Ayat-Gabung-1-10.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/85_alburuj/85buruj1.10/85buruj1.10.m3u8',2,5000),
+	 (85,'11','https://api.maqdisacademy.com/assets/raw/audio_surat/85_alburuj/Ayat11.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/85_alburuj/85buruj11/85buruj11.m3u8',1,5000),
+	 (85,'12-16','https://api.maqdisacademy.com/assets/raw/audio_surat/85_alburuj/Ayat12-16.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/85_alburuj/85buruj12.16/85buruj12.16.m3u8',1,5000),
+	 (85,'11-16','https://api.maqdisacademy.com/assets/raw/audio_surat/85_alburuj/Ayat-Gabung-11-16.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/85_alburuj/85buruj11.16/85buruj11.16.m3u8',2,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (85,'17-22','https://api.maqdisacademy.com/assets/raw/audio_surat/85_alburuj/Ayat17-22.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/85_alburuj/85buruj17.22/85buruj17.22.m3u8',1,5000),
+	 (85,'11-22','https://api.maqdisacademy.com/assets/raw/audio_surat/85_alburuj/Ayat-Gabung-11-22.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/85_alburuj/85buruj11.22/85buruj11.22.m3u8',2,5000),
+	 (85,'1-22','https://api.maqdisacademy.com/assets/raw/audio_surat/85_alburuj/Ayat-Gabung-1-22.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/85_alburuj/85buruj1.22/85buruj1.22.m3u8',2,5000),
+	 (84,'1-4','https://api.maqdisacademy.com/assets/raw/audio_surat/84_alinsyiqaq/Ayat1-4.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/84_alinsyiqaq/84insyiqaq1.4/84insyiqaq1.4.m3u8',1,5000),
+	 (84,'5-9','https://api.maqdisacademy.com/assets/raw/audio_surat/84_alinsyiqaq/Ayat5-9.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/84_alinsyiqaq/84insyiqaq5.9/84insyiqaq5.9.m3u8',1,5000),
+	 (84,'1-9','https://api.maqdisacademy.com/assets/raw/audio_surat/84_alinsyiqaq/Ayat-Gabung-1-9.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/84_alinsyiqaq/84insyiqaq1.9/84insyiqaq1.9.m3u8',2,5000),
+	 (84,'10-13','https://api.maqdisacademy.com/assets/raw/audio_surat/84_alinsyiqaq/Ayat10-13.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/84_alinsyiqaq/84insyiqaq10.13/84insyiqaq10.13.m3u8',1,5000),
+	 (84,'14-17','https://api.maqdisacademy.com/assets/raw/audio_surat/84_alinsyiqaq/Ayat14-17.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/84_alinsyiqaq/84insyiqaq14.17/84insyiqaq14.17.m3u8',1,5000),
+	 (84,'10-17','https://api.maqdisacademy.com/assets/raw/audio_surat/84_alinsyiqaq/Ayat-Gabung-10-17.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/84_alinsyiqaq/84insyiqaq10.17/84insyiqaq10.17.m3u8',2,5000),
+	 (84,'1-17','https://api.maqdisacademy.com/assets/raw/audio_surat/84_alinsyiqaq/Ayat-Gabung-1-17.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/84_alinsyiqaq/84insyiqaq1.17/84insyiqaq1.17.m3u8',2,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (84,'18-21','https://api.maqdisacademy.com/assets/raw/audio_surat/84_alinsyiqaq/Ayat18-21.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/84_alinsyiqaq/84insyiqaq18.21/84insyiqaq18.21.m3u8',1,5000),
+	 (84,'22-25','https://api.maqdisacademy.com/assets/raw/audio_surat/84_alinsyiqaq/Ayat22-25.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/84_alinsyiqaq/84insyiqaq22.25/84insyiqaq22.25.m3u8',1,5000),
+	 (84,'18-25','https://api.maqdisacademy.com/assets/raw/audio_surat/84_alinsyiqaq/Ayat-Gabung-18-25.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/84_alinsyiqaq/84insyiqaq18.25/84insyiqaq18.25.m3u8',2,5000),
+	 (84,'1-25','https://api.maqdisacademy.com/assets/raw/audio_surat/84_alinsyiqaq/Ayat-gabung-1-25.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/84_alinsyiqaq/84insyiqaq1.25/84insyiqaq1.25.m3u8',2,5000),
+	 (83,'1-4','https://api.maqdisacademy.com/assets/raw/audio_surat/83_almuthaffifiin/Ayat1-4.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/83_almuthaffifin/83muthaffifin1.4/83muthaffifin1.4.m3u8',1,5000),
+	 (83,'5-8','https://api.maqdisacademy.com/assets/raw/audio_surat/83_almuthaffifiin/Ayat5-8.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/83_almuthaffifin/83muthaffifin5.8/83muthaffifin5.8.m3u8',1,5000),
+	 (83,'1-8','https://api.maqdisacademy.com/assets/raw/audio_surat/83_almuthaffifiin/Ayat-Gabung-1-8.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/83_almuthaffifin/83muthaffifin1.8/83muthaffifin1.8.m3u8',2,5000),
+	 (83,'9-12','https://api.maqdisacademy.com/assets/raw/audio_surat/83_almuthaffifiin/Ayat9-12.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/83_almuthaffifin/83muthaffifin9.12/83muthaffifin9.12.m3u8',1,5000),
+	 (83,'13-16','https://api.maqdisacademy.com/assets/raw/audio_surat/83_almuthaffifiin/Ayat13-16.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/83_almuthaffifin/83muthaffifin13.16/83muthaffifin13.16.m3u8',1,5000),
+	 (83,'9-16','https://api.maqdisacademy.com/assets/raw/audio_surat/83_almuthaffifiin/Ayat-Gabung-9-16.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/83_almuthaffifin/83muthaffifin9.16/83muthaffifin9.16.m3u8',2,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (83,'1-16','https://api.maqdisacademy.com/assets/raw/audio_surat/83_almuthaffifiin/Ayat-Gabung-1-16.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/83_almuthaffifin/83muthaffifin1.16/83muthaffifin1.16.m3u8',2,5000),
+	 (83,'17-20','https://api.maqdisacademy.com/assets/raw/audio_surat/83_almuthaffifiin/Ayat17-20.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/83_almuthaffifin/83muthaffifin17.20/83muthaffifin17.20.m3u8',1,5000),
+	 (83,'21-24','https://api.maqdisacademy.com/assets/raw/audio_surat/83_almuthaffifiin/Ayat21-24.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/83_almuthaffifin/83muthaffifin21.24/83muthaffifin21.24.m3u8',1,5000),
+	 (83,'17-24','https://api.maqdisacademy.com/assets/raw/audio_surat/83_almuthaffifiin/Ayat-Gabung-17-24.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/83_almuthaffifin/83muthaffifin17.24/83muthaffifin17.24.m3u8',2,5000),
+	 (83,'25-27','https://api.maqdisacademy.com/assets/raw/audio_surat/83_almuthaffifiin/Ayat25-27.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/83_almuthaffifin/83muthaffifin25.27/83muthaffifin25.27.m3u8',1,5000),
+	 (83,'28-31','https://api.maqdisacademy.com/assets/raw/audio_surat/83_almuthaffifiin/Ayat28-31.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/83_almuthaffifin/83muthaffifin28.31/83muthaffifin28.31.m3u8',1,5000),
+	 (83,'25-31','https://api.maqdisacademy.com/assets/raw/audio_surat/83_almuthaffifiin/Ayat-Gabung-25-31.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/83_almuthaffifin/83muthaffifin25.31/83muthaffifin25.31.m3u8',2,5000),
+	 (83,'17-31','https://api.maqdisacademy.com/assets/raw/audio_surat/83_almuthaffifiin/Ayat-Gabung-17-31.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/83_almuthaffifin/83muthaffifin17.31/83muthaffifin17.31.m3u8',2,5000),
+	 (83,'1-31','https://api.maqdisacademy.com/assets/raw/audio_surat/83_almuthaffifiin/Ayat-Gabung-1-31.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/83_almuthaffifin/83muthaffifin1.31/83muthaffifin1.31.m3u8',2,5000),
+	 (83,'32-36','https://api.maqdisacademy.com/assets/raw/audio_surat/83_almuthaffifiin/Ayat32-36.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/83_almuthaffifin/83muthaffifin32.36/83muthaffifin32.36.m3u8',1,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (83,'1-36','https://api.maqdisacademy.com/assets/raw/audio_surat/83_almuthaffifiin/Ayat-Gabung-1-36.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/83_almuthaffifin/83muthaffifin1.36/83muthaffifin1.36.m3u8',2,5000),
+	 (82,'1-4','https://api.maqdisacademy.com/assets/raw/audio_surat/82_alinfitor/Ayat1-4.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/82_alinfitor/82infithar1.4/82infithar1.4.m3u8',1,5000),
+	 (82,'5-8','https://api.maqdisacademy.com/assets/raw/audio_surat/82_alinfitor/Ayat5-8.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/82_alinfitor/82infithar5.8/82infithar5.8.m3u8',1,5000),
+	 (82,'1-8','https://api.maqdisacademy.com/assets/raw/audio_surat/82_alinfitor/Ayat-gabung-1-8.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/82_alinfitor/82infithar1.8/82infithar1.8.m3u8',2,5000),
+	 (82,'9-12','https://api.maqdisacademy.com/assets/raw/audio_surat/82_alinfitor/Ayat9-12.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/82_alinfitor/82infithar9.12/82infithar9.12.m3u8',1,5000),
+	 (82,'13-16','https://api.maqdisacademy.com/assets/raw/audio_surat/82_alinfitor/Ayat13-16.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/82_alinfitor/82infithar13.16/82infithar13.16.m3u8',1,5000),
+	 (82,'9-16','https://api.maqdisacademy.com/assets/raw/audio_surat/82_alinfitor/Ayat-gabung-9-16.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/82_alinfitor/82infithar9.16/82infithar9.16.m3u8',2,5000),
+	 (82,'17-19','https://api.maqdisacademy.com/assets/raw/audio_surat/82_alinfitor/Ayat17-19.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/82_alinfitor/82infithar17.19/82infithar17.19.m3u8',1,5000),
+	 (82,'1-19','https://api.maqdisacademy.com/assets/raw/audio_surat/82_alinfitor/Ayat-gabung-1-19.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/82_alinfitor/82infithar1.19/82infithar1.19.m3u8',2,5000),
+	 (81,'1-4','https://api.maqdisacademy.com/assets/raw/audio_surat/81_attakwir/Ayat1-4.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/81_attakwir/81takwir1.4/81takwir1.4.m3u8',1,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (81,'5-8','https://api.maqdisacademy.com/assets/raw/audio_surat/81_attakwir/Ayat5-8.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/81_attakwir/81takwir5.8/81takwir5.8.m3u8',1,5000),
+	 (81,'1-8','https://api.maqdisacademy.com/assets/raw/audio_surat/81_attakwir/Ayat-Gabung-1-8.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/81_attakwir/81takwir1.8/81takwir1.8.m3u8',2,5000),
+	 (81,'9-12','https://api.maqdisacademy.com/assets/raw/audio_surat/81_attakwir/Ayat9-12.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/81_attakwir/81takwir9.12/81takwir9.12.m3u8',1,5000),
+	 (81,'13-16','https://api.maqdisacademy.com/assets/raw/audio_surat/81_attakwir/Ayat13-16.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/81_attakwir/81takwir13.16/81takwir13.16.m3u8',1,5000),
+	 (81,'9-16','https://api.maqdisacademy.com/assets/raw/audio_surat/81_attakwir/Ayat-Gabung-9-16.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/81_attakwir/81takwir9.16/81takwir9.16',2,5000),
+	 (81,'17-20','https://api.maqdisacademy.com/assets/raw/audio_surat/81_attakwir/Ayat17-20.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/81_attakwir/81takwir17.20/81takwir17.20.m3u8',1,5000),
+	 (81,'21-24','https://api.maqdisacademy.com/assets/raw/audio_surat/81_attakwir/Ayat21-24.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/81_attakwir/81takwir21.24/81takwir21.24.m3u8',1,5000),
+	 (81,'17-24','https://api.maqdisacademy.com/assets/raw/audio_surat/81_attakwir/Ayat-gabung-17-24.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/81_attakwir/81takwir17.24/81takwir17.24.m3u8',2,5000),
+	 (81,'25-29','https://api.maqdisacademy.com/assets/raw/audio_surat/81_attakwir/Ayat25-29.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/81_attakwir/81takwir25.29/81takwir25.29.m3u8',1,5000),
+	 (81,'1-29','https://api.maqdisacademy.com/assets/raw/audio_surat/81_attakwir/Ayat-Gabung-1-29.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/81_attakwir/81takwir1.29/81takwir1.29.m3u8',2,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (80,'1-4','https://api.maqdisacademy.com/assets/raw/audio_surat/80_abasa/Ayat1-4.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/80_abasa/80abasa1.4/80abasa1.4.m3u8',1,5000),
+	 (80,'5-8','https://api.maqdisacademy.com/assets/raw/audio_surat/80_abasa/Ayat5-8.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/80_abasa/80abasa5.8/80abasa5.8.m3u8',1,5000),
+	 (80,'1-8','https://api.maqdisacademy.com/assets/raw/audio_surat/80_abasa/Ayat-Gabung-1-8.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/80_abasa/80abasa1.8/80abasa1.8.m3u8',2,5000),
+	 (80,'9-12','https://api.maqdisacademy.com/assets/raw/audio_surat/80_abasa/Ayat9-12.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/80_abasa/80abasa9.12/80abasa9.12.m3u8',1,5000),
+	 (80,'13-16','https://api.maqdisacademy.com/assets/raw/audio_surat/80_abasa/Ayat13-16.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/80_abasa/80abasa13.16/80abasa13.16.m3u8',1,5000),
+	 (80,'9-16','https://api.maqdisacademy.com/assets/raw/audio_surat/80_abasa/Ayat-Gabung-9-16.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/80_abasa/80abasa9.16/80abasa9.16.m3u8',2,5000),
+	 (80,'1-16','https://api.maqdisacademy.com/assets/raw/audio_surat/80_abasa/Ayat-Gabung-1-16.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/80_abasa/80abasa1.16/80abasa1.16.m3u8',2,5000),
+	 (80,'17-20','https://api.maqdisacademy.com/assets/raw/audio_surat/80_abasa/Ayat17-20.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/80_abasa/80abasa17.20/80abasa17.20.m3u8',1,5000),
+	 (80,'21-24','https://api.maqdisacademy.com/assets/raw/audio_surat/80_abasa/Ayat21-24.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/80_abasa/80abasa21.24/80abasa21.24.m3u8',1,5000),
+	 (80,'17-24','https://api.maqdisacademy.com/assets/raw/audio_surat/80_abasa/Ayat-Gabung-17-24.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/80_abasa/80abasa17.24/80abasa17.24.m3u8',2,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (80,'25-28','https://api.maqdisacademy.com/assets/raw/audio_surat/80_abasa/Ayat25-28.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/80_abasa/80abasa25.28/80abasa25.28.m3u8',1,5000),
+	 (80,'29-32','https://api.maqdisacademy.com/assets/raw/audio_surat/80_abasa/Ayat29-32.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/80_abasa/80abasa29.32/80abasa29.32.m3u8',1,5000),
+	 (80,'25-32','https://api.maqdisacademy.com/assets/raw/audio_surat/80_abasa/Ayat-Gabung-25-32.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/80_abasa/80abasa25.32/80abasa25.32.m3u8',2,5000),
+	 (80,'17-32','https://api.maqdisacademy.com/assets/raw/audio_surat/80_abasa/Ayat-Gabung-17-32.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/80_abasa/80abasa17.32/80abasa17.32.m3u8',2,5000),
+	 (80,'33-36','https://api.maqdisacademy.com/assets/raw/audio_surat/80_abasa/Ayat33-36.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/80_abasa/80abasa33.36/80abasa33.36.m3u8',1,5000),
+	 (80,'37-42','https://api.maqdisacademy.com/assets/raw/audio_surat/80_abasa/Ayat37-42.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/80_abasa/80abasa37.42/80abasa37.42.m3u8',1,5000),
+	 (80,'33-42','https://api.maqdisacademy.com/assets/raw/audio_surat/80_abasa/Ayat-Gabung-33-42.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/80_abasa/80abasa33.42/80abasa33.42.m3u8',2,5000),
+	 (80,'1-42','https://api.maqdisacademy.com/assets/raw/audio_surat/80_abasa/Ayat-Gabung-1-42.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/80_abasa/80abasa1.42/80abasa1.42.m3u8',2,5000),
+	 (67,'1-2','https://api.maqdisacademy.com/assets/raw/audio_surat/67_almulk/1.1-2.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/67_almulk/1_2/1.1-2.m3u8',1,5000),
+	 (67,'3-4','https://api.maqdisacademy.com/assets/raw/audio_surat/67_almulk/2.3-4.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/67_almulk/3_4/3_4.m3u8',1,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (67,'1-4','https://api.maqdisacademy.com/assets/raw/audio_surat/67_almulk/3.1-4.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/67_almulk/1_4/3.1-4.m3u8',2,5000),
+	 (67,'5-6','https://api.maqdisacademy.com/assets/raw/audio_surat/67_almulk/4.5-6.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/67_almulk/5_6/5_6.m3u8',1,5000),
+	 (67,'7-8','https://api.maqdisacademy.com/assets/raw/audio_surat/67_almulk/5.7-8.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/67_almulk/7_8/7_8.m3u8',1,5000),
+	 (67,'5-8','https://api.maqdisacademy.com/assets/raw/audio_surat/67_almulk/6.5-8.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/67_almulk/5_8/5_8.m3u8',2,5000),
+	 (67,'1-8','https://api.maqdisacademy.com/assets/raw/audio_surat/67_almulk/7.1-8.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/67_almulk/1_8/67_almulk.m3u8',2,5000),
+	 (67,'9-11','https://api.maqdisacademy.com/assets/raw/audio_surat/67_almulk/8.9-11.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/67_almulk/9_11/9_11.m3u8',1,5000),
+	 (67,'12-14','https://api.maqdisacademy.com/assets/raw/audio_surat/67_almulk/9.12-14.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/67_almulk/12_14/67_almulk.m3u8',1,5000),
+	 (67,'9-14','https://api.maqdisacademy.com/assets/raw/audio_surat/67_almulk/10.9-14.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/67_almulk/9_14/9_14.m3u8',2,5000),
+	 (67,'15-17','https://api.maqdisacademy.com/assets/raw/audio_surat/67_almulk/11.15-17.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/67_almulk/15_17/67_almulk.m3u8',1,5000),
+	 (67,'17-19','https://api.maqdisacademy.com/assets/raw/audio_surat/67_almulk/12.17-19.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/67_almulk/17_19/67_almulk.m3u8',1,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (67,'15-19','https://api.maqdisacademy.com/assets/raw/audio_surat/67_almulk/13.15-19.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/67_almulk/15_19/67_almulk.m3u8',2,5000),
+	 (67,'9-19','https://api.maqdisacademy.com/assets/raw/audio_surat/67_almulk/14.9-19.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/67_almulk/9_19/9_19.m3u8',2,5000),
+	 (67,'1-19','https://api.maqdisacademy.com/assets/raw/audio_surat/67_almulk/15.1-19.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/67_almulk/1_19/67_almulk.m3u8',2,5000),
+	 (67,'20-21','https://api.maqdisacademy.com/assets/raw/audio_surat/67_almulk/16.20-21.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/67_almulk/20_21/67_almulk.m3u8',1,5000),
+	 (67,'22-23','https://api.maqdisacademy.com/assets/raw/audio_surat/67_almulk/17.22-23.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/67_almulk/22_23/67_almulk.m3u8',1,5000),
+	 (67,'20-23','https://api.maqdisacademy.com/assets/raw/audio_surat/67_almulk/18.20-23.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/67_almulk/20_23/67_almulk1.2.m3u8',2,5000),
+	 (67,'24-26','https://api.maqdisacademy.com/assets/raw/audio_surat/67_almulk/19.24-26.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/67_almulk/24_26/67_almulk.m3u8',1,5000),
+	 (67,'27-30','https://api.maqdisacademy.com/assets/raw/audio_surat/67_almulk/20.27-30.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/67_almulk/27_30/27_30.m3u8',1,5000),
+	 (67,'24-30','https://api.maqdisacademy.com/assets/raw/audio_surat/67_almulk/21.24-30.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/67_almulk/24_30/67_almulk.m3u8',2,5000),
+	 (67,'20-30','https://api.maqdisacademy.com/assets/raw/audio_surat/67_almulk/22.20-30.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/67_almulk/20_30/67_almulk.m3u8',2,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (67,'1-30','https://api.maqdisacademy.com/assets/raw/audio_surat/67_almulk/23.1-30.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/67_almulk/1_30/67_almulk1.2.m3u8',2,5000),
+	 (68,'1-3','https://api.maqdisacademy.com/assets/raw/audio_surat/68_alqalam/1.1-3.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/68_alqalam/1_3/68_alqalam.m3u8',1,5000),
+	 (68,'4-7','https://api.maqdisacademy.com/assets/raw/audio_surat/68_alqalam/2.4-7.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/68_alqalam/4_7/68_alqalam.m3u8',1,5000),
+	 (68,'1-7','https://api.maqdisacademy.com/assets/raw/audio_surat/68_alqalam/3.1-7.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/68_alqalam/1_7/68_alqalam.m3u8',2,5000),
+	 (68,'8-11','https://api.maqdisacademy.com/assets/raw/audio_surat/68_alqalam/4.8-11.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/68_alqalam/8_11/68_alqalam.m3u8',1,5000),
+	 (68,'12-15','https://api.maqdisacademy.com/assets/raw/audio_surat/68_alqalam/5.12-15.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/68_alqalam/12_15/68_alqalam.m3u8',1,5000),
+	 (68,'8-15','https://api.maqdisacademy.com/assets/raw/audio_surat/68_alqalam/6.8-15.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/68_alqalam/8_15/68_alqalam.m3u8',2,5000),
+	 (68,'1-15','https://api.maqdisacademy.com/assets/raw/audio_surat/68_alqalam/7.1-15.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/68_alqalam/1_15/68_alqalam.m3u8',2,5000),
+	 (68,'16-18','https://api.maqdisacademy.com/assets/raw/audio_surat/68_alqalam/8.16-18.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/68_alqalam/16_18/68_alqalam.m3u8',1,5000),
+	 (68,'19-22','https://api.maqdisacademy.com/assets/raw/audio_surat/68_alqalam/9.19-22.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/68_alqalam/19_22/68_alqalam.m3u8',1,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (68,'16-22','https://api.maqdisacademy.com/assets/raw/audio_surat/68_alqalam/10.16-22.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/68_alqalam/16_22/68_alqalam.m3u8',2,5000),
+	 (68,'23-26','https://api.maqdisacademy.com/assets/raw/audio_surat/68_alqalam/11.23-26.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/68_alqalam/23_26/68_alqalam.m3u8',1,5000),
+	 (68,'27-30','https://api.maqdisacademy.com/assets/raw/audio_surat/68_alqalam/12.27-30.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/68_alqalam/27_30/68_alqalam.m3u8',1,5000),
+	 (68,'23-30','https://api.maqdisacademy.com/assets/raw/audio_surat/68_alqalam/13.23-30.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/68_alqalam/23_30/68_alqalam.m3u8',2,5000),
+	 (68,'16-30','https://api.maqdisacademy.com/assets/raw/audio_surat/68_alqalam/14.16-30.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/68_alqalam/16_30/68_alqalam.m3u8',2,5000),
+	 (68,'1-30','https://api.maqdisacademy.com/assets/raw/audio_surat/68_alqalam/15.1-30.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/68_alqalam/1_30/68_alqalam.m3u8',2,5000),
+	 (68,'31-33','https://api.maqdisacademy.com/assets/raw/audio_surat/68_alqalam/16.31-33.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/68_alqalam/31_33/68_alqalam.m3u8',1,5000),
+	 (68,'34-37','https://api.maqdisacademy.com/assets/raw/audio_surat/68_alqalam/17.34-37.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/68_alqalam/34_37/68_alqalam.m3u8',1,5000),
+	 (68,'31-37','https://api.maqdisacademy.com/assets/raw/audio_surat/68_alqalam/18.31-37.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/68_alqalam/31_37/68_alqalam.m3u8',2,5000),
+	 (68,'38-41','https://api.maqdisacademy.com/assets/raw/audio_surat/68_alqalam/19.38-41.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/68_alqalam/38_41/68_alqalam.m3u8',1,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (68,'42-44','https://api.maqdisacademy.com/assets/raw/audio_surat/68_alqalam/20.42-44.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/68_alqalam/42_44/68_alqalam.m3u8',1,5000),
+	 (68,'38-44','https://api.maqdisacademy.com/assets/raw/audio_surat/68_alqalam/21.38-44.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/68_alqalam/38_44/68_alqalam.m3u8',2,5000),
+	 (68,'31-44','https://api.maqdisacademy.com/assets/raw/audio_surat/68_alqalam/22.31-44.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/68_alqalam/31_44/68_alqalam.m3u8',2,5000),
+	 (68,'45-48','https://api.maqdisacademy.com/assets/raw/audio_surat/68_alqalam/23.45-48.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/68_alqalam/45_48/68_alqalam.m3u8',1,5000),
+	 (68,'48-52','https://api.maqdisacademy.com/assets/raw/audio_surat/68_alqalam/24.48-52.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/68_alqalam/48_52/68_alqalam.m3u8',1,5000),
+	 (68,'45-52','https://api.maqdisacademy.com/assets/raw/audio_surat/68_alqalam/25.45-52.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/68_alqalam/45_52/68_alqalam.m3u8',2,5000),
+	 (68,'1-52','https://api.maqdisacademy.com/assets/raw/audio_surat/68_alqalam/26.1-52.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/68_alqalam/1_52/68_alqalam.m3u8',2,5000),
+	 (69,'1-4','https://api.maqdisacademy.com/assets/raw/audio_surat/69_alhaqqah/1.1-4.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/69_alhaqqah/1_4/69_alhaqqah.m3u8',1,5000),
+	 (69,'5-7','https://api.maqdisacademy.com/assets/raw/audio_surat/69_alhaqqah/2.5-7.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/69_alhaqqah/5_7/69_alhaqqah.m3u8',1,5000),
+	 (69,'1-7','https://api.maqdisacademy.com/assets/raw/audio_surat/69_alhaqqah/3.1-7.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/69_alhaqqah/1_7/69_alhaqqah.m3u8',2,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (69,'8-11','https://api.maqdisacademy.com/assets/raw/audio_surat/69_alhaqqah/4.8-11.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/69_alhaqqah/8_11/69_alhaqqah.m3u8',1,5000),
+	 (69,'12-15','https://api.maqdisacademy.com/assets/raw/audio_surat/69_alhaqqah/5.12-15.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/69_alhaqqah/12_15/69_alhaqqah.m3u8',1,5000),
+	 (69,'8-15','https://api.maqdisacademy.com/assets/raw/audio_surat/69_alhaqqah/6.8-15.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/69_alhaqqah/8_15/69_alhaqqah.m3u8',2,5000),
+	 (69,'1-15','https://api.maqdisacademy.com/assets/raw/audio_surat/69_alhaqqah/7.1-15.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/69_alhaqqah/1_15/69_alhaqqah.m3u8',2,5000),
+	 (69,'16-18','https://api.maqdisacademy.com/assets/raw/audio_surat/69_alhaqqah/8.16-18.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/69_alhaqqah/16_18/69_alhaqqah.m3u8',1,5000),
+	 (69,'19-22','https://api.maqdisacademy.com/assets/raw/audio_surat/69_alhaqqah/9.19-22.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/69_alhaqqah/19_22/69_alhaqqah.m3u8',1,5000),
+	 (69,'16-22','https://api.maqdisacademy.com/assets/raw/audio_surat/69_alhaqqah/10.16-22.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/69_alhaqqah/16_22/69_alhaqqah.m3u8',2,5000),
+	 (69,'23-25','https://api.maqdisacademy.com/assets/raw/audio_surat/69_alhaqqah/11.23-25.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/69_alhaqqah/23_25/69_alhaqqah.m3u8',1,5000),
+	 (69,'26-29','https://api.maqdisacademy.com/assets/raw/audio_surat/69_alhaqqah/12.26-29.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/69_alhaqqah/26_29/69_alhaqqah.m3u8',1,5000),
+	 (69,'23-29','https://api.maqdisacademy.com/assets/raw/audio_surat/69_alhaqqah/13.23-29.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/69_alhaqqah/23_29/69_alhaqqah.m3u8',2,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (69,'16-29','https://api.maqdisacademy.com/assets/raw/audio_surat/69_alhaqqah/14.16-29.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/69_alhaqqah/16_29/69_alhaqqah.m3u8',2,5000),
+	 (69,'1-29','https://api.maqdisacademy.com/assets/raw/audio_surat/69_alhaqqah/15.1-29.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/69_alhaqqah/1_29/69_alhaqqah.m3u8',2,5000),
+	 (69,'30-33','https://api.maqdisacademy.com/assets/raw/audio_surat/69_alhaqqah/16.30-33.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/69_alhaqqah/30_33/69_alhaqqah.m3u8',1,5000),
+	 (69,'34-37','https://api.maqdisacademy.com/assets/raw/audio_surat/69_alhaqqah/17.34-37.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/69_alhaqqah/34_37/69_alhaqqah.m3u8',1,5000),
+	 (69,'30-37','https://api.maqdisacademy.com/assets/raw/audio_surat/69_alhaqqah/18.30-37.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/69_alhaqqah/30_37/69_alhaqqah.m3u8',2,5000),
+	 (69,'38-41','https://api.maqdisacademy.com/assets/raw/audio_surat/69_alhaqqah/19.38-41.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/69_alhaqqah/38_41/69_alhaqqah.m3u8',1,5000),
+	 (69,'42-45','https://api.maqdisacademy.com/assets/raw/audio_surat/69_alhaqqah/20.42-45.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/69_alhaqqah/42_45/69_alhaqqah.m3u8',1,5000),
+	 (69,'38-45','https://api.maqdisacademy.com/assets/raw/audio_surat/69_alhaqqah/21.38-45.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/69_alhaqqah/38_45/69_alhaqqah.m3u8',2,5000),
+	 (69,'30-45','https://api.maqdisacademy.com/assets/raw/audio_surat/69_alhaqqah/22.30-45.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/69_alhaqqah/30_45/69_alhaqqah.m3u8',2,5000),
+	 (69,'46-49','https://api.maqdisacademy.com/assets/raw/audio_surat/69_alhaqqah/23.46-49.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/69_alhaqqah/46_49/69_alhaqqah.m3u8',1,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (69,'50-52','https://api.maqdisacademy.com/assets/raw/audio_surat/69_alhaqqah/24.50-52.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/69_alhaqqah/50_52/69_alhaqqah.m3u8',1,5000),
+	 (69,'46-52','https://api.maqdisacademy.com/assets/raw/audio_surat/69_alhaqqah/25.46-52.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/69_alhaqqah/46_52/69_alhaqqah.m3u8',2,5000),
+	 (69,'1-52','https://api.maqdisacademy.com/assets/raw/audio_surat/69_alhaqqah/26.1-52.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/69_alhaqqah/1_52/69_alhaqqah.m3u8',2,5000),
+	 (70,'1-4','https://api.maqdisacademy.com/assets/raw/audio_surat/70_almaarij/1.1-4.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/70_almaarij/1_4/70_almaarij.m3u8',1,5000),
+	 (70,'5-8','https://api.maqdisacademy.com/assets/raw/audio_surat/70_almaarij/2.5-8.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/70_almaarij/5_8/70_almaarij.m3u8',1,5000),
+	 (70,'1-8','https://api.maqdisacademy.com/assets/raw/audio_surat/70_almaarij/3.1-8.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/70_almaarij/1_8/70_almaarij.m3u8',2,5000),
+	 (70,'9-12','https://api.maqdisacademy.com/assets/raw/audio_surat/70_almaarij/4.9-12.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/70_almaarij/9_12/70_almaarij.m3u8',1,5000),
+	 (70,'13-16','https://api.maqdisacademy.com/assets/raw/audio_surat/70_almaarij/5.13-16.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/70_almaarij/13_16/70_almaarij.m3u8',1,5000),
+	 (70,'9-16','https://api.maqdisacademy.com/assets/raw/audio_surat/70_almaarij/6.9-16.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/70_almaarij/9_16/70_almaarij.m3u8',2,5000),
+	 (70,'1-16','https://api.maqdisacademy.com/assets/raw/audio_surat/70_almaarij/7.1-16.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/70_almaarij/1_16/70_almaarij.m3u8',2,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (70,'17-20','https://api.maqdisacademy.com/assets/raw/audio_surat/70_almaarij/8.17-20.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/70_almaarij/17_20/70_almaarij.m3u8',1,5000),
+	 (70,'21-24','https://api.maqdisacademy.com/assets/raw/audio_surat/70_almaarij/9.21-24.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/70_almaarij/21_24/70_almaarij.m3u8',1,5000),
+	 (70,'17-24','https://api.maqdisacademy.com/assets/raw/audio_surat/70_almaarij/10.17-24.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/70_almaarij/17_24/70_almaarij.m3u8',2,5000),
+	 (70,'25-28','https://api.maqdisacademy.com/assets/raw/audio_surat/70_almaarij/11.25-28.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/70_almaarij/25_28/70_almaarij.m3u8',1,5000),
+	 (70,'29-32','https://api.maqdisacademy.com/assets/raw/audio_surat/70_almaarij/12.29-32.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/70_almaarij/29_32/70_almaarij.m3u8',1,5000),
+	 (70,'25-32','https://api.maqdisacademy.com/assets/raw/audio_surat/70_almaarij/13.25-32.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/870_almaarij/25_32/70_almaarij.m3u8',2,5000),
+	 (70,'17-32','https://api.maqdisacademy.com/assets/raw/audio_surat/70_almaarij/14.17-32.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/70_almaarij/17_32/70_almaarij.m3u8',2,5000),
+	 (70,'1-32','https://api.maqdisacademy.com/assets/raw/audio_surat/70_almaarij/15.1-32.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/70_almaarij/1_32/70_almaarij.m3u8',2,5000),
+	 (70,'33-36','https://api.maqdisacademy.com/assets/raw/audio_surat/70_almaarij/16.33-36.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/70_almaarij/33_36/70_almaarij.m3u8',1,5000),
+	 (70,'37-40','https://api.maqdisacademy.com/assets/raw/audio_surat/70_almaarij/17.37-40.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/70_almaarij/37_40/70_almaarij.m3u8',1,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (70,'33-40','https://api.maqdisacademy.com/assets/raw/audio_surat/70_almaarij/18.33-40.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/70_almaarij/33_40/70_almaarij.m3u8',2,5000),
+	 (70,'41-44','https://api.maqdisacademy.com/assets/raw/audio_surat/70_almaarij/19.41-44.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/70_almaarij/41_44/70_almaarij.m3u8',1,5000),
+	 (70,'1-44','https://api.maqdisacademy.com/assets/raw/audio_surat/70_almaarij/20.1-44.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/70_almaarij/1_44/70_almaarij.m3u8',2,5000),
+	 (71,'1-4','https://api.maqdisacademy.com/assets/raw/audio_surat/71_nuh/1.1-4.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/71_nuh/1_4/71._nuh.m3u8',1,5000),
+	 (71,'4-6','https://api.maqdisacademy.com/assets/raw/audio_surat/71_nuh/2.4-6.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/71_nuh/4_6/71._nuh.m3u8',1,5000),
+	 (71,'1-6','https://api.maqdisacademy.com/assets/raw/audio_surat/71_nuh/3.1-6.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/71_nuh/1_6/71._nuh.m3u8',2,5000),
+	 (71,'7-9','https://api.maqdisacademy.com/assets/raw/audio_surat/71_nuh/4.7-9.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/71_nuh/7_9/71._nuh.m3u8',1,5000),
+	 (71,'10-13','https://api.maqdisacademy.com/assets/raw/audio_surat/71_nuh/5.10-13.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/71_nuh/10_13/71._nuh.m3u8',1,5000),
+	 (71,'7-13','https://api.maqdisacademy.com/assets/raw/audio_surat/71_nuh/6.7-13.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/71_nuh/7_13/71._nuh.m3u8',2,5000),
+	 (71,'1-13','https://api.maqdisacademy.com/assets/raw/audio_surat/71_nuh/7.1-13.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/71_nuh/1_13/71._nuh.m3u8',2,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (71,'14-17','https://api.maqdisacademy.com/assets/raw/audio_surat/71_nuh/8.14-17.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/71_nuh/14_17/71._nuh.m3u8',1,5000),
+	 (71,'18-21','https://api.maqdisacademy.com/assets/raw/audio_surat/71_nuh/9.18-21.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/71_nuh/18_21/71._nuh.m3u8',1,5000),
+	 (71,'14-21','https://api.maqdisacademy.com/assets/raw/audio_surat/71_nuh/10.14-21.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/71_nuh/14_21/71._nuh.m3u8',2,5000),
+	 (71,'22-24','https://api.maqdisacademy.com/assets/raw/audio_surat/71_nuh/11.22-24.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/71_nuh/22_24/71._nuh.m3u8',1,5000),
+	 (71,'25-27','https://api.maqdisacademy.com/assets/raw/audio_surat/71_nuh/12.25-27.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/71_nuh/25_27/71._nuh.m3u8',1,5000),
+	 (71,'22-27','https://api.maqdisacademy.com/assets/raw/audio_surat/71_nuh/13.22-27.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/71_nuh/22_27/71._nuh.m3u8',2,5000),
+	 (71,'14-27','https://api.maqdisacademy.com/assets/raw/audio_surat/71_nuh/14.14-27.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/71_nuh/14_27/71._nuh.m3u8',2,5000),
+	 (71,'1-27','https://api.maqdisacademy.com/assets/raw/audio_surat/71_nuh/15.1-27.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/71_nuh/1_27/71._nuh.m3u8',2,5000),
+	 (71,'28','https://api.maqdisacademy.com/assets/raw/audio_surat/71_nuh/16.28.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/71_nuh/16_28/71._nuh.m3u8',1,5000),
+	 (71,'1-28','https://api.maqdisacademy.com/assets/raw/audio_surat/71_nuh/17.1-28.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/71_nuh/1_28/71._nuh.m3u8',2,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (72,'1-2','https://api.maqdisacademy.com/assets/raw/audio_surat/72_aljin/1.1-2.mp3
+','https://api.maqdisacademy.com/assets/raw/video_surat/72.al_jinn/1_2/72.aljinn.m3u8',1,5000),
+	 (72,'3-5','https://api.maqdisacademy.com/assets/raw/audio_surat/72_aljin/2.3-5.mp3
+','https://api.maqdisacademy.com/assets/raw/video_surat/72.al_jinn/3_5/72.aljinn.m3u8',1,5000),
+	 (72,'1-5','https://api.maqdisacademy.com/assets/raw/audio_surat/72_aljin/3.1-5.mp3
+','https://api.maqdisacademy.com/assets/raw/video_surat/72.al_jinn/1_5/72.aljinn.m3u8',2,5000),
+	 (72,'6-8','https://api.maqdisacademy.com/assets/raw/audio_surat/72_aljin/4.6-8.mp3
+','https://api.maqdisacademy.com/assets/raw/video_surat/72.al_jinn/6_8/72.aljinn.m3u8',1,5000),
+	 (72,'9-10','https://api.maqdisacademy.com/assets/raw/audio_surat/72_aljin/5.9-10.mp3
+','https://api.maqdisacademy.com/assets/raw/video_surat/72.al_jinn/9_10/72.aljinn.m3u8',1,5000),
+	 (72,'6-10','https://api.maqdisacademy.com/assets/raw/audio_surat/72_aljin/6.6-10.mp3
+','https://api.maqdisacademy.com/assets/raw/video_surat/72.al_jinn/6_10/72.aljinn.m3u8',2,5000),
+	 (72,'1-10','https://api.maqdisacademy.com/assets/raw/audio_surat/72_aljin/7.1-10.mp3
+','https://api.maqdisacademy.com/assets/raw/video_surat/72.al_jinn/1_10/72.aljinn.m3u8',2,5000),
+	 (72,'11-12','https://api.maqdisacademy.com/assets/raw/audio_surat/72_aljin/8.11-12.mp3
+','https://api.maqdisacademy.com/assets/raw/video_surat/72.al_jinn/11_12/72.aljinn.m3u8',1,5000),
+	 (72,'13-14','https://api.maqdisacademy.com/assets/raw/audio_surat/72_aljin/9.13-14.mp3
+','https://api.maqdisacademy.com/assets/raw/video_surat/72.al_jinn/13_14/72.aljinn.m3u8',1,5000),
+	 (72,'11-14','https://api.maqdisacademy.com/assets/raw/audio_surat/72_aljin/10.11-14.mp3
+','https://api.maqdisacademy.com/assets/raw/video_surat/72.al_jinn/11_14/72.aljinn.m3u8',2,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (72,'15-17','https://api.maqdisacademy.com/assets/raw/audio_surat/72_aljin/11.15-17.mp3
+','https://api.maqdisacademy.com/assets/raw/video_surat/72.al_jinn/15_17/72.aljinn.m3u8',1,5000),
+	 (72,'18-21','https://api.maqdisacademy.com/assets/raw/audio_surat/72_aljin/12.18-21.mp3
+','https://api.maqdisacademy.com/assets/raw/video_surat/72.al_jinn/18_21/72.aljinn.m3u8',1,5000),
+	 (72,'15-21','https://api.maqdisacademy.com/assets/raw/audio_surat/72_aljin/13.15-21.mp3
+','https://api.maqdisacademy.com/assets/raw/video_surat/72.al_jinn/15_21/72.aljinn.m3u8',2,5000),
+	 (72,'11-21','https://api.maqdisacademy.com/assets/raw/audio_surat/72_aljin/14.16-21.mp3
+','https://api.maqdisacademy.com/assets/raw/video_surat/72.al_jinn/11_21/72.aljinn.m3u8',2,5000),
+	 (72,'1-21','https://api.maqdisacademy.com/assets/raw/audio_surat/72_aljin/15.1-21.mp3
+','https://api.maqdisacademy.com/assets/raw/video_surat/72.al_jinn/1_21/72.aljinn.m3u8',2,5000),
+	 (72,'22-23','https://api.maqdisacademy.com/assets/raw/audio_surat/72_aljin/16.22-23.mp3
+','https://api.maqdisacademy.com/assets/raw/video_surat/72.al_jinn/22_23/72.aljinn.m3u8',1,5000),
+	 (72,'24-26','https://api.maqdisacademy.com/assets/raw/audio_surat/72_aljin/17.24-26.mp3
+','https://api.maqdisacademy.com/assets/raw/video_surat/72.al_jinn/24_26/72.aljinn.m3u8',1,5000),
+	 (72,'22-26','https://api.maqdisacademy.com/assets/raw/audio_surat/72_aljin/18.22-26.mp3
+','https://api.maqdisacademy.com/assets/raw/video_surat/72.al_jinn/22_26/72.aljinn.m3u8',2,5000),
+	 (72,'27-28','https://api.maqdisacademy.com/assets/raw/audio_surat/72_aljin/19.27-28.mp3
+','https://api.maqdisacademy.com/assets/raw/video_surat/72.al_jinn/27_28/72.aljinn.m3u8',1,5000),
+	 (72,'1-28','https://api.maqdisacademy.com/assets/raw/audio_surat/72_aljin/20.1-28.mp3
+','https://api.maqdisacademy.com/assets/raw/video_surat/72.al_jinn/1_28/72.aljinn.m3u8',2,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (73,'1-4','https://api.maqdisacademy.com/assets/raw/audio_surat/73_almuzzammil/1.1-4.mp3
+','https://api.maqdisacademy.com/assets/raw/video_surat/73_almuzzammil/1_4/1.1-4.m3u8',1,5000),
+	 (73,'5-8','https://api.maqdisacademy.com/assets/raw/audio_surat/73_almuzzammil/2.5-8.mp3
+','https://api.maqdisacademy.com/assets/raw/video_surat/73_almuzzammil/5_8/2.5-8.m3u8',1,5000),
+	 (73,'1-8','https://api.maqdisacademy.com/assets/raw/audio_surat/73_almuzzammil/3.1-8.mp3
+','https://api.maqdisacademy.com/assets/raw/video_surat/73_almuzzammil/1_8/3.1-8.m3u8',2,5000),
+	 (73,'9-12','https://api.maqdisacademy.com/assets/raw/audio_surat/73_almuzzammil/4.9-12.mp3
+','https://api.maqdisacademy.com/assets/raw/video_surat/73_almuzzammil/9_12/4.9-12.m3u8',1,5000),
+	 (73,'13-15','https://api.maqdisacademy.com/assets/raw/audio_surat/73_almuzzammil/5.13-15.mp3
+','https://api.maqdisacademy.com/assets/raw/video_surat/73_almuzzammil/13_15/5.13-15.m3u8',1,5000),
+	 (73,'9-15','https://api.maqdisacademy.com/assets/raw/audio_surat/73_almuzzammil/6.9-15.mp3
+','https://api.maqdisacademy.com/assets/raw/video_surat/73_almuzzammil/9_15/6.9-15.m3u8',2,5000),
+	 (73,'1-15','https://api.maqdisacademy.com/assets/raw/audio_surat/73_almuzzammil/7.1-15.mp3
+','https://api.maqdisacademy.com/assets/raw/video_surat/73_almuzzammil/1_15/73_almuzzammil.m3u8',2,5000),
+	 (73,'16-19','https://api.maqdisacademy.com/assets/raw/audio_surat/73_almuzzammil/8.16-19.mp3
+','https://api.maqdisacademy.com/assets/raw/video_surat/73_almuzzammil/16_19/73_almuzzammil.m3u8',1,5000),
+	 (73,'20.1','https://api.maqdisacademy.com/assets/raw/audio_surat/73_almuzzammil/9.20.1.mp3
+','https://api.maqdisacademy.com/assets/raw/video_surat/73_almuzzammil/20.1/73_almuzzammil.m3u8',1,5000),
+	 (73,'16-20.1','https://api.maqdisacademy.com/assets/raw/audio_surat/73_almuzzammil/10.16-20.1.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/73_almuzzammil/16_20.1/73_almuzzammil.m3u8',2,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (73,'20.2','https://api.maqdisacademy.com/assets/raw/audio_surat/73_almuzzammil/11.20.2.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/73_almuzzammil/20.2/73_almuzzammil.m3u8',1,5000),
+	 (73,'20.3','https://api.maqdisacademy.com/assets/raw/audio_surat/73_almuzzammil/12.20.3.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/73_almuzzammil/20.3/73_almuzzammil.m3u8',1,5000),
+	 (73,'20.2-20.3','https://api.maqdisacademy.com/assets/raw/audio_surat/73_almuzzammil/13.20.2-20.3.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/73_almuzzammil/20.2_20.3/73_almuzzammil.m3u8',2,5000),
+	 (73,'16-20','https://api.maqdisacademy.com/assets/raw/audio_surat/73_almuzzammil/14.16-20.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/73_almuzzammil/16_20/73_almuzzammil.m3u8',2,5000),
+	 (73,'1-20','https://api.maqdisacademy.com/assets/raw/audio_surat/73_almuzzammil/15.1-20.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/73_almuzzammil/1_20/73_almuzzammil.m3u8',2,5000),
+	 (74,'1-4','https://api.maqdisacademy.com/assets/raw/audio_surat/74_almuddassir/1.1-4.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/74_almuddassir/1_4/74_almuddassir.m3u8',1,5000),
+	 (74,'5-8','https://api.maqdisacademy.com/assets/raw/audio_surat/74_almuddassir/2.5-8.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/74_almuddassir/5_8/74_almuddassir.m3u8',1,5000),
+	 (74,'1-8','https://api.maqdisacademy.com/assets/raw/audio_surat/74_almuddassir/3.1-8.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/74_almuddassir/1_8/74_almuddassir.m3u8',2,5000),
+	 (74,'9-12','https://api.maqdisacademy.com/assets/raw/audio_surat/74_almuddassir/4.9-12.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/74_almuddassir/9_12/74_almuddassir.m3u8',1,5000),
+	 (74,'13-16','https://api.maqdisacademy.com/assets/raw/audio_surat/74_almuddassir/5.13-16.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/74_almuddassir/13_16/74_almuddassir.m3u8',1,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (74,'9-16','https://api.maqdisacademy.com/assets/raw/audio_surat/74_almuddassir/6.9-16.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/74_almuddassir/9_16/74_almuddassir.m3u8',2,5000),
+	 (74,'1-16','https://api.maqdisacademy.com/assets/raw/audio_surat/74_almuddassir/7.1-16.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/74_almuddassir/1_16/74_almuddassir.m3u8',2,5000),
+	 (74,'17-20','https://api.maqdisacademy.com/assets/raw/audio_surat/74_almuddassir/8.17-20.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/74_almuddassir/17_20/74_almuddassir.m3u8',1,5000),
+	 (74,'21-24','https://api.maqdisacademy.com/assets/raw/audio_surat/74_almuddassir/9.21-24.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/74_almuddassir/21_24/74_almuddassir.m3u8',1,5000),
+	 (74,'17-24','https://api.maqdisacademy.com/assets/raw/audio_surat/74_almuddassir/10.17-24.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/74_almuddassir/17_24/74_almuddassir.m3u8',2,5000),
+	 (74,'25-30','https://api.maqdisacademy.com/assets/raw/audio_surat/74_almuddassir/11.25-30.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/74_almuddassir/25_30/74_almuddassir.m3u8',1,5000),
+	 (74,'31','https://api.maqdisacademy.com/assets/raw/audio_surat/74_almuddassir/12.31.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/74_almuddassir/31/74_almuddassir.m3u8',1,5000),
+	 (74,'25-31','https://api.maqdisacademy.com/assets/raw/audio_surat/74_almuddassir/13.25-31.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/74_almuddassir/25_31/74_almuddassir.m3u8',2,5000),
+	 (74,'17-31','https://api.maqdisacademy.com/assets/raw/audio_surat/74_almuddassir/14.17-31.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/74_almuddassir/17_31/74_almuddassir.m3u8',2,5000),
+	 (74,'1-31','https://api.maqdisacademy.com/assets/raw/audio_surat/74_almuddassir/15.1-31.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/74_almuddassir/1_31/74_almuddassir.m3u8',2,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (74,'32-35','https://api.maqdisacademy.com/assets/raw/audio_surat/74_almuddassir/16.32-35.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/74_almuddassir/32_35/74_almuddassir.m3u8',1,5000),
+	 (74,'36-39','https://api.maqdisacademy.com/assets/raw/audio_surat/74_almuddassir/17.36-39.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/74_almuddassir/36_39/74_almuddassir.m3u8',1,5000),
+	 (74,'32-39','https://api.maqdisacademy.com/assets/raw/audio_surat/74_almuddassir/18.32-39.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/74_almuddassir/32_39/74_almuddassir.m3u8',2,5000),
+	 (74,'40-43','https://api.maqdisacademy.com/assets/raw/audio_surat/74_almuddassir/19.40-43.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/74_almuddassir/40_43/74_almuddassir.m3u8',1,5000),
+	 (74,'44-47','https://api.maqdisacademy.com/assets/raw/audio_surat/74_almuddassir/20.44-47.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/74_almuddassir/44_47/74_almuddassir.m3u8',1,5000),
+	 (74,'40-47','https://api.maqdisacademy.com/assets/raw/audio_surat/74_almuddassir/21.40-47.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/874_almuddassir/40_47/74_almuddassir.m3u8',2,5000),
+	 (74,'32-47','https://api.maqdisacademy.com/assets/raw/audio_surat/74_almuddassir/22.32-47.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/74_almuddassir/32_47/74_almuddassir.m3u8',2,5000),
+	 (74,'48-51','https://api.maqdisacademy.com/assets/raw/audio_surat/74_almuddassir/23.48-51.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/74_almuddassir/48_51/74_almuddassir.m3u8',1,5000),
+	 (74,'52-56','https://api.maqdisacademy.com/assets/raw/audio_surat/74_almuddassir/24.52-56.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/74_almuddassir/52_56/74_almuddassir.m3u8',1,5000),
+	 (74,'48-56','https://api.maqdisacademy.com/assets/raw/audio_surat/74_almuddassir/25.48-56.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/74_almuddassir/48_56/74_almuddassir.m3u8',2,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (74,'1-56','https://api.maqdisacademy.com/assets/raw/audio_surat/74_almuddassir/26.1-56.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/74_almuddassir/1_56/74_almuddassir.m3u8',2,5000),
+	 (75,'1-4','https://api.maqdisacademy.com/assets/raw/audio_surat/75_alqiyamah/1.1-4.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/75_alqiyamah/1_4/75_alqiyamah.m3u8',1,5000),
+	 (75,'5-8','https://api.maqdisacademy.com/assets/raw/audio_surat/75_alqiyamah/2.5-8.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/75_alqiyamah/5_8/75_alqiyamah.m3u8',1,5000),
+	 (75,'1-8','https://api.maqdisacademy.com/assets/raw/audio_surat/75_alqiyamah/3.1-8.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/75_alqiyamah/1_8/75_alqiyamah.m3u8',2,5000),
+	 (75,'9-12','https://api.maqdisacademy.com/assets/raw/audio_surat/75_alqiyamah/4.9-12.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/75_alqiyamah/9_12/75_alqiyamah.m3u8',1,5000),
+	 (75,'13-16','https://api.maqdisacademy.com/assets/raw/audio_surat/75_alqiyamah/5.13-16.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/75_alqiyamah/13_16/75_alqiyamah.m3u8',1,5000),
+	 (75,'9-16','https://api.maqdisacademy.com/assets/raw/audio_surat/75_alqiyamah/6.9-16.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/75_alqiyamah/9_16/75_alqiyamah.m3u8',2,5000),
+	 (75,'1-16','https://api.maqdisacademy.com/assets/raw/audio_surat/75_alqiyamah/7.1-16.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/75_alqiyamah/1_16/75_alqiyamah.m3u8',2,5000),
+	 (75,'17-20','https://api.maqdisacademy.com/assets/raw/audio_surat/75_alqiyamah/8.17-20.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/75_alqiyamah/17_20/75_alqiyamah.m3u8',1,5000),
+	 (75,'21-24','https://api.maqdisacademy.com/assets/raw/audio_surat/75_alqiyamah/9.21-24.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/75_alqiyamah/21_24/75_alqiyamah.m3u8',1,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (75,'17-24','https://api.maqdisacademy.com/assets/raw/audio_surat/75_alqiyamah/10.17-24.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/75_alqiyamah/17_24/75_alqiyamah.m3u8',2,5000),
+	 (75,'25-28','https://api.maqdisacademy.com/assets/raw/audio_surat/75_alqiyamah/11.25-28.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/75_alqiyamah/25_28/75_alqiyamah.m3u8',1,5000),
+	 (75,'29-32','https://api.maqdisacademy.com/assets/raw/audio_surat/75_alqiyamah/12.29-32.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/75_alqiyamah/29_32/75_alqiyamah.m3u8',1,5000),
+	 (75,'25-32','https://api.maqdisacademy.com/assets/raw/audio_surat/75_alqiyamah/13.25-32.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/75_alqiyamah/25_32/75_alqiyamah.m3u8',2,5000),
+	 (75,'17-32','https://api.maqdisacademy.com/assets/raw/audio_surat/75_alqiyamah/14.17-32.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/75_alqiyamah/17_32/75_alqiyamah.m3u8',2,5000),
+	 (75,'1-32','https://api.maqdisacademy.com/assets/raw/audio_surat/75_alqiyamah/15.1-32.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/75_alqiyamah/1_32/75_alqiyamah.m3u8',2,5000),
+	 (75,'33-36','https://api.maqdisacademy.com/assets/raw/audio_surat/75_alqiyamah/16.33-36.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/75_alqiyamah/33_36/75_alqiyamah.m3u8',1,5000),
+	 (75,'37-40','https://api.maqdisacademy.com/assets/raw/audio_surat/75_alqiyamah/17.37-40.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/75_alqiyamah/37_40/75_alqiyamah.m3u8',1,5000),
+	 (75,'33-40','https://api.maqdisacademy.com/assets/raw/audio_surat/75_alqiyamah/18.33-40.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/75_alqiyamah/33_40/75_alqiyamah.m3u8',2,5000),
+	 (75,'1-40','https://api.maqdisacademy.com/assets/raw/audio_surat/75_alqiyamah/19.1-40.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/75_alqiyamah/1_40/75_alqiyamah.m3u8',2,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (76,'1-2','https://api.maqdisacademy.com/assets/raw/audio_surat/76_alInsan/1.1-2.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/76_alinsan/1_2/76_alinsan.m3u8',1,5000),
+	 (76,'3-5','https://api.maqdisacademy.com/assets/raw/audio_surat/76_alInsan/2.3-5.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/76_alinsan/3_5/76_alinsan.m3u8',1,5000),
+	 (76,'1-5','https://api.maqdisacademy.com/assets/raw/audio_surat/76_alInsan/3.1-5.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/76_alinsan/1_5/76_alinsan.m3u8',2,5000),
+	 (76,'6-8','https://api.maqdisacademy.com/assets/raw/audio_surat/76_alInsan/4.6-8.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/76_alinsan/6_8/76_alinsan.m3u8',1,5000),
+	 (76,'9-11','https://api.maqdisacademy.com/assets/raw/audio_surat/76_alInsan/5.9-11.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/76_alinsan/9_11/76_alinsan.m3u8',1,5000),
+	 (76,'6-11','https://api.maqdisacademy.com/assets/raw/audio_surat/76_alInsan/6.6-11.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/76_alinsan/6_11/76_alinsan.m3u8',2,5000),
+	 (76,'1-11','https://api.maqdisacademy.com/assets/raw/audio_surat/76_alInsan/7.1-11.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/76_alinsan/1_11/76_alinsan.m3u8',2,5000),
+	 (76,'12-14','https://api.maqdisacademy.com/assets/raw/audio_surat/76_alInsan/8.12-14.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/76_alinsan/12_14/76_alinsan.m3u8',1,5000),
+	 (76,'15-17','https://api.maqdisacademy.com/assets/raw/audio_surat/76_alInsan/9.15-17.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/76_alinsan/15_17/76_alinsan.m3u8',1,5000),
+	 (76,'12-17','https://api.maqdisacademy.com/assets/raw/audio_surat/76_alInsan/10.12-17.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/76_alinsan/12_17/76_alinsan.m3u8',2,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (76,'18-20','https://api.maqdisacademy.com/assets/raw/audio_surat/76_alInsan/11.18-20.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/76_alinsan/18_20/76_alinsan.m3u8',1,5000),
+	 (76,'21-22','https://api.maqdisacademy.com/assets/raw/audio_surat/76_alInsan/12.21-22.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/76_alinsan/21_22/76_alinsan.m3u8',1,5000),
+	 (76,'18-22','https://api.maqdisacademy.com/assets/raw/audio_surat/76_alInsan/13.18-22.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/76_alinsan/18_22/76_alinsan.m3u8',2,5000),
+	 (76,'12-22','https://api.maqdisacademy.com/assets/raw/audio_surat/76_alInsan/14.12-22.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/76_alinsan/12_22/76_alinsan.m3u8',2,5000),
+	 (76,'1-22','https://api.maqdisacademy.com/assets/raw/audio_surat/76_alInsan/15.1-22.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/76_alinsan/1_22/76_alinsan.m3u8',2,5000),
+	 (76,'23-25','https://api.maqdisacademy.com/assets/raw/audio_surat/76_alInsan/16.23-25.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/76_alinsan/23_25/76_alinsan.m3u8',1,5000),
+	 (76,'26-28','https://api.maqdisacademy.com/assets/raw/audio_surat/76_alInsan/17.26-28.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/76_alinsan/26_28/76_alinsan.m3u8',1,5000),
+	 (76,'23-28','https://api.maqdisacademy.com/assets/raw/audio_surat/76_alInsan/18.23-28.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/76_alinsan/23_28/76_alinsan.m3u8',2,5000),
+	 (76,'29-31','https://api.maqdisacademy.com/assets/raw/audio_surat/76_alInsan/19.29-31.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/76_alinsan/29_31/76_alinsan.m3u8',1,5000),
+	 (76,'1-31','https://api.maqdisacademy.com/assets/raw/audio_surat/76_alInsan/20.1-31.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/76_alinsan/1_31/76_alinsan.m3u8',2,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (77,'1-4','https://api.maqdisacademy.com/assets/raw/audio_surat/77_almursalat/1.1-4.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/77_almursalat/1_4/77_almursalat.m3u8',1,5000),
+	 (77,'5-8','https://api.maqdisacademy.com/assets/raw/audio_surat/77_almursalat/2.5-8.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/77_almursalat/5_8/77_almursalat.m3u8',1,5000),
+	 (77,'1-8','https://api.maqdisacademy.com/assets/raw/audio_surat/77_almursalat/3.1-8.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/77_almursalat/1_8/77_almursalat.m3u8',2,5000),
+	 (77,'9-12','https://api.maqdisacademy.com/assets/raw/audio_surat/77_almursalat/4.9-12.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/77_almursalat/9_12/77_almursalat.m3u8',1,5000),
+	 (77,'13-16','https://api.maqdisacademy.com/assets/raw/audio_surat/77_almursalat/5.13-16.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/77_almursalat/13_16/77_almursalat.m3u8',1,5000),
+	 (77,'9-16','https://api.maqdisacademy.com/assets/raw/audio_surat/77_almursalat/6.9-16.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/77_almursalat/9_16/77_almursalat.m3u8',2,5000),
+	 (77,'1-16','https://api.maqdisacademy.com/assets/raw/audio_surat/77_almursalat/7.1-16.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/77_almursalat/1_16/77_almursalat.m3u8',2,5000),
+	 (77,'17-19','https://api.maqdisacademy.com/assets/raw/audio_surat/77_almursalat/8.17-19.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/77_almursalat/17_19/77_almursalat.m3u8',1,5000),
+	 (77,'20-23','https://api.maqdisacademy.com/assets/raw/audio_surat/77_almursalat/9.20-23.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/77_almursalat/20_23/77_almursalat.m3u8',1,5000),
+	 (77,'17-23','https://api.maqdisacademy.com/assets/raw/audio_surat/77_almursalat/10.17-23.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/77_almursalat/17_23/77_almursalat.m3u8',2,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (77,'24-27','https://api.maqdisacademy.com/assets/raw/audio_surat/77_almursalat/11.24-27.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/77_almursalat/24_27/77_almursalat.m3u8',1,5000),
+	 (77,'28-31','https://api.maqdisacademy.com/assets/raw/audio_surat/77_almursalat/12.28-31.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/77_almursalat/28_31/77_almursalat.m3u8',1,5000),
+	 (77,'24-31','https://api.maqdisacademy.com/assets/raw/audio_surat/77_almursalat/13.24-31.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/77_almursalat/24_31/77_almursalat.m3u8',2,5000),
+	 (77,'17-31','https://api.maqdisacademy.com/assets/raw/audio_surat/77_almursalat/14.17-31.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/77_almursalat/17_31/77_almursalat.m3u8',2,5000),
+	 (77,'1-31','https://api.maqdisacademy.com/assets/raw/audio_surat/77_almursalat/15.1-31.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/77_almursalat/1_31/77_almursalat.m3u8',2,5000),
+	 (77,'32-35','https://api.maqdisacademy.com/assets/raw/audio_surat/77_almursalat/16.32-35.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/77_almursalat/32_35/77_almursalat.m3u8',1,5000),
+	 (77,'36-40','https://api.maqdisacademy.com/assets/raw/audio_surat/77_almursalat/17.36-40.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/77_almursalat/36_40/77_almursalat.m3u8',1,5000),
+	 (77,'32-40','https://api.maqdisacademy.com/assets/raw/audio_surat/77_almursalat/18.32-40.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/77_almursalat/32_40/77_almursalat.m3u8',2,5000),
+	 (77,'41-44','https://api.maqdisacademy.com/assets/raw/audio_surat/77_almursalat/19.41-44.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/77_almursalat/41_44/77_almursalat.m3u8',1,5000),
+	 (77,'45-50','https://api.maqdisacademy.com/assets/raw/audio_surat/77_almursalat/20.45-50.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/77_almursalat/45_50/77_almursalat.m3u8',1,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (77,'41-50','https://api.maqdisacademy.com/assets/raw/audio_surat/77_almursalat/21.41-50.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/77_almursalat/41_50/77_almursalat.m3u8',2,5000),
+	 (77,'32-50','https://api.maqdisacademy.com/assets/raw/audio_surat/77_almursalat/22.32-50.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/77_almursalat/32_50/77_almursalat.m3u8',2,5000),
+	 (77,'1-50','https://api.maqdisacademy.com/assets/raw/audio_surat/77_almursalat/23.1-50.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/77_almursalat/1_50/77_almursalat.m3u8',2,5000),
+	 (255,'1','https://api.maqdisacademy.com/assets/raw/audio_surat/ayat_kursi/ayat_kursi_a.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/ayat_kursi/bagian_a/ayat_kursi_a.m3u8',1,5000),
+	 (255,'2','https://api.maqdisacademy.com/assets/raw/audio_surat/ayat_kursi/ayat_kursi_b.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/ayat_kursi/bagian_b/ayat_kursi_b.m3u8',1,5000),
+	 (255,'Full','https://api.maqdisacademy.com/assets/raw/audio_surat/ayat_kursi/ayat_kursi_full.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/ayat_kursi/bagian_full/ayat_kursi_full.m3u8',2,5000),
+	 (90,'13-16','https://api.maqdisacademy.com/assets/raw/audio_surat/90_albalad/Ayat13-16.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/90_albalad/90balad13.16/90balad13.16.m3u8',1,5000),
+	 (90,'9-16','https://api.maqdisacademy.com/assets/raw/audio_surat/90_albalad/Ayat-Gabung-9-16.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/90_albalad/90balad9.16/90balad9.16.m3u8',2,5000),
+	 (90,'1-16','https://api.maqdisacademy.com/assets/raw/audio_surat/90_albalad/Ayat-Gabung-1-16.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/90_albalad/90balad1.16/90balad1.16.m3u8',2,5000),
+	 (90,'17-20','https://api.maqdisacademy.com/assets/raw/audio_surat/90_albalad/Ayat17-20.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/90_albalad/90balad17.20/90balad17.20.m3u8',1,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (90,'1-20','https://api.maqdisacademy.com/assets/raw/audio_surat/90_albalad/Ayat-Gabung-1-20.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/90_albalad/90balad1.20/90balad1.20.m3u8',2,5000),
+	 (58,'1','https://api.maqdisacademy.com/assets/raw/audio_surat/58_al_mujadalah/1_1.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/58_almujadalah/Ayat_1/Ayat_1.m3u8',1,5000),
+	 (58,'2','https://api.maqdisacademy.com/assets/raw/audio_surat/58_al_mujadalah/2_2.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/58_almujadalah/Ayat_2/Ayat_2.m3u8',1,5000),
+	 (58,'1-2','https://api.maqdisacademy.com/assets/raw/audio_surat/58_al_mujadalah/3_1-2.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/58_almujadalah/Ayat_1-2/Ayat_1-2.m3u8',2,5000),
+	 (58,'3','https://api.maqdisacademy.com/assets/raw/audio_surat/58_al_mujadalah/4_3.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/58_almujadalah/Ayat_3/Ayat_3.m3u8',1,5000),
+	 (58,'4','https://api.maqdisacademy.com/assets/raw/audio_surat/58_al_mujadalah/5_4.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/58_almujadalah/Ayat_4/Ayat_4.m3u8',1,5000),
+	 (58,'3-4','https://api.maqdisacademy.com/assets/raw/audio_surat/58_al_mujadalah/6_3-4.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/58_almujadalah/Ayat_3-4/Ayat_3-4.m3u8',2,5000),
+	 (58,'1-4','https://api.maqdisacademy.com/assets/raw/audio_surat/58_al_mujadalah/7_1-4.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/58_almujadalah/Ayat_1-4/Ayat_1-4.m3u8',2,5000),
+	 (58,'5','https://api.maqdisacademy.com/assets/raw/audio_surat/58_al_mujadalah/8_5.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/58_almujadalah/Ayat_5/Ayat_5.m3u8',1,5000),
+	 (58,'6','https://api.maqdisacademy.com/assets/raw/audio_surat/58_al_mujadalah/9_6.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/58_almujadalah/Ayat_6/Ayat_6.m3u8',1,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (58,'5-6','https://api.maqdisacademy.com/assets/raw/audio_surat/58_al_mujadalah/10_5-6.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/58_almujadalah/Ayat_5-6/Ayat_5-6.m3u8',2,5000),
+	 (58,'7','https://api.maqdisacademy.com/assets/raw/audio_surat/58_al_mujadalah/11_7.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/58_almujadalah/Ayat_7/Ayat_7.m3u8',1,5000),
+	 (58,'8','https://api.maqdisacademy.com/assets/raw/audio_surat/58_al_mujadalah/12_8.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/58_almujadalah/Ayat_8/Ayat_8.m3u8',1,5000),
+	 (58,'7-8','https://api.maqdisacademy.com/assets/raw/audio_surat/58_al_mujadalah/13_7-8.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/58_almujadalah/Ayat_7-8/Ayat_7-8.m3u8',2,5000),
+	 (58,'5-8','https://api.maqdisacademy.com/assets/raw/audio_surat/58_al_mujadalah/14_5-8.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/58_almujadalah/Ayat_5-8/Ayat_5-8.m3u8',2,5000),
+	 (58,'1-8','https://api.maqdisacademy.com/assets/raw/audio_surat/58_al_mujadalah/15_1-8.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/58_almujadalah/Ayat_1-8/Ayat_1-8.m3u8',2,5000),
+	 (58,'9','https://api.maqdisacademy.com/assets/raw/audio_surat/58_al_mujadalah/16_9.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/58_almujadalah/Ayat_9/Ayat_9.m3u8',1,5000),
+	 (58,'10','https://api.maqdisacademy.com/assets/raw/audio_surat/58_al_mujadalah/17_10.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/58_almujadalah/Ayat_10/Ayat_10.m3u8',1,5000),
+	 (58,'9-10','https://api.maqdisacademy.com/assets/raw/audio_surat/58_al_mujadalah/18_9-10.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/58_almujadalah/Ayat_9-10/Ayat_9-10.m3u8',2,5000),
+	 (58,'11','https://api.maqdisacademy.com/assets/raw/audio_surat/58_al_mujadalah/19_11.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/58_almujadalah/Ayat_11/Ayat_11.m3u8',1,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (58,'12','https://api.maqdisacademy.com/assets/raw/audio_surat/58_al_mujadalah/20_12.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/58_almujadalah/Ayat_12/Ayat_12.m3u8',1,5000),
+	 (58,'11-12','https://api.maqdisacademy.com/assets/raw/audio_surat/58_al_mujadalah/20_11-12.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/58_almujadalah/Ayat_11-12/Ayat_11-12.m3u8',2,5000),
+	 (58,'9-12','https://api.maqdisacademy.com/assets/raw/audio_surat/58_al_mujadalah/22_9-12.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/58_almujadalah/Ayat_9-12/Ayat_9-12.m3u8',2,5000),
+	 (58,'13','https://api.maqdisacademy.com/assets/raw/audio_surat/58_al_mujadalah/23_13.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/58_almujadalah/Ayat_13/Ayat_13.m3u8',1,5000),
+	 (58,'14','https://api.maqdisacademy.com/assets/raw/audio_surat/58_al_mujadalah/24_14.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/58_almujadalah/Ayat_14/Ayat_14.m3u8',1,5000),
+	 (58,'13-14','https://api.maqdisacademy.com/assets/raw/audio_surat/58_al_mujadalah/25_13-14.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/58_almujadalah/Ayat_13-14/Ayat_13-14.m3u8',2,5000),
+	 (58,'15-16','https://api.maqdisacademy.com/assets/raw/audio_surat/58_al_mujadalah/26_15-16.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/58_almujadalah/Ayat_15-16/Ayat_15-16.m3u8',2,5000),
+	 (58,'17','https://api.maqdisacademy.com/assets/raw/audio_surat/58_al_mujadalah/27_17.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/58_almujadalah/Ayat_17/Ayat_17.m3u8',1,5000),
+	 (58,'15-17','https://api.maqdisacademy.com/assets/raw/audio_surat/58_al_mujadalah/28_15-17.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/58_almujadalah/Ayat_15-17/Ayat_15-17.m3u8',2,5000),
+	 (58,'13-17','https://api.maqdisacademy.com/assets/raw/audio_surat/58_al_mujadalah/29_13-17.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/58_almujadalah/Ayat_13-17/Ayat_13-17.m3u8',2,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (58,'1-17','https://api.maqdisacademy.com/assets/raw/audio_surat/58_al_mujadalah/30_1-17.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/58_almujadalah/Ayat_1-17/Ayat_1-17.m3u8',2,5000),
+	 (58,'18','https://api.maqdisacademy.com/assets/raw/audio_surat/58_al_mujadalah/31_18.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/58_almujadalah/Ayat_18/Ayat_18.m3u8',1,5000),
+	 (58,'19','https://api.maqdisacademy.com/assets/raw/audio_surat/58_al_mujadalah/32_19.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/58_almujadalah/Ayat_19/Ayat_19.m3u8',1,5000),
+	 (58,'18-19','https://api.maqdisacademy.com/assets/raw/audio_surat/58_al_mujadalah/33_18-19.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/58_almujadalah/Ayat_18-19/Ayat_18-19.m3u8',2,5000),
+	 (58,'20-21','https://api.maqdisacademy.com/assets/raw/audio_surat/58_al_mujadalah/34_20-21.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/58_almujadalah/Ayat_20-21/Ayat_20-21.m3u8',2,5000),
+	 (58,'22a','https://api.maqdisacademy.com/assets/raw/audio_surat/58_al_mujadalah/35_22a.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/58_almujadalah/Ayat_22a/Ayat_22a.m3u8',1,5000),
+	 (58,'20-22a','https://api.maqdisacademy.com/assets/raw/audio_surat/58_al_mujadalah/36_20-22a.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/58_almujadalah/Ayat_20-22a/Ayat_20-22a.m3u8',2,5000),
+	 (58,'18-22a','https://api.maqdisacademy.com/assets/raw/audio_surat/58_al_mujadalah/37_18-22a.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/58_almujadalah/Ayat_18-22a/Ayat_18-22a.m3u8',2,5000),
+	 (58,'22b','https://api.maqdisacademy.com/assets/raw/audio_surat/58_al_mujadalah/38_22b.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/58_almujadalah/Ayat_22b/Ayat_22b.m3u8',1,5000),
+	 (58,'1-22','https://api.maqdisacademy.com/assets/raw/audio_surat/58_al_mujadalah/39_1-22.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/58_almujadalah/Ayat_1-22/Ayat_1-22.m3u8',2,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (59,'1','https://api.maqdisacademy.com/assets/raw/audio_surat/59_al_hasyr/1_1.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/59_alhasyr/Ayat_1/Ayat_1.m3u8',1,5000),
+	 (59,'2a','https://api.maqdisacademy.com/assets/raw/audio_surat/59_al_hasyr/2_2a.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/59_alhasyr/Ayat_2a/Ayat_2a.m3u8',1,5000),
+	 (59,'1-2a','https://api.maqdisacademy.com/assets/raw/audio_surat/59_al_hasyr/3_1-2a.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/59_alhasyr/Ayat_1-2a/Ayat_1-2.m3u8',2,5000),
+	 (59,'2b','https://api.maqdisacademy.com/assets/raw/audio_surat/59_al_hasyr/4_2b.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/59_alhasyr/Ayat_2b/Ayat_2b.m3u8',1,5000),
+	 (59,'3-4','https://api.maqdisacademy.com/assets/raw/audio_surat/59_al_hasyr/5_3-4.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/59_alhasyr/Ayat_3-4/Ayat_3-4.m3u8',2,5000),
+	 (59,'2b-4','https://api.maqdisacademy.com/assets/raw/audio_surat/59_al_hasyr/6_2b-4.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/59_alhasyr/Ayat_2b-4/Ayat_2b-4.m3u8',2,5000),
+	 (59,'1-4','https://api.maqdisacademy.com/assets/raw/audio_surat/59_al_hasyr/7_1-4.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/59_alhasyr/Ayat_1-4/Ayat_1-4.m3u8',2,5000),
+	 (59,'5-6','https://api.maqdisacademy.com/assets/raw/audio_surat/59_al_hasyr/8_5-6.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/59_alhasyr/Ayat_5-6/Ayat_5-6.m3u8',2,5000),
+	 (59,'7','https://api.maqdisacademy.com/assets/raw/audio_surat/59_al_hasyr/9_7.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/59_alhasyr/Ayat_7/Ayat_7.m3u8',1,5000),
+	 (59,'5-7','https://api.maqdisacademy.com/assets/raw/audio_surat/59_al_hasyr/10_5-7.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/59_alhasyr/Ayat_5-7/Ayat_5-7.m3u8',2,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (59,'8','https://api.maqdisacademy.com/assets/raw/audio_surat/59_al_hasyr/11_8.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/59_alhasyr/Ayat_8/Ayat_8.m3u8',1,5000),
+	 (59,'9','https://api.maqdisacademy.com/assets/raw/audio_surat/59_al_hasyr/12_9.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/59_alhasyr/Ayat_9/Ayat_9.m3u8',1,5000),
+	 (59,'8-9','https://api.maqdisacademy.com/assets/raw/audio_surat/59_al_hasyr/13_8-9.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/59_alhasyr/Ayat_8-9/Ayat_8-9.m3u8',2,5000),
+	 (59,'5-9','https://api.maqdisacademy.com/assets/raw/audio_surat/59_al_hasyr/14_5-9.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/59_alhasyr/Ayat_5-9/Ayat_5-9.m3u8',2,5000),
+	 (59,'1-9','https://api.maqdisacademy.com/assets/raw/audio_surat/59_al_hasyr/15_1-9.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/59_alhasyr/Ayat_1-9/Ayat_1-9.m3u8',2,5000),
+	 (59,'10','https://api.maqdisacademy.com/assets/raw/audio_surat/59_al_hasyr/16_10.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/59_alhasyr/Ayat_10/Ayat_10.m3u8',1,5000),
+	 (59,'11','https://api.maqdisacademy.com/assets/raw/audio_surat/59_al_hasyr/17_11.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/59_alhasyr/Ayat_11/Ayat_11.m3u8',1,5000),
+	 (59,'10-11','https://api.maqdisacademy.com/assets/raw/audio_surat/59_al_hasyr/18_10-11.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/59_alhasyr/Ayat_10-11/Ayat_10-11.m3u8',2,5000),
+	 (59,'12-13','https://api.maqdisacademy.com/assets/raw/audio_surat/59_al_hasyr/19_12-13.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/59_alhasyr/Ayat_12-13/Ayat_12-13.m3u8',2,5000),
+	 (59,'14','https://api.maqdisacademy.com/assets/raw/audio_surat/59_al_hasyr/20_14.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/59_alhasyr/Ayat_14/Ayat_14.m3u8',1,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (59,'12-14','https://api.maqdisacademy.com/assets/raw/audio_surat/59_al_hasyr/21_12-14.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/59_alhasyr/Ayat_12-14/Ayat_12-14.m3u8',2,5000),
+	 (59,'10-14','https://api.maqdisacademy.com/assets/raw/audio_surat/59_al_hasyr/22_10-14.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/59_alhasyr/Ayat_10-14/Ayat_10-14.m3u8',2,5000),
+	 (59,'15-17','https://api.maqdisacademy.com/assets/raw/audio_surat/59_al_hasyr/23_15-17.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/59_alhasyr/Ayat_15-17/Ayat_15-17.m3u8',2,5000),
+	 (59,'18','https://api.maqdisacademy.com/assets/raw/audio_surat/59_al_hasyr/24_18.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/59_alhasyr/Ayat_18/Ayat_18.m3u8',1,5000),
+	 (59,'15-18','https://api.maqdisacademy.com/assets/raw/audio_surat/59_al_hasyr/25_15-18.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/59_alhasyr/Ayat_15-18/Ayat_15-18.m3u8',2,5000),
+	 (59,'19-20','https://api.maqdisacademy.com/assets/raw/audio_surat/59_al_hasyr/26_19-20.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/59_alhasyr/Ayat_19-20/Ayat_19-20.m3u8',2,5000),
+	 (59,'21','https://api.maqdisacademy.com/assets/raw/audio_surat/59_al_hasyr/27_21.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/59_alhasyr/Ayat_21/Ayat_21.m3u8',1,5000),
+	 (59,'19-21','https://api.maqdisacademy.com/assets/raw/audio_surat/59_al_hasyr/28_19-21.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/59_alhasyr/Ayat_19-21/Ayat_19-21.m3u8',2,5000),
+	 (59,'15-21','https://api.maqdisacademy.com/assets/raw/audio_surat/59_al_hasyr/29_15-21.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/59_alhasyr/Ayat_15-21/Ayat_15-21.m3u8',2,5000),
+	 (59,'1-21','https://api.maqdisacademy.com/assets/raw/audio_surat/59_al_hasyr/30_1-21.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/59_alhasyr/Ayat_1-21/Ayat_1-21.m3u8',2,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (59,'22-23','https://api.maqdisacademy.com/assets/raw/audio_surat/59_al_hasyr/31_22-23.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/59_alhasyr/Ayat_22-23/Ayat_22-23.m3u8',2,5000),
+	 (59,'24','https://api.maqdisacademy.com/assets/raw/audio_surat/59_al_hasyr/32_24.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/59_alhasyr/Ayat_24/Ayat_24.m3u8',1,5000),
+	 (59,'22-24','https://api.maqdisacademy.com/assets/raw/audio_surat/59_al_hasyr/33_22-24.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/59_alhasyr/Ayat_22-24/Ayat_22-24.m3u8',2,5000),
+	 (59,'1-24','https://api.maqdisacademy.com/assets/raw/audio_surat/59_al_hasyr/34_1-24.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/59_alhasyr/Ayat_1-24/Ayat_1-24.m3u8',2,5000),
+	 (60,'1a','https://api.maqdisacademy.com/assets/raw/audio_surat/60_al_mumtahannah/1_1a.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/60_almumtahanah/Ayat_1a/Ayat_1a.m3u8',1,5000),
+	 (60,'1b','https://api.maqdisacademy.com/assets/raw/audio_surat/60_al_mumtahannah/2_1b.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/60_almumtahanah/Ayat_1b/Ayat_1b.m3u8',1,5000),
+	 (60,'1','https://api.maqdisacademy.com/assets/raw/audio_surat/60_al_mumtahannah/3_1.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/60_almumtahanah/Ayat_1/Ayat_1.m3u8',1,5000),
+	 (60,'2-3','https://api.maqdisacademy.com/assets/raw/audio_surat/60_al_mumtahannah/4_2-3.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/60_almumtahanah/Ayat_2-3/Ayat_2-3.m3u8',2,5000),
+	 (60,'4a','https://api.maqdisacademy.com/assets/raw/audio_surat/60_al_mumtahannah/5_4a.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/60_almumtahanah/Ayat_4a/Ayat_4a.m3u8',1,5000),
+	 (60,'2-4a','https://api.maqdisacademy.com/assets/raw/audio_surat/60_al_mumtahannah/6_2-4a.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/60_almumtahanah/Ayat_2-4a/Ayat_2-4a.m3u8',2,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (60,'1-4a','https://api.maqdisacademy.com/assets/raw/audio_surat/60_al_mumtahannah/7_1-4a.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/60_almumtahanah/Ayat_1-4a/Ayat_1-4a.m3u8',2,5000),
+	 (60,'4b','https://api.maqdisacademy.com/assets/raw/audio_surat/60_al_mumtahannah/8_4b.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/60_almumtahanah/Ayat_4b/Ayat_4b.m3u8',1,5000),
+	 (60,'5-6','https://api.maqdisacademy.com/assets/raw/audio_surat/60_al_mumtahannah/9_5-6.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/60_almumtahanah/Ayat_5-6/Ayat_5-6.m3u8',2,5000),
+	 (60,'4b-6','https://api.maqdisacademy.com/assets/raw/audio_surat/60_al_mumtahannah/10_4b-6.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/60_almumtahanah/Ayat_4b-6/Ayat_4b-6.m3u8',2,5000),
+	 (60,'7','https://api.maqdisacademy.com/assets/raw/audio_surat/60_al_mumtahannah/11_7.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/60_almumtahanah/Ayat_7/Ayat_7.m3u8',1,5000),
+	 (60,'8','https://api.maqdisacademy.com/assets/raw/audio_surat/60_al_mumtahannah/12_8.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/60_almumtahanah/Ayat_8/Ayat_8.m3u8',1,5000),
+	 (60,'7-8','https://api.maqdisacademy.com/assets/raw/audio_surat/60_al_mumtahannah/13_7-8.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/60_almumtahanah/Ayat_7-8/Ayat_7-8.m3u8',2,5000),
+	 (60,'4b-8','https://api.maqdisacademy.com/assets/raw/audio_surat/60_al_mumtahannah/14_4b-8.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/60_almumtahanah/Ayat_4b-8/Ayat_4b-8.m3u8',2,5000),
+	 (60,'1-8','https://api.maqdisacademy.com/assets/raw/audio_surat/60_al_mumtahannah/15_1-8.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/60_almumtahanah/Ayat_1-8/Ayat_1-8.m3u8',2,5000),
+	 (60,'9','https://api.maqdisacademy.com/assets/raw/audio_surat/60_al_mumtahannah/16_9.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/60_almumtahanah/Ayat_9/Ayat_9.m3u8',1,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (60,'10a','https://api.maqdisacademy.com/assets/raw/audio_surat/60_al_mumtahannah/17_10a.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/60_almumtahanah/Ayat_10a/Ayat_10a.m3u8',1,5000),
+	 (60,'9-10a','https://api.maqdisacademy.com/assets/raw/audio_surat/60_al_mumtahannah/18_9-10a.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/60_almumtahanah/Ayat_9-10a/Ayat_9-10a.m3u8',2,5000),
+	 (60,'10b','https://api.maqdisacademy.com/assets/raw/audio_surat/60_al_mumtahannah/19_10b.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/60_almumtahanah/Ayat_10b/Ayat_10b.m3u8',1,5000),
+	 (60,'11','https://api.maqdisacademy.com/assets/raw/audio_surat/60_al_mumtahannah/20_11.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/60_almumtahanah/Ayat_11/Ayat_11.m3u8',1,5000),
+	 (60,'10b-11','https://api.maqdisacademy.com/assets/raw/audio_surat/60_al_mumtahannah/21_10b-11.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/60_almumtahanah/Ayat_10b-11/Ayat_10b-11.m3u8',2,5000),
+	 (60,'9-11','https://api.maqdisacademy.com/assets/raw/audio_surat/60_al_mumtahannah/22_9-11.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/60_almumtahanah/Ayat_9-11/Ayat_9-11.m3u8',2,5000),
+	 (60,'12','https://api.maqdisacademy.com/assets/raw/audio_surat/60_al_mumtahannah/23_12.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/60_almumtahanah/Ayat_12/Ayat_12.m3u8',1,5000),
+	 (60,'13','https://api.maqdisacademy.com/assets/raw/audio_surat/60_al_mumtahannah/24_13.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/60_almumtahanah/Ayat_13/Ayat_13.m3u8',1,5000),
+	 (60,'12-13','https://api.maqdisacademy.com/assets/raw/audio_surat/60_al_mumtahannah/25_12-13.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/60_almumtahanah/Ayat_12-13/Ayat_12-13.m3u8',2,5000),
+	 (60,'1-13','https://api.maqdisacademy.com/assets/raw/audio_surat/60_al_mumtahannah/26_1-13.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/60_almumtahanah/Ayat_1-13/Ayat_1-13.m3u8',2,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (61,'1-3','https://api.maqdisacademy.com/assets/raw/audio_surat/61_as_saff/1_1-3.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/61_assaff/Ayat_1-3/Ayat_1-3.m3u8',2,5000),
+	 (61,'4-5','https://api.maqdisacademy.com/assets/raw/audio_surat/61_as_saff/2_4-5.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/61_assaff/Ayat_4-5/Ayat_4-5.m3u8',2,5000),
+	 (61,'1-5','https://api.maqdisacademy.com/assets/raw/audio_surat/61_as_saff/3_1-5.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/61_assaff/Ayat_1-5/Ayat_1-5.m3u8',2,5000),
+	 (61,'6','https://api.maqdisacademy.com/assets/raw/audio_surat/61_as_saff/4_6.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/61_assaff/Ayat_6/Ayat_6.m3u8',1,5000),
+	 (61,'7-8','https://api.maqdisacademy.com/assets/raw/audio_surat/61_as_saff/5_7-8.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/61_assaff/Ayat_7-8/Ayat_7-8.m3u8',2,5000),
+	 (61,'6-8','https://api.maqdisacademy.com/assets/raw/audio_surat/61_as_saff/6_6-8.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/61_assaff/Ayat_6-8/Ayat_6-8.m3u8',2,5000),
+	 (61,'1-8','https://api.maqdisacademy.com/assets/raw/audio_surat/61_as_saff/7_1-8.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/61_assaff/Ayat_1-8/Ayat_1-8.m3u8',2,5000),
+	 (61,'9-11','https://api.maqdisacademy.com/assets/raw/audio_surat/61_as_saff/8_9-11.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/61_assaff/Ayat_9-11/Ayat_9-11.m3u8',2,5000),
+	 (61,'12-13','https://api.maqdisacademy.com/assets/raw/audio_surat/61_as_saff/9_12-13.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/61_assaff/Ayat_12-13/Ayat_12-13.m3u8',2,5000),
+	 (61,'9-13','https://api.maqdisacademy.com/assets/raw/audio_surat/61_as_saff/10_9-13.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/61_assaff/Ayat_9-13/Ayat_9-13.m3u8',2,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (61,'14','https://api.maqdisacademy.com/assets/raw/audio_surat/61_as_saff/11_14.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/61_assaff/Ayat_14/Ayat_14.m3u8',1,5000),
+	 (61,'1-14','https://api.maqdisacademy.com/assets/raw/audio_surat/61_as_saff/12_1-4.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/61_assaff/Ayat_1-14/Ayat_1-14.m3u8',2,5000),
+	 (62,'1-2','https://api.maqdisacademy.com/assets/raw/audio_surat/62_al_jumu’ah/1_1-2.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/62_aljumuah/Ayat_1-2/Ayat_1-2.m3u8',2,5000),
+	 (62,'3-4','https://api.maqdisacademy.com/assets/raw/audio_surat/62_al_jumu’ah/2_3-4.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/62_aljumuah/Ayat_3-4/Ayat_3-4.m3u8',2,5000),
+	 (62,'1-4','https://api.maqdisacademy.com/assets/raw/audio_surat/62_al_jumu’ah/3_1-4.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/62_aljumuah/Ayat_1-4/Ayat_1-4.m3u8',2,5000),
+	 (62,'5-6','https://api.maqdisacademy.com/assets/raw/audio_surat/62_al_jumu’ah/4_5-6.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/62_aljumuah/Ayat_5-6/Ayat_5-6.m3u8',2,5000),
+	 (62,'7-8','https://api.maqdisacademy.com/assets/raw/audio_surat/62_al_jumu’ah/5_7-8.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/62_aljumuah/Ayat_7-8/Ayat_7-8.m3u8',2,5000),
+	 (62,'5-8','https://api.maqdisacademy.com/assets/raw/audio_surat/62_al_jumu’ah/6_5-8.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/62_aljumuah/Ayat_5-8/Ayat_5-8.m3u8',2,5000),
+	 (62,'1-6','https://api.maqdisacademy.com/assets/raw/audio_surat/62_al_jumu’ah/7_1-6.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/62_aljumuah/Ayat_1-6/Ayat_1-6.m3u8',2,5000),
+	 (62,'9','https://api.maqdisacademy.com/assets/raw/audio_surat/62_al_jumu’ah/8_9.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/62_aljumuah/Ayat_9/Ayat_9.m3u8',1,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (62,'10-11','https://api.maqdisacademy.com/assets/raw/audio_surat/62_al_jumu’ah/9_10-11.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/62_aljumuah/Ayat_10-11/Ayat_10-11.m3u8',2,5000),
+	 (62,'9-11','https://api.maqdisacademy.com/assets/raw/audio_surat/62_al_jumu’ah/10_9-11.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/62_aljumuah/Ayat_9-11/Ayat_9-11.m3u8',2,5000),
+	 (62,'1-11','https://api.maqdisacademy.com/assets/raw/audio_surat/62_al_jumu’ah/11_1-11.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/62_aljumuah/Ayat_1-11/Ayat_1-11.m3u8',2,5000),
+	 (63,'1','https://api.maqdisacademy.com/assets/raw/audio_surat/63_al_munafiqun/1_1.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/63_almunafiqun/Ayat_1/Ayat_1.m3u8',1,5000),
+	 (63,'2-3','https://api.maqdisacademy.com/assets/raw/audio_surat/63_al_munafiqun/2_2-3.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/63_almunafiqun/Ayat_2-3/Ayat_2-3.m3u8',2,5000),
+	 (63,'1-3','https://api.maqdisacademy.com/assets/raw/audio_surat/63_al_munafiqun/3_1-3.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/63_almunafiqun/Ayat_1-3/Ayat_1-3.m3u8',2,5000),
+	 (63,'4','https://api.maqdisacademy.com/assets/raw/audio_surat/63_al_munafiqun/4_4.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/63_almunafiqun/Ayat_4/Ayat_4.m3u8',1,5000),
+	 (63,'5-6','https://api.maqdisacademy.com/assets/raw/audio_surat/63_al_munafiqun/5_5-6.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/63_almunafiqun/Ayat_5-6/Ayat_5-6.m3u8',2,5000),
+	 (63,'4-6','https://api.maqdisacademy.com/assets/raw/audio_surat/63_al_munafiqun/6_4-6.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/63_almunafiqun/Ayat_4-6/Ayat_4-6.m3u8',2,5000),
+	 (63,'1-6','https://api.maqdisacademy.com/assets/raw/audio_surat/63_al_munafiqun/7_1-6.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/63_almunafiqun/Ayat_1-6/Ayat_1-6.m3u8',2,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (63,'7-8','https://api.maqdisacademy.com/assets/raw/audio_surat/63_al_munafiqun/8_7-8.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/63_almunafiqun/Ayat_7-8/Ayat_7-8.m3u8',2,5000),
+	 (63,'9','https://api.maqdisacademy.com/assets/raw/audio_surat/63_al_munafiqun/9_9.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/63_almunafiqun/Ayat_9/Ayat_9.m3u8',1,5000),
+	 (63,'7-9','https://api.maqdisacademy.com/assets/raw/audio_surat/63_al_munafiqun/10_7-9.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/63_almunafiqun/Ayat_7-9/Ayat_7-9.m3u8',2,5000),
+	 (63,'10-11','https://api.maqdisacademy.com/assets/raw/audio_surat/63_al_munafiqun/11_10-11.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/63_almunafiqun/Ayat_10-11/Ayat_10-11.m3u8',2,5000),
+	 (63,'1-11','https://api.maqdisacademy.com/assets/raw/audio_surat/63_al_munafiqun/12_1-12.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/63_almunafiqun/Ayat_1-11/Ayat_1-11.m3u8',2,5000),
+	 (64,'1-2','https://api.maqdisacademy.com/assets/raw/audio_surat/64_at_taghabun/1_1-2.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/64_attagabun/Ayat_1-2/Ayat_1-2.m3u8',2,5000),
+	 (64,'3-4','https://api.maqdisacademy.com/assets/raw/audio_surat/64_at_taghabun/2_3-4.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/64_attagabun/Ayat_3-4/Ayat_3-4.m3u8',2,5000),
+	 (64,'1-4','https://api.maqdisacademy.com/assets/raw/audio_surat/64_at_taghabun/3_1-4.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/64_attagabun/Ayat_1-4/Ayat_1-4.m3u8',2,5000),
+	 (64,'5-6','https://api.maqdisacademy.com/assets/raw/audio_surat/64_at_taghabun/4_5-6.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/64_attagabun/Ayat_5-6/Ayat_5-6.m3u8',2,5000),
+	 (64,'7-8','https://api.maqdisacademy.com/assets/raw/audio_surat/64_at_taghabun/5_7-8.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/64_attagabun/Ayat_7-8/Ayat_7-8.m3u8',2,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (64,'5-8','https://api.maqdisacademy.com/assets/raw/audio_surat/64_at_taghabun/6_5-8.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/64_attagabun/Ayat_5-8/Ayat_5-8.m3u8',2,5000),
+	 (64,'1-6','https://api.maqdisacademy.com/assets/raw/audio_surat/64_at_taghabun/7_1-6.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/64_attagabun/Ayat_1-6/Ayat_1-6.m3u8',2,5000),
+	 (64,'9','https://api.maqdisacademy.com/assets/raw/audio_surat/64_at_taghabun/8_9.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/64_attagabun/Ayat_9/Ayat_9.m3u8',1,5000),
+	 (64,'10-11','https://api.maqdisacademy.com/assets/raw/audio_surat/64_at_taghabun/9_10-11.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/64_attagabun/Ayat_10-11/Ayat_10-11.m3u8',2,5000),
+	 (64,'9-11','https://api.maqdisacademy.com/assets/raw/audio_surat/64_at_taghabun/10_9-11.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/64_attagabun/Ayat_9-11/Ayat_9-11.m3u8',2,5000),
+	 (64,'12-13','https://api.maqdisacademy.com/assets/raw/audio_surat/64_at_taghabun/11_12-13.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/64_attagabun/Ayat_12-13/Ayat_12-13.m3u8',2,5000),
+	 (64,'14','https://api.maqdisacademy.com/assets/raw/audio_surat/64_at_taghabun/12_14.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/64_attagabun/Ayat_14/Ayat_14.m3u8',1,5000),
+	 (64,'12-14','https://api.maqdisacademy.com/assets/raw/audio_surat/64_at_taghabun/13_12-14.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/64_attagabun/Ayat_12-14/Ayat_12-14.m3u8',2,5000),
+	 (64,'9-14','https://api.maqdisacademy.com/assets/raw/audio_surat/64_at_taghabun/14_9-14.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/64_attagabun/Ayat_9-14/Ayat_9-14.m3u8',2,5000),
+	 (64,'1-14','https://api.maqdisacademy.com/assets/raw/audio_surat/64_at_taghabun/15_1-14.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/64_attagabun/Ayat_1-14/Ayat_1-14.m3u8',2,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (64,'15-16','https://api.maqdisacademy.com/assets/raw/audio_surat/64_at_taghabun/16_15-16.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/64_attagabun/Ayat_15-16/Ayat_15-16.m3u8',2,5000),
+	 (64,'17-18','https://api.maqdisacademy.com/assets/raw/audio_surat/64_at_taghabun/17_17-18.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/64_attagabun/Ayat_17-18/Ayat_17-18.m3u8',2,5000),
+	 (64,'15-18','https://api.maqdisacademy.com/assets/raw/audio_surat/64_at_taghabun/18_15-18.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/64_attagabun/Ayat_15-18/Ayat_15-18.m3u8',2,5000),
+	 (64,'1-18','https://api.maqdisacademy.com/assets/raw/audio_surat/64_at_taghabun/19_1-18.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/64_attagabun/Ayat_1-18/Ayat_1-18.m3u8',2,5000),
+	 (65,'1a','https://api.maqdisacademy.com/assets/raw/audio_surat/65_at_talaq/1_1a.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/65_altalaq/Ayat_1a/Ayat_1a.m3u8',1,5000),
+	 (65,'1b','https://api.maqdisacademy.com/assets/raw/audio_surat/65_at_talaq/2_1b.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/65_altalaq/Ayat_1b/Ayat_1b.m3u8',1,5000),
+	 (65,'1','https://api.maqdisacademy.com/assets/raw/audio_surat/65_at_talaq/3_1.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/65_altalaq/Ayat_1/Ayat_1.m3u8',1,5000),
+	 (65,'2','https://api.maqdisacademy.com/assets/raw/audio_surat/65_at_talaq/4_2.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/65_altalaq/Ayat_2/Ayat_2.m3u8',1,5000),
+	 (65,'3','https://api.maqdisacademy.com/assets/raw/audio_surat/65_at_talaq/5_3.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/65_altalaq/Ayat_3/Ayat_3.m3u8',1,5000),
+	 (65,'2-3','https://api.maqdisacademy.com/assets/raw/audio_surat/65_at_talaq/6_2-3.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/65_altalaq/Ayat_2-3/Ayat_2-3.m3u8',2,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (65,'1-3','https://api.maqdisacademy.com/assets/raw/audio_surat/65_at_talaq/7_1-3.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/65_altalaq/Ayat_1-3/Ayat_1-3.m3u8',2,5000),
+	 (65,'4-5','https://api.maqdisacademy.com/assets/raw/audio_surat/65_at_talaq/8_4-5.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/65_altalaq/Ayat_4-5/Ayat_4-5.m3u8',2,5000),
+	 (65,'6a','https://api.maqdisacademy.com/assets/raw/audio_surat/65_at_talaq/9_6a.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/65_altalaq/Ayat_6a/Ayat_6a.m3u8',1,5000),
+	 (65,'4-6a','https://api.maqdisacademy.com/assets/raw/audio_surat/65_at_talaq/10_4-6a.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/65_altalaq/Ayat_4-6a/Ayat_4-6a.m3u8',2,5000),
+	 (65,'6b','https://api.maqdisacademy.com/assets/raw/audio_surat/65_at_talaq/11_6b.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/65_altalaq/Ayat_6b/Ayat_6b.m3u8',1,5000),
+	 (65,'7','https://api.maqdisacademy.com/assets/raw/audio_surat/65_at_talaq/12_7.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/65_altalaq/Ayat_7/Ayat_7.m3u8',1,5000),
+	 (65,'6b-7','https://api.maqdisacademy.com/assets/raw/audio_surat/65_at_talaq/13_6b-7.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/65_altalaq/Ayat_6b-7/Ayat_6b-7.m3u8',2,5000),
+	 (65,'4-7','https://api.maqdisacademy.com/assets/raw/audio_surat/65_at_talaq/14_4-7.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/65_altalaq/Ayat_4-7/Ayat_4-7.m3u8',2,5000),
+	 (65,'1-7','https://api.maqdisacademy.com/assets/raw/audio_surat/65_at_talaq/15_1-7.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/65_altalaq/Ayat_1-7/Ayat_1-7.m3u8',2,5000),
+	 (65,'8-10','https://api.maqdisacademy.com/assets/raw/audio_surat/65_at_talaq/16_8-10.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/65_altalaq/Ayat_8-10/Ayat_8-10.m3u8',2,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (65,'11a','https://api.maqdisacademy.com/assets/raw/audio_surat/65_at_talaq/17_11a.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/65_altalaq/Ayat_11a/Ayat_11a.m3u8',1,5000),
+	 (65,'8-11a','https://api.maqdisacademy.com/assets/raw/audio_surat/65_at_talaq/18_8-11a.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/65_altalaq/Ayat_8-11a/Ayat_8-11a.m3u8',2,5000),
+	 (65,'11b','https://api.maqdisacademy.com/assets/raw/audio_surat/65_at_talaq/19_11b.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/65_altalaq/Ayat_11b/Ayat_11b.m3u8',1,5000),
+	 (65,'12','https://api.maqdisacademy.com/assets/raw/audio_surat/65_at_talaq/20_12.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/65_altalaq/Ayat_12/Ayat_12.m3u8',2,5000),
+	 (65,'11b-12','https://api.maqdisacademy.com/assets/raw/audio_surat/65_at_talaq/21_11b-12.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/65_altalaq/Ayat_11b-12/Ayat_11b-12.m3u8',2,5000),
+	 (65,'8-12','https://api.maqdisacademy.com/assets/raw/audio_surat/65_at_talaq/22_8-12.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/65_altalaq/Ayat_8-12/Ayat_8-12.m3u8',2,5000),
+	 (65,'1-12','https://api.maqdisacademy.com/assets/raw/audio_surat/65_at_talaq/23_1-12.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/65_altalaq/Ayat_1-12/Ayat_1-12.m3u8',2,5000),
+	 (66,'1','https://api.maqdisacademy.com/assets/raw/audio_surat/66_at_tahrim/1_1.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/66_attahrim/Ayat_1/Ayat_1.m3u8',1,5000),
+	 (66,'2','https://api.maqdisacademy.com/assets/raw/audio_surat/66_at_tahrim/2_2.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/66_attahrim/Ayat_2/Ayat_2.m3u8',1,5000),
+	 (66,'1-2','https://api.maqdisacademy.com/assets/raw/audio_surat/66_at_tahrim/3_1-2.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/66_attahrim/Ayat_1-2/Ayat_1-2.m3u8',2,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (66,'3','https://api.maqdisacademy.com/assets/raw/audio_surat/66_at_tahrim/4_3.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/66_attahrim/Ayat_3/Ayat_3.m3u8',1,5000),
+	 (66,'4','https://api.maqdisacademy.com/assets/raw/audio_surat/66_at_tahrim/5_4.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/66_attahrim/Ayat_4/Ayat_4.m3u8',1,5000),
+	 (66,'3-4','https://api.maqdisacademy.com/assets/raw/audio_surat/66_at_tahrim/6_3-4.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/66_attahrim/Ayat_3-4/Ayat_3-4.m3u8',2,5000),
+	 (66,'1-4','https://api.maqdisacademy.com/assets/raw/audio_surat/66_at_tahrim/7_1-4.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/66_attahrim/Ayat_1-4/Ayat_1-4.m3u8',2,5000),
+	 (66,'5','https://api.maqdisacademy.com/assets/raw/audio_surat/66_at_tahrim/8_5.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/66_attahrim/Ayat_5/Ayat_5.m3u8',1,5000),
+	 (66,'6-7','https://api.maqdisacademy.com/assets/raw/audio_surat/66_at_tahrim/9_6-7.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/66_attahrim/Ayat_6-7/Ayat_6-7.m3u8',2,5000),
+	 (66,'5-7','https://api.maqdisacademy.com/assets/raw/audio_surat/66_at_tahrim/10_5-7.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/66_attahrim/Ayat_5-7/Ayat_5-7.m3u8',2,5000),
+	 (66,'8','https://api.maqdisacademy.com/assets/raw/audio_surat/66_at_tahrim/11_8.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/66_attahrim/Ayat_8/Ayat_8.m3u8',1,5000),
+	 (66,'9','https://api.maqdisacademy.com/assets/raw/audio_surat/66_at_tahrim/12_9.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/66_attahrim/Ayat_9/Ayat_9.m3u8',1,5000),
+	 (66,'8-9','https://api.maqdisacademy.com/assets/raw/audio_surat/66_at_tahrim/13_8-9.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/66_attahrim/Ayat_8-9/Ayat_8-9.m3u8',2,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (66,'5-9','https://api.maqdisacademy.com/assets/raw/audio_surat/66_at_tahrim/14_5-9.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/66_attahrim/Ayat_5-9/Ayat_5-9.m3u8',2,5000),
+	 (66,'1-9','https://api.maqdisacademy.com/assets/raw/audio_surat/66_at_tahrim/15_1-9.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/66_attahrim/Ayat_1-9/Ayat_1-9.m3u8',2,5000),
+	 (66,'10','https://api.maqdisacademy.com/assets/raw/audio_surat/66_at_tahrim/16_10.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/66_attahrim/Ayat_10/Ayat_10.m3u8',1,5000),
+	 (66,'11','https://api.maqdisacademy.com/assets/raw/audio_surat/66_at_tahrim/17_11.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/66_attahrim/Ayat_11/Ayat_11.m3u8',1,5000),
+	 (66,'10-11','https://api.maqdisacademy.com/assets/raw/audio_surat/66_at_tahrim/18_10-11.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/66_attahrim/Ayat_10-11/Ayat_10-11.m3u8',2,5000),
+	 (66,'1-11','https://api.maqdisacademy.com/assets/raw/audio_surat/66_at_tahrim/19_1-11.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/66_attahrim/Ayat_1-11/Ayat_1-11.m3u8',2,5000),
+	 (66,'12','https://api.maqdisacademy.com/assets/raw/audio_surat/66_at_tahrim/20_12.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/66_attahrim/Ayat_12/Ayat_12.m3u8',1,5000),
+	 (66,'1-12','https://api.maqdisacademy.com/assets/raw/audio_surat/66_at_tahrim/21_1-12.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/66_attahrim/Ayat_1-12/Ayat_1-12.m3u8',2,5000),
+	 (36,'1-4','https://api.maqdisacademy.com/assets/raw/audio_surat/36_yasin/1_1-4.mp3','',1,5000),
+	 (36,'5-7','https://api.maqdisacademy.com/assets/raw/audio_surat/36_yasin/2_5-7.mp3','',1,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (36,'1-7','https://api.maqdisacademy.com/assets/raw/audio_surat/36_yasin/3_1-7.mp3','',2,5000),
+	 (36,'8-9','https://api.maqdisacademy.com/assets/raw/audio_surat/36_yasin/4_8-9.mp3','',1,5000),
+	 (36,'10-11','https://api.maqdisacademy.com/assets/raw/audio_surat/36_yasin/5_10-11.mp3','',1,5000),
+	 (36,'8-11','https://api.maqdisacademy.com/assets/raw/audio_surat/36_yasin/6_8-11.mp3','',2,5000),
+	 (36,'1-11','https://api.maqdisacademy.com/assets/raw/audio_surat/36_yasin/7_1-11.mp3','',2,5000),
+	 (36,'12','https://api.maqdisacademy.com/assets/raw/audio_surat/36_yasin/8_12.mp3','',1,5000),
+	 (36,'13-14','https://api.maqdisacademy.com/assets/raw/audio_surat/36_yasin/9_13-14.mp3','',1,5000),
+	 (36,'12-14','https://api.maqdisacademy.com/assets/raw/audio_surat/36_yasin/10_12-14.mp3','',2,5000),
+	 (36,'15-17','https://api.maqdisacademy.com/assets/raw/audio_surat/36_yasin/11_15-17.mp3','',1,5000),
+	 (36,'18-19','https://api.maqdisacademy.com/assets/raw/audio_surat/36_yasin/12_18-19.mp3','',1,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (36,'15-19','https://api.maqdisacademy.com/assets/raw/audio_surat/36_yasin/13_15-19.mp3','',2,5000),
+	 (36,'12-19','https://api.maqdisacademy.com/assets/raw/audio_surat/36_yasin/14_12-19.mp3','',2,5000),
+	 (36,'1-19','https://api.maqdisacademy.com/assets/raw/audio_surat/36_yasin/15_1-19.mp3','',2,5000),
+	 (36,'20-21','https://api.maqdisacademy.com/assets/raw/audio_surat/36_yasin/16_20-21.mp3','',1,5000),
+	 (36,'22-24','https://api.maqdisacademy.com/assets/raw/audio_surat/36_yasin/17_22-24.mp3','',1,5000),
+	 (36,'20-24','https://api.maqdisacademy.com/assets/raw/audio_surat/36_yasin/18_20-24.mp3','',2,5000),
+	 (36,'25-27','https://api.maqdisacademy.com/assets/raw/audio_surat/36_yasin/19_25-27.mp3','',1,5000),
+	 (36,'28-30','https://api.maqdisacademy.com/assets/raw/audio_surat/36_yasin/20_28-30.mp3','',1,5000),
+	 (36,'25-30','https://api.maqdisacademy.com/assets/raw/audio_surat/36_yasin/21_25-30.mp3','',2,5000),
+	 (36,'20-30','https://api.maqdisacademy.com/assets/raw/audio_surat/36_yasin/22_20-30.mp3','',2,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (36,'31-32','https://api.maqdisacademy.com/assets/raw/audio_surat/36_yasin/23_31-32.mp3','',1,5000),
+	 (36,'33-34','https://api.maqdisacademy.com/assets/raw/audio_surat/36_yasin/24_33-34.mp3','',1,5000),
+	 (36,'31-34','https://api.maqdisacademy.com/assets/raw/audio_surat/36_yasin/25_31-34.mp3','',2,5000),
+	 (36,'35-36','https://api.maqdisacademy.com/assets/raw/audio_surat/36_yasin/26_35-36.mp3','',1,5000),
+	 (36,'37-38','https://api.maqdisacademy.com/assets/raw/audio_surat/36_yasin/27_37-38.mp3','',1,5000),
+	 (36,'35-38','https://api.maqdisacademy.com/assets/raw/audio_surat/36_yasin/28_35-38.mp3','',2,5000),
+	 (36,'31-38','https://api.maqdisacademy.com/assets/raw/audio_surat/36_yasin/29_31-38.mp3','',2,5000),
+	 (36,'1-38','https://api.maqdisacademy.com/assets/raw/audio_surat/36_yasin/30_1-38.mp3','',2,5000),
+	 (36,'39-40','https://api.maqdisacademy.com/assets/raw/audio_surat/36_yasin/31_39-40.mp3','',1,5000),
+	 (36,'41-44','https://api.maqdisacademy.com/assets/raw/audio_surat/36_yasin/32_41-44.mp3','',1,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (36,'39-44','https://api.maqdisacademy.com/assets/raw/audio_surat/36_yasin/33_39-44.mp3','',2,5000),
+	 (36,'45-46','https://api.maqdisacademy.com/assets/raw/audio_surat/36_yasin/34_45-46.mp3','',1,5000),
+	 (36,'47','https://api.maqdisacademy.com/assets/raw/audio_surat/36_yasin/35_47.mp3','',1,5000),
+	 (36,'45-57','https://api.maqdisacademy.com/assets/raw/audio_surat/36_yasin/36_45-47.mp3','',2,5000),
+	 (36,'39-47','https://api.maqdisacademy.com/assets/raw/audio_surat/36_yasin/37_39-47.mp3','',2,5000),
+	 (36,'48-50','https://api.maqdisacademy.com/assets/raw/audio_surat/36_yasin/38_48-50.mp3','',1,5000),
+	 (36,'51-54','https://api.maqdisacademy.com/assets/raw/audio_surat/36_yasin/39_51-54.mp3','',1,5000),
+	 (36,'48-54','https://api.maqdisacademy.com/assets/raw/audio_surat/36_yasin/40_48-54.mp3','',2,5000),
+	 (36,'55-58','https://api.maqdisacademy.com/assets/raw/audio_surat/36_yasin/41_55-58.mp3','',1,5000),
+	 (36,'59-61','https://api.maqdisacademy.com/assets/raw/audio_surat/36_yasin/42_59-61.mp3','',1,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (36,'55-61','https://api.maqdisacademy.com/assets/raw/audio_surat/36_yasin/43_55-61.mp3','',2,5000),
+	 (36,'48-61','https://api.maqdisacademy.com/assets/raw/audio_surat/36_yasin/44_48-61.mp3','',2,5000),
+	 (36,'1-61','https://api.maqdisacademy.com/assets/raw/audio_surat/36_yasin/45_1-61.mp3','',2,5000),
+	 (36,'62-64','https://api.maqdisacademy.com/assets/raw/audio_surat/36_yasin/46_62-64.mp3','',1,5000),
+	 (36,'65-67','https://api.maqdisacademy.com/assets/raw/audio_surat/36_yasin/47_65-67.mp3','',1,5000),
+	 (36,'62-67','https://api.maqdisacademy.com/assets/raw/audio_surat/36_yasin/48_62-67.mp3','',2,5000),
+	 (36,'68-70','https://api.maqdisacademy.com/assets/raw/audio_surat/36_yasin/49_68-70.mp3','',1,5000),
+	 (36,'71-73','https://api.maqdisacademy.com/assets/raw/audio_surat/36_yasin/50_71-73.mp3','',1,5000),
+	 (36,'68-73','https://api.maqdisacademy.com/assets/raw/audio_surat/36_yasin/51_68-73.mp3','',2,5000),
+	 (36,'62-73','https://api.maqdisacademy.com/assets/raw/audio_surat/36_yasin/52_62-73.mp3','',2,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (36,'74-76','https://api.maqdisacademy.com/assets/raw/audio_surat/36_yasin/53_74-76.mp3','',1,5000),
+	 (36,'77-78','https://api.maqdisacademy.com/assets/raw/audio_surat/36_yasin/54_77-78.mp3','',1,5000),
+	 (36,'74-78','https://api.maqdisacademy.com/assets/raw/audio_surat/36_yasin/55_74-78.mp3','',2,5000),
+	 (36,'79-80','https://api.maqdisacademy.com/assets/raw/audio_surat/36_yasin/56_79-80.mp3','',1,5000),
+	 (36,'81-83','https://api.maqdisacademy.com/assets/raw/audio_surat/36_yasin/57_81-83.mp3','',1,5000),
+	 (36,'79-83','https://api.maqdisacademy.com/assets/raw/audio_surat/36_yasin/58_79-83.mp3','',2,5000),
+	 (36,'74-83','https://api.maqdisacademy.com/assets/raw/audio_surat/36_yasin/59_74-83.mp3','',2,5000),
+	 (36,'1-83','https://api.maqdisacademy.com/assets/raw/audio_surat/36_yasin/60_1-83.mp3','',2,5000),
+	 (19,'1-10','https://api.maqdisacademy.com/assets/raw/audio_surat/36_yasin/60_1-83.mp3','',1,5000),
+	 (6701,'1-2','https://api.maqdisacademy.com/assets/raw/audio_surat/67_almulk/1.1-2.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/67_almulk/1_2/1.1-2.m3u8',1,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (6702,'3-4','https://api.maqdisacademy.com/assets/raw/audio_surat/67_almulk/2.3-4.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/67_almulk/3_4/3_4.m3u8',1,5000),
+	 (6703,'1-4','https://api.maqdisacademy.com/assets/raw/audio_surat/67_almulk/3.1-4.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/67_almulk/1_4/3.1-4.m3u8',2,5000),
+	 (6704,'5-6','https://api.maqdisacademy.com/assets/raw/audio_surat/67_almulk/4.5-6.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/67_almulk/5_6/5_6.m3u8',1,5000),
+	 (6705,'7-8','https://api.maqdisacademy.com/assets/raw/audio_surat/67_almulk/5.7-8.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/67_almulk/7_8/7_8.m3u8',1,5000),
+	 (6706,'5-8','https://api.maqdisacademy.com/assets/raw/audio_surat/67_almulk/6.5-8.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/67_almulk/5_8/5_8.m3u8',2,5000),
+	 (6707,'1-8','https://api.maqdisacademy.com/assets/raw/audio_surat/67_almulk/7.1-8.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/67_almulk/1_8/67_almulk.m3u8',2,5000),
+	 (6708,'9-11','https://api.maqdisacademy.com/assets/raw/audio_surat/67_almulk/8.9-11.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/67_almulk/9_11/9_11.m3u8',1,5000),
+	 (6709,'12-14','https://api.maqdisacademy.com/assets/raw/audio_surat/67_almulk/9.12-14.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/67_almulk/12_14/67_almulk.m3u8',1,5000),
+	 (6710,'9-14','https://api.maqdisacademy.com/assets/raw/audio_surat/67_almulk/10.9-14.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/67_almulk/9_14/9_14.m3u8',2,5000),
+	 (6711,'15-17','https://api.maqdisacademy.com/assets/raw/audio_surat/67_almulk/11.15-17.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/67_almulk/15_17/67_almulk.m3u8',1,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (6712,'17-19','https://api.maqdisacademy.com/assets/raw/audio_surat/67_almulk/12.17-19.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/67_almulk/17_19/67_almulk.m3u8',1,5000),
+	 (6713,'15-19','https://api.maqdisacademy.com/assets/raw/audio_surat/67_almulk/13.15-19.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/67_almulk/15_19/67_almulk.m3u8',2,5000),
+	 (6714,'9-19','https://api.maqdisacademy.com/assets/raw/audio_surat/67_almulk/14.9-19.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/67_almulk/9_19/9_19.m3u8',2,5000),
+	 (6715,'1-19','https://api.maqdisacademy.com/assets/raw/audio_surat/67_almulk/15.1-19.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/67_almulk/1_19/67_almulk.m3u8',2,5000),
+	 (6716,'20-21','https://api.maqdisacademy.com/assets/raw/audio_surat/67_almulk/16.20-21.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/67_almulk/20_21/67_almulk.m3u8',1,5000),
+	 (6717,'22-23','https://api.maqdisacademy.com/assets/raw/audio_surat/67_almulk/17.22-23.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/67_almulk/22_23/67_almulk.m3u8',1,5000),
+	 (6718,'20-23','https://api.maqdisacademy.com/assets/raw/audio_surat/67_almulk/18.20-23.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/67_almulk/20_23/67_almulk1.2.m3u8',2,5000),
+	 (6719,'24-26','https://api.maqdisacademy.com/assets/raw/audio_surat/67_almulk/19.24-26.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/67_almulk/24_26/67_almulk.m3u8',1,5000),
+	 (6720,'27-30','https://api.maqdisacademy.com/assets/raw/audio_surat/67_almulk/20.27-30.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/67_almulk/27_30/27_30.m3u8',1,5000),
+	 (6721,'24-30','https://api.maqdisacademy.com/assets/raw/audio_surat/67_almulk/21.24-30.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/67_almulk/24_30/67_almulk.m3u8',2,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (6722,'20-30','https://api.maqdisacademy.com/assets/raw/audio_surat/67_almulk/22.20-30.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/67_almulk/20_30/67_almulk.m3u8',2,5000),
+	 (6723,'1-30','https://api.maqdisacademy.com/assets/raw/audio_surat/67_almulk/23.1-30.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/67_almulk/1_30/67_almulk1.2.m3u8',2,5000),
+	 (7301,'1-4','https://api.maqdisacademy.com/assets/raw/audio_surat/73_almuzzammil/1.1-4.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/73_almuzzammil/1_4/1.1-4.m3u8',2,5000),
+	 (7302,'5-8','https://api.maqdisacademy.com/assets/raw/audio_surat/73_almuzzammil/2.5-8.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/73_almuzzammil/5_8/2.5-8.m3u8',2,5000),
+	 (7303,'9-12','https://api.maqdisacademy.com/assets/raw/audio_surat/73_almuzzammil/4.9-12.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/73_almuzzammil/9_12/4.9-12.m3u8',2,5000),
+	 (7304,'13-15','https://api.maqdisacademy.com/assets/raw/audio_surat/73_almuzzammil/5.13-15.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/73_almuzzammil/13_15/5.13-15.m3u8',2,5000),
+	 (7305,'1-15','https://api.maqdisacademy.com/assets/raw/audio_surat/73_almuzzammil/7.1-15.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/73_almuzzammil/1_15/73_almuzzammil.m3u8',2,5000),
+	 (7306,'16-19','https://api.maqdisacademy.com/assets/raw/audio_surat/73_almuzzammil/8.16-19.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/73_almuzzammil/16_19/73_almuzzammil.m3u8',2,5000),
+	 (7307,'20.1','https://api.maqdisacademy.com/assets/raw/audio_surat/73_almuzzammil/9.20.1.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/73_almuzzammil/20.1/73_almuzzammil.m3u8',2,5000),
+	 (7308,'16-20.1','https://api.maqdisacademy.com/assets/raw/audio_surat/73_almuzzammil/10.16-20.1.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/73_almuzzammil/16_20.1/73_almuzzammil.m3u8',2,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (7309,'20.2','https://api.maqdisacademy.com/assets/raw/audio_surat/73_almuzzammil/11.20.2.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/73_almuzzammil/20.2/73_almuzzammil.m3u8',2,5000),
+	 (7310,'20.3','https://api.maqdisacademy.com/assets/raw/audio_surat/73_almuzzammil/12.20.3.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/73_almuzzammil/20.3/73_almuzzammil.m3u8',2,5000),
+	 (7311,'20.2-20.3','https://api.maqdisacademy.com/assets/raw/audio_surat/73_almuzzammil/13.20.2-20.3.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/73_almuzzammil/20.2_20.3/73_almuzzammil.m3u8',2,5000),
+	 (7312,'16-20','https://api.maqdisacademy.com/assets/raw/audio_surat/73_almuzzammil/14.16-20.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/73_almuzzammil/16_20/73_almuzzammil.m3u8',2,5000),
+	 (7313,'1-20','https://api.maqdisacademy.com/assets/raw/audio_surat/73_almuzzammil/15.1-20.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/73_almuzzammil/1_20/73_almuzzammil.m3u8',2,5000),
+	 (7801,'1-4','https://api.maqdisacademy.com/assets/raw/audio_surat/78_annaba/ayat1-4.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/78_annaba/78naba1.4/78naba1.4.m3u8',2,5000),
+	 (7802,'5-8','https://api.maqdisacademy.com/assets/raw/audio_surat/78_annaba/ayat5-8.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/78_annaba/78naba5.8/78naba5.8.m3u8',2,5000),
+	 (7803,'9-12','https://api.maqdisacademy.com/assets/raw/audio_surat/78_annaba/ayat9-12.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/78_annaba/78naba9.12/78naba9.12.m3u8',2,5000),
+	 (7804,'13-16','https://api.maqdisacademy.com/assets/raw/audio_surat/78_annaba/ayat13-16.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/78_annaba/78naba13.16/78naba13.16.m3u8',2,5000),
+	 (7805,'9-16','https://api.maqdisacademy.com/assets/raw/audio_surat/78_annaba/ayat-gabung-9-16.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/78_annaba/78naba9.16/78naba9.16.m3u8',2,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (7806,'1-16','https://api.maqdisacademy.com/assets/raw/audio_surat/78_annaba/ayat-gabung-1-16.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/78_annaba/78naba1.16/78naba1.16.m3u8',2,5000),
+	 (7807,'17-20','https://api.maqdisacademy.com/assets/raw/audio_surat/78_annaba/ayat17-20.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/78_annaba/78naba17.20/78naba17.20.m3u8',2,5000),
+	 (7808,'21-24','https://api.maqdisacademy.com/assets/raw/audio_surat/78_annaba/ayat21-24.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/78_annaba/78naba21.24/78naba21.24.m3u8',2,5000),
+	 (7809,'17-24','https://api.maqdisacademy.com/assets/raw/audio_surat/78_annaba/ayat-gabung-17-24.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/78_annaba/78naba17.24/78naba17.24.m3u8',2,5000),
+	 (7810,'25-30','https://api.maqdisacademy.com/assets/raw/audio_surat/78_annaba/ayat25-30.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/78_annaba/78naba25.30/78naba25.30.m3u8',2,5000),
+	 (7811,'31-34','https://api.maqdisacademy.com/assets/raw/audio_surat/78_annaba/ayat31-34.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/78_annaba/78naba31.34/78naba31.34.m3u8',2,5000),
+	 (7812,'25-34','https://api.maqdisacademy.com/assets/raw/audio_surat/78_annaba/ayat-gabung-25-34.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/78_annaba/78naba25.34/78naba25.34.m3u8',2,5000),
+	 (7813,'17-34','https://api.maqdisacademy.com/assets/raw/audio_surat/78_annaba/ayat-gabung-17-34.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/78_annaba/78naba17.34/78naba17.34.m3u8',2,5000),
+	 (7814,'35-37','https://api.maqdisacademy.com/assets/raw/audio_surat/78_annaba/ayat35-37.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/78_annaba/78naba35.37/78naba35.37.m3u8',2,5000),
+	 (7815,'38-40','https://api.maqdisacademy.com/assets/raw/audio_surat/78_annaba/ayat38-40.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/78_annaba/78naba38.40/78naba38.40.m3u8',2,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (7816,'35-40','https://api.maqdisacademy.com/assets/raw/audio_surat/78_annaba/ayat-gabung-35-40.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/78_annaba/78naba35.40/78naba35.40.m3u8',2,5000),
+	 (7817,'1-40','https://api.maqdisacademy.com/assets/raw/audio_surat/78_annaba/ayat-gabung-1-40.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/78_annaba/78naba1.40/78naba1.40.m3u8',2,5000),
+	 (7601,'1-2','https://api.maqdisacademy.com/assets/raw/audio_surat/76_alInsan/1.1-2.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/76_alinsan/1_2/76_alinsan.m3u8',2,5000),
+	 (7602,'3-5','https://api.maqdisacademy.com/assets/raw/audio_surat/76_alInsan/2.3-5.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/76_alinsan/3_5/76_alinsan.m3u8',2,5000),
+	 (7603,'1-5','https://api.maqdisacademy.com/assets/raw/audio_surat/76_alInsan/3.1-5.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/76_alinsan/1_5/76_alinsan.m3u8',2,5000),
+	 (7604,'6-8','https://api.maqdisacademy.com/assets/raw/audio_surat/76_alInsan/4.6-8.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/76_alinsan/6_8/76_alinsan.m3u8',2,5000),
+	 (7605,'9-11','https://api.maqdisacademy.com/assets/raw/audio_surat/76_alInsan/5.9-11.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/76_alinsan/9_11/76_alinsan.m3u8',2,5000),
+	 (7606,'6-11','https://api.maqdisacademy.com/assets/raw/audio_surat/76_alInsan/6.6-11.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/76_alinsan/6_11/76_alinsan.m3u8',2,5000),
+	 (7607,'1-11','https://api.maqdisacademy.com/assets/raw/audio_surat/76_alInsan/7.1-11.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/76_alinsan/1_11/76_alinsan.m3u8',2,5000),
+	 (7608,'12-14','https://api.maqdisacademy.com/assets/raw/audio_surat/76_alInsan/8.12-14.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/76_alinsan/12_14/76_alinsan.m3u8',2,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (7609,'15-17','https://api.maqdisacademy.com/assets/raw/audio_surat/76_alInsan/9.15-17.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/76_alinsan/15_17/76_alinsan.m3u8',2,5000),
+	 (7610,'12-17','https://api.maqdisacademy.com/assets/raw/audio_surat/76_alInsan/10.12-17.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/76_alinsan/12_17/76_alinsan.m3u8',2,5000),
+	 (7611,'18-20','https://api.maqdisacademy.com/assets/raw/audio_surat/76_alInsan/11.18-20.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/76_alinsan/18_20/76_alinsan.m3u8',2,5000),
+	 (7612,'21-22','https://api.maqdisacademy.com/assets/raw/audio_surat/76_alInsan/12.21-22.mp3','https://api.maqdisacademy.com/assets/raw/audio_surat/76_alInsan/12.21-22.mp3',2,5000),
+	 (7613,'18-22','https://api.maqdisacademy.com/assets/raw/audio_surat/76_alInsan/13.18-22.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/76_alinsan/18_22/76_alinsan.m3u8',2,5000),
+	 (7614,'12-22','https://api.maqdisacademy.com/assets/raw/audio_surat/76_alInsan/14.12-22.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/76_alinsan/12_22/76_alinsan.m3u8',2,5000),
+	 (7615,'1-22','https://api.maqdisacademy.com/assets/raw/audio_surat/76_alInsan/15.1-22.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/76_alinsan/1_22/76_alinsan.m3u8',2,5000),
+	 (7616,'23-25','https://api.maqdisacademy.com/assets/raw/audio_surat/76_alInsan/16.23-25.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/76_alinsan/23_25/76_alinsan.m3u8',2,5000),
+	 (7617,'26-28','https://api.maqdisacademy.com/assets/raw/audio_surat/76_alInsan/17.26-28.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/76_alinsan/26_28/76_alinsan.m3u8',2,5000),
+	 (7618,'23-28','https://api.maqdisacademy.com/assets/raw/audio_surat/76_alInsan/18.23-28.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/76_alinsan/23_28/76_alinsan.m3u8',2,5000);
+INSERT INTO maqdisacademy_db_hamim.tbl_detail_surat1 (id_surat,jumlah_ayat_potong,url_audio,url_video,tipe,poin) VALUES
+	 (7619,'29-31','https://api.maqdisacademy.com/assets/raw/audio_surat/76_alInsan/19.29-31.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/76_alinsan/29_31/76_alinsan.m3u8',2,5000),
+	 (7620,'1-31','https://api.maqdisacademy.com/assets/raw/audio_surat/76_alInsan/20.1-31.mp3','https://api.maqdisacademy.com/assets/raw/video_surat/76_alinsan/1_31/76_alinsan.m3u8',2,5000);

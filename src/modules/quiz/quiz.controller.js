@@ -33,7 +33,7 @@ const submitAttempt = async (req, res) => {
   } catch (err) {
     if (err.message === 'QUESTION_NOT_FOUND') return error(res, 'Soal tidak ditemukan', 404)
     if (err.message === 'OPTION_NOT_FOUND') return error(res, 'Opsi jawaban tidak valid', 400)
-    if (err.name === 'ZodError') return error(res, 'Input tidak valid', 400, err.errors)
+    if (err.name === 'ZodError') return error(res, 'Input tidak valid', 400, err.issues)
     console.error('[submitAttempt]', err)
     return error(res, 'Terjadi kesalahan server', 500)
   }
