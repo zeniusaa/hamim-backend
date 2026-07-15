@@ -3,10 +3,31 @@ const crypto = require('crypto')
 const prisma = require('../../config/database')
 const { generateTokens, verifyRefreshToken } = require('../../utils/jwt')
 const { verifyGoogleIdToken } = require('../../utils/googleAuth')
-const { sendResetPasswordEmail } = require('../../utils/email')
+const { sendResetPasswordEmail, sendVerificationEmail } = require('../../utils/email')
 
 // Token reset password berlaku 1 jam
 const RESET_TOKEN_TTL_MS = 60 * 60 * 1000
+
+// Token verifikasi email berlaku lebih lama dari reset password (24 jam),
+// karena user mungkin tidak langsung buka emailnya setelah daftar.
+const VERIFICATION_TOKEN_TTL_MS = 24 * 60 * 60 * 1000
+
+// Helper dipakai bareng oleh register() dan resendVerificationEmail() —
+// generate token verifikasi baru, simpan HASH-nya ke DB, lalu kirim emailnya.
+// Sama seperti reset password: token asli hanya ada di email, DB cuma simpan hash.
+const generateAndSendVerification = async (user) => {
+  const rawToken = crypto.randomBytes(32).toString('hex')
+  const verification_token_hash = crypto.createHash('sha256').update(rawToken).digest('hex')
+  const verification_token_expires = new Date(Date.now() + VERIFICATION_TOKEN_TTL_MS)
+
+  await prisma.user.update({
+    where: { id: user.id },
+    data: { verification_token_hash, verification_token_expires },
+  })
+
+  const verifyLink = `${process.env.BACKEND_URL}/auth/verify-email?token=${rawToken}`
+  await sendVerificationEmail({ to: user.email, verifyLink })
+}
 
 // SERVICE = tempat business logic.
 // Controller hanya terima request dan kirim response.
@@ -67,6 +88,14 @@ const register = async ({ name, email, phone_number, password, language_code }) 
   })
 
   const tokens = generateTokens({ id: user.id, email: user.email })
+
+  // Kirim email verifikasi di background — tidak perlu ditunggu (await)
+  // supaya proses register tidak lambat kalau SMTP-nya lemot.
+  // Kalau gagal kirim, tidak menggagalkan register — user masih bisa
+  // minta kirim ulang lewat endpoint resend-verification.
+  generateAndSendVerification(user).catch((err) => {
+    console.error('Gagal kirim email verifikasi:', err.message)
+  })
 
   return { user, ...tokens }
 }
@@ -234,6 +263,48 @@ const resetPassword = async ({ token, password }) => {
   })
 }
 
+// GET /auth/verify-email?token=xxxx
+// Dipanggil saat user klik link di email. Beda dari reset-password,
+// endpoint ini langsung menandai user terverifikasi (tidak perlu form lanjutan).
+const verifyEmail = async (token) => {
+  const verification_token_hash = crypto.createHash('sha256').update(token).digest('hex')
+
+  const user = await prisma.user.findFirst({
+    where: {
+      verification_token_hash,
+      verification_token_expires: { gt: new Date() }, // belum kadaluarsa
+    },
+  })
+
+  if (!user) {
+    const err = new Error('Token verifikasi tidak valid atau sudah kadaluarsa.')
+    err.statusCode = 400
+    throw err
+  }
+
+  await prisma.user.update({
+    where: { id: user.id },
+    data: {
+      email_verified: true,
+      verification_token_hash: null,
+      verification_token_expires: null,
+    },
+  })
+}
+
+// POST /auth/resend-verification
+// Selalu balas sukses walau email tidak ditemukan/sudah terverifikasi —
+// sama seperti forgotPassword, ini untuk mencegah user enumeration.
+const resendVerificationEmail = async (email) => {
+  const user = await prisma.user.findUnique({ where: { email } })
+
+  if (!user || user.email_verified) {
+    return
+  }
+
+  await generateAndSendVerification(user)
+}
+
 // DELETE /auth/account
 // Kalau user punya password (daftar via email), wajib konfirmasi password
 // dulu sebelum akun dihapus. User yang daftar via Google (tanpa password)
@@ -275,5 +346,7 @@ module.exports = {
   loginWithGoogleIdToken,
   forgotPassword,
   resetPassword,
+  verifyEmail,
+  resendVerificationEmail,
   deleteAccount,
 }

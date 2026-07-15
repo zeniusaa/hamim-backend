@@ -35,6 +35,12 @@ router.post('/forgot-password', authLimiter, controller.forgotPassword)
 // POST /auth/reset-password — submit token + password baru
 router.post('/reset-password', authLimiter, controller.resetPassword)
 
+// GET /auth/verify-email — diklik dari link di email, bukan dipanggil dari app
+router.get('/verify-email', controller.verifyEmail)
+
+// POST /auth/resend-verification — kirim ulang link verifikasi
+router.post('/resend-verification', authLimiter, controller.resendVerification)
+
 // ─── Google OAuth (Web — browser redirect) ───────────────────
 // GET /auth/google — redirect user ke halaman login Google
 router.get(

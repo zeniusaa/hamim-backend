@@ -60,4 +60,37 @@ const sendResetPasswordEmail = async ({ to, resetLink }) => {
   })
 }
 
-module.exports = { sendResetPasswordEmail }
+// sendVerificationEmail — kirim email berisi link verifikasi akun.
+// Sama seperti reset password: kalau SMTP belum dikonfigurasi (development),
+// link cukup di-log ke console supaya developer tetap bisa testing flow.
+const sendVerificationEmail = async ({ to, verifyLink }) => {
+  if (!isSmtpConfigured()) {
+    console.log('\n📧 [DEV] SMTP belum dikonfigurasi — link verifikasi email:')
+    console.log(`   To     : ${to}`)
+    console.log(`   Link   : ${verifyLink}\n`)
+    return
+  }
+
+  const mailer = getTransporter()
+
+  await mailer.sendMail({
+    from: process.env.EMAIL_FROM || 'HAMIM <no-reply@hamim.app>',
+    to,
+    subject: 'Verifikasi Email — HAMIM',
+    html: `
+      <div style="font-family: sans-serif; max-width: 480px; margin: 0 auto;">
+        <h2>Verifikasi Email Kamu</h2>
+        <p>Terima kasih sudah daftar di HAMIM! Satu langkah lagi — verifikasi email kamu dulu.</p>
+        <p style="margin: 24px 0;">
+          <a href="${verifyLink}"
+             style="background:#1d4ed8;color:#fff;padding:12px 20px;border-radius:8px;text-decoration:none;">
+            Verifikasi Email
+          </a>
+        </p>
+        <p>Link ini berlaku selama 24 jam. Kalau kamu tidak merasa mendaftar di HAMIM, abaikan saja email ini.</p>
+      </div>
+    `,
+  })
+}
+
+module.exports = { sendResetPasswordEmail, sendVerificationEmail }
