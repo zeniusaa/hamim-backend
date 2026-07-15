@@ -34,6 +34,24 @@ const googleNativeSchema = z.object({
   idToken: z.string().min(10, 'idToken tidak boleh kosong.'),
 })
 
+const forgotPasswordSchema = z.object({
+  email: z.string().email('Format email tidak valid.'),
+})
+
+const resetPasswordSchema = z.object({
+  token: z.string().min(10, 'Token tidak valid.'),
+  password: z
+    .string()
+    .min(8, 'Password minimal 8 karakter.')
+    .max(100, 'Password terlalu panjang.'),
+})
+
+const deleteAccountSchema = z.object({
+  // Opsional di level validasi — wajib-tidaknya dicek di service,
+  // karena tergantung apakah user daftar via email atau Google.
+  password: z.string().optional(),
+})
+
 // POST /auth/register
 const register = async (req, res, next) => {
   try {
@@ -139,4 +157,51 @@ const me = async (req, res, next) => {
   }
 }
 
-module.exports = { register, login, refresh, googleCallback, googleNative, me }
+// POST /auth/forgot-password
+const forgotPassword = async (req, res, next) => {
+  try {
+    const data = forgotPasswordSchema.parse(req.body)
+    await authService.forgotPassword(data.email)
+
+    // Pesan generik — tidak membedakan email terdaftar atau tidak
+    return success(res, 'Jika email terdaftar, link reset password sudah dikirim.')
+  } catch (err) {
+    next(err)
+  }
+}
+
+// POST /auth/reset-password
+const resetPassword = async (req, res, next) => {
+  try {
+    const data = resetPasswordSchema.parse(req.body)
+    await authService.resetPassword(data)
+
+    return success(res, 'Password berhasil direset. Silakan login dengan password baru.')
+  } catch (err) {
+    next(err)
+  }
+}
+
+// DELETE /auth/account
+const deleteAccount = async (req, res, next) => {
+  try {
+    const data = deleteAccountSchema.parse(req.body)
+    await authService.deleteAccount(req.user.id, data.password)
+
+    return success(res, 'Akun berhasil dihapus.')
+  } catch (err) {
+    next(err)
+  }
+}
+
+module.exports = {
+  register,
+  login,
+  refresh,
+  googleCallback,
+  googleNative,
+  me,
+  forgotPassword,
+  resetPassword,
+  deleteAccount,
+}

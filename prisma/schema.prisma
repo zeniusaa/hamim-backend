@@ -15,6 +15,8 @@ model User {
   phone_number         String?               @unique @map("nomor_telepon") @db.VarChar(20)
   phone_verified       Boolean               @default(false) @map("telepon_terverifikasi")
   is_onboarded         Boolean               @default(false) @map("sudah_onboarding")
+  reset_token_hash     String?               @map("hash_token_reset") @db.VarChar(255)
+  reset_token_expires  DateTime?             @map("token_reset_kadaluarsa")
   language_id          Int?                  @map("id_bahasa")
   created_at           DateTime              @default(now()) @map("dibuat_pada")
   updated_at           DateTime              @updatedAt @map("diperbarui_pada")
