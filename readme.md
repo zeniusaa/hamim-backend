@@ -275,6 +275,71 @@ Setiap login/register berhasil mengembalikan `accessToken` (7 hari) dan `refresh
 
 ---
 
+### `POST /auth/forgot-password`
+**Publik.** Minta link reset password dikirim ke email. Rate limit sama seperti register/login.
+
+**Body:**
+```json
+{ "email": "raka@example.com" }
+```
+
+**Response 200** (selalu sukses, apa pun kondisinya):
+```json
+{ "success": true, "message": "Jika email terdaftar, link reset password sudah dikirim." }
+```
+> Pesan sengaja generik dan **selalu balas sukses** — walau email tidak terdaftar, atau akunnya daftar via Google (tidak punya password) — supaya tidak bisa dipakai untuk menebak email mana yang terdaftar (*user enumeration*). Link asli dikirim lewat email; kalau SMTP belum dikonfigurasi di `.env`, link cukup di-log ke terminal server.
+
+Token reset berlaku **1 jam**.
+
+---
+
+### `POST /auth/reset-password`
+**Publik.** Submit token dari email + password baru.
+
+**Body:**
+```json
+{ "token": "<token dari email/log>", "password": "passwordBaru123" }
+```
+
+**Response 200:**
+```json
+{ "success": true, "message": "Password berhasil direset. Silakan login dengan password baru." }
+```
+
+**Error khas:** `400` — token tidak valid, sudah dipakai, atau sudah kadaluarsa (>1 jam).
+
+---
+
+### `GET /auth/verify-email?token=xxxx`
+**Publik.** Diklik langsung dari link di email verifikasi (bukan dipanggil dari app/mobile). Menandai `email_verified` jadi `true`.
+
+**Response 200:**
+```json
+{ "success": true, "message": "Email berhasil diverifikasi. Silakan kembali ke aplikasi." }
+```
+
+**Error khas:** `400` — token tidak valid, sudah dipakai (sekali pakai), atau sudah kadaluarsa (>24 jam).
+
+> Catatan: saat ini `email_verified` bersifat informatif saja — belum dipakai untuk membatasi akses ke endpoint lain (belum ada *enforcement*).
+
+---
+
+### `POST /auth/resend-verification`
+**Publik.** Kirim ulang link verifikasi (misal karena email pertama tidak sampai atau kadaluarsa). Rate limit sama seperti register/login.
+
+**Body:**
+```json
+{ "email": "raka@example.com" }
+```
+
+**Response 200** (selalu sukses, apa pun kondisinya):
+```json
+{ "success": true, "message": "Jika email terdaftar dan belum terverifikasi, link verifikasi sudah dikirim." }
+```
+> Sama seperti `forgot-password`, pesan sengaja generik untuk mencegah *user enumeration* — baik email tidak terdaftar maupun email yang **sudah** terverifikasi tetap dibalas sukses, tapi email baru **hanya** benar-benar dikirim kalau user ada dan belum terverifikasi. Mengirim ulang otomatis menerbitkan token baru (24 jam) dan token lama otomatis tidak berlaku lagi.
+
+---
+
 ### `GET /auth/me`
 **Butuh login.** Cek token masih valid + ambil data dasar user.
 
@@ -288,6 +353,7 @@ Setiap login/register berhasil mengembalikan `accessToken` (7 hari) dan `refresh
     "email": "raka@example.com",
     "phone_number": "081234567890",
     "is_onboarded": true,
+    "email_verified": false,
     "language_id": 1,
     "created_at": "2026-07-03T10:00:00.000Z",
     "profile": {
@@ -299,6 +365,23 @@ Setiap login/register berhasil mengembalikan `accessToken` (7 hari) dan `refresh
   }
 }
 ```
+
+---
+
+### `DELETE /auth/account`
+**Butuh login.** Hapus akun permanen. Semua data turunan (profile, progress, quiz attempt, dll) otomatis ikut terhapus (cascade).
+
+**Body** (wajib **hanya** kalau akun daftar via email/password; akun Google tanpa `password_hash` tidak perlu kirim ini):
+```json
+{ "password": "password123" }
+```
+
+**Response 200:**
+```json
+{ "success": true, "message": "Akun berhasil dihapus." }
+```
+
+**Error khas:** `400` — password wajib diisi (akun email tapi tidak kirim password). `401` — password salah.
 
 ---
 
@@ -746,6 +829,7 @@ Sistem 15 tingkatan, tiap level butuh 2 juz selesai (semua ayat, semua tahap ter
 | `404` | Data tidak ditemukan (surah, ayah, bundle, dll) |
 | `409` | Data bentrok — email/nomor HP sudah dipakai (juga otomatis untuk constraint unik Prisma `P2002`) |
 | `422` | Validasi Zod gagal — cek array `errors` untuk detail per field |
+| `429` | Rate limit terlampaui — maksimal 10 request/15 menit/IP untuk endpoint `auth` yang pakai `authLimiter` (`register`, `login`, `forgot-password`, `reset-password`, `resend-verification`, `google/native`) |
 | `500` | Error server/database tak terduga |
 
 ---
@@ -785,4 +869,29 @@ curl http://localhost:3000/quiz/ayah/1 -H "Authorization: Bearer <TOKEN>"
 
 # 8. Lihat daftar ikon aset
 curl http://localhost:3000/assets/icons -H "Authorization: Bearer <TOKEN>"
+
+# 9. Verifikasi email — ambil <TOKEN_VERIFIKASI> dari log terminal server
+#    (kalau SMTP belum dikonfigurasi) atau dari email asli
+curl "http://localhost:3000/auth/verify-email?token=<TOKEN_VERIFIKASI>"
+
+# 10. Kirim ulang link verifikasi (kalau token/link pertama kadaluarsa)
+curl -X POST http://localhost:3000/auth/resend-verification \
+  -H "Content-Type: application/json" \
+  -d '{"email":"raka@example.com"}'
+
+# 11. Lupa password — minta link reset
+curl -X POST http://localhost:3000/auth/forgot-password \
+  -H "Content-Type: application/json" \
+  -d '{"email":"raka@example.com"}'
+
+# 12. Reset password — ambil <TOKEN_RESET> dari log terminal server / email
+curl -X POST http://localhost:3000/auth/reset-password \
+  -H "Content-Type: application/json" \
+  -d '{"token":"<TOKEN_RESET>","password":"passwordBaru123"}'
+
+# 13. Hapus akun (perlu password kalau daftar via email)
+curl -X DELETE http://localhost:3000/auth/account \
+  -H "Authorization: Bearer <TOKEN>" \
+  -H "Content-Type: application/json" \
+  -d '{"password":"password123"}'
 ```

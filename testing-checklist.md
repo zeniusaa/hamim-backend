@@ -62,6 +62,97 @@ curl http://localhost:3000/auth/me \
 ```
 Coba juga TANPA header Authorization → harus 401 `"Token tidak ditemukan..."`.
 Coba juga dengan token asal-asalan → harus 401 `"Token tidak valid."`.
+Cek juga field baru `email_verified` — harus `false` untuk user yang baru register.
+
+---
+
+## 5a. Auth — Verifikasi Email
+
+⚠️ Kalau `SMTP_HOST/SMTP_USER/SMTP_PASS` belum diisi di `.env`, link verifikasi tidak
+benar-benar terkirim — cukup **di-log ke terminal server**:
+```
+📧 [DEV] SMTP belum dikonfigurasi — link verifikasi email:
+   To     : ...
+   Link   : http://localhost:3000/auth/verify-email?token=xxxx
+```
+Salin token dari log itu untuk langkah di bawah.
+
+```bash
+# Klik link verifikasi (GET, bukan POST — memang diakses dari link email)
+curl "http://localhost:3000/auth/verify-email?token=<token dari log>"
+
+# Cek /auth/me lagi — email_verified harus jadi true
+curl http://localhost:3000/auth/me -H "Authorization: Bearer $TOKEN"
+
+# Coba pakai token yang sama lagi (replay) → harus ditolak 400, bukan diloloskan
+curl "http://localhost:3000/auth/verify-email?token=<token yang sama>"
+
+# Kirim ulang link verifikasi (untuk akun lain yang belum diverifikasi)
+curl -X POST http://localhost:3000/auth/resend-verification \
+  -H "Content-Type: application/json" \
+  -d '{"email":"test1@hamim.dev"}'
+```
+✅ Cek:
+- Token cuma bisa dipakai sekali.
+- `resend-verification` **selalu** balas sukses generik (email tidak terdaftar / sudah terverifikasi / valid, responsnya sama) — ini disengaja, bukan bug.
+- Rate limit `resend-verification`: 10x/15 menit/IP → request ke-11 harus 429.
+
+---
+
+## 5b. Auth — Forgot & Reset Password
+
+```bash
+# Minta link reset password
+curl -X POST http://localhost:3000/auth/forgot-password \
+  -H "Content-Type: application/json" \
+  -d '{"email":"test1@hamim.dev"}'
+```
+⚠️ Sama seperti verifikasi email: kalau SMTP belum dikonfigurasi, link cukup di-log ke terminal.
+Selalu balas sukses generik walau email tidak terdaftar (anti *user enumeration*) — bukan bug.
+
+```bash
+# Submit token + password baru (ambil <token> dari log/email)
+curl -X POST http://localhost:3000/auth/reset-password \
+  -H "Content-Type: application/json" \
+  -d '{"token":"<token dari log>","password":"passwordBaru123"}'
+
+# Login pakai password lama → harus GAGAL (401)
+curl -X POST http://localhost:3000/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"test1@hamim.dev","password":"password123"}'
+
+# Login pakai password baru → harus berhasil
+curl -X POST http://localhost:3000/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"test1@hamim.dev","password":"passwordBaru123"}'
+```
+✅ Cek: token reset kadaluarsa dalam 1 jam, dan sekali pakai (coba submit ulang token yang sama → harus 400).
+
+---
+
+## 5c. Auth — Delete Account
+```bash
+# Tanpa password (akun email/password) → harus gagal 400
+curl -X DELETE http://localhost:3000/auth/account \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" -d '{}'
+
+# Dengan password salah → harus gagal 401
+curl -X DELETE http://localhost:3000/auth/account \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" -d '{"password":"salahpassword"}'
+
+# Dengan password benar → harus berhasil, akun & semua data turunan terhapus
+curl -X DELETE http://localhost:3000/auth/account \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" -d '{"password":"passwordBaru123"}'
+
+# Cek akun benar-benar hilang — login lagi harus gagal 401
+curl -X POST http://localhost:3000/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"test1@hamim.dev","password":"passwordBaru123"}'
+```
+⚠️ Lakukan langkah ini **paling akhir** kalau mau lanjut testing modul lain pakai user yang sama (Profile, Progress, dst) — akun `test1@hamim.dev` sudah tidak bisa dipakai lagi setelah dihapus. Pakai user lain (mis. dari langkah 2) untuk lanjut ke checklist di bawah.
 
 ---
 
@@ -188,3 +279,5 @@ curl http://localhost:3000/quiz/history -H "Authorization: Bearer $TOKEN"
 1. Apapun yang **500** (internal server error) — paste stack trace-nya dari terminal server.
 2. Response yang isinya beda dari ekspektasi di atas (mis. field hilang, format aneh).
 3. Endpoint mana yang datanya kosong padahal seharusnya ada (biasanya artinya perlu seed tambahan).
+4. Token verifikasi email / reset password yang **masih bisa dipakai ulang** setelah sukses sekali → bug.
+5. `resend-verification` yang ternyata **tetap mengirim email baru** untuk akun yang sudah `email_verified: true` → bug kecil (boros kirim email meski responsnya tetap generik).

@@ -34,6 +34,32 @@ const googleNativeSchema = z.object({
   idToken: z.string().min(10, 'idToken tidak boleh kosong.'),
 })
 
+const forgotPasswordSchema = z.object({
+  email: z.string().email('Format email tidak valid.'),
+})
+
+const resetPasswordSchema = z.object({
+  token: z.string().min(10, 'Token tidak valid.'),
+  password: z
+    .string()
+    .min(8, 'Password minimal 8 karakter.')
+    .max(100, 'Password terlalu panjang.'),
+})
+
+const verifyEmailSchema = z.object({
+  token: z.string().min(10, 'Token tidak valid.'),
+})
+
+const resendVerificationSchema = z.object({
+  email: z.string().email('Format email tidak valid.'),
+})
+
+const deleteAccountSchema = z.object({
+  // Opsional di level validasi — wajib-tidaknya dicek di service,
+  // karena tergantung apakah user daftar via email atau Google.
+  password: z.string().optional(),
+})
+
 // POST /auth/register
 const register = async (req, res, next) => {
   try {
@@ -118,6 +144,7 @@ const me = async (req, res, next) => {
         email: true,
         phone_number: true,
         is_onboarded: true,
+        email_verified: true,
         language_id: true,
         created_at: true,
         profile: {
@@ -139,4 +166,80 @@ const me = async (req, res, next) => {
   }
 }
 
-module.exports = { register, login, refresh, googleCallback, googleNative, me }
+// POST /auth/forgot-password
+const forgotPassword = async (req, res, next) => {
+  try {
+    const data = forgotPasswordSchema.parse(req.body)
+    await authService.forgotPassword(data.email)
+
+    // Pesan generik — tidak membedakan email terdaftar atau tidak
+    return success(res, 'Jika email terdaftar, link reset password sudah dikirim.')
+  } catch (err) {
+    next(err)
+  }
+}
+
+// POST /auth/reset-password
+const resetPassword = async (req, res, next) => {
+  try {
+    const data = resetPasswordSchema.parse(req.body)
+    await authService.resetPassword(data)
+
+    return success(res, 'Password berhasil direset. Silakan login dengan password baru.')
+  } catch (err) {
+    next(err)
+  }
+}
+
+// GET /auth/verify-email?token=xxxx
+// Diakses langsung dari link di email (bukan dipanggil dari app),
+// jadi token diambil dari query string, bukan body.
+const verifyEmail = async (req, res, next) => {
+  try {
+    const data = verifyEmailSchema.parse(req.query)
+    await authService.verifyEmail(data.token)
+
+    return success(res, 'Email berhasil diverifikasi. Silakan kembali ke aplikasi.')
+  } catch (err) {
+    next(err)
+  }
+}
+
+// POST /auth/resend-verification
+const resendVerification = async (req, res, next) => {
+  try {
+    const data = resendVerificationSchema.parse(req.body)
+    await authService.resendVerificationEmail(data.email)
+
+    // Pesan generik — tidak membedakan email terdaftar/sudah terverifikasi atau tidak
+    return success(res, 'Jika email terdaftar dan belum terverifikasi, link verifikasi sudah dikirim.')
+  } catch (err) {
+    next(err)
+  }
+}
+
+// DELETE /auth/account
+const deleteAccount = async (req, res, next) => {
+  try {
+    const data = deleteAccountSchema.parse(req.body)
+    await authService.deleteAccount(req.user.id, data.password)
+
+    return success(res, 'Akun berhasil dihapus.')
+  } catch (err) {
+    next(err)
+  }
+}
+
+module.exports = {
+  register,
+  login,
+  refresh,
+  googleCallback,
+  googleNative,
+  me,
+  forgotPassword,
+  resetPassword,
+  verifyEmail,
+  resendVerification,
+  deleteAccount,
+}

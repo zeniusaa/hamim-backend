@@ -1,7 +1,33 @@
 const bcrypt = require('bcryptjs')
+const crypto = require('crypto')
 const prisma = require('../../config/database')
 const { generateTokens, verifyRefreshToken } = require('../../utils/jwt')
 const { verifyGoogleIdToken } = require('../../utils/googleAuth')
+const { sendResetPasswordEmail, sendVerificationEmail } = require('../../utils/email')
+
+// Token reset password berlaku 1 jam
+const RESET_TOKEN_TTL_MS = 60 * 60 * 1000
+
+// Token verifikasi email berlaku lebih lama dari reset password (24 jam),
+// karena user mungkin tidak langsung buka emailnya setelah daftar.
+const VERIFICATION_TOKEN_TTL_MS = 24 * 60 * 60 * 1000
+
+// Helper dipakai bareng oleh register() dan resendVerificationEmail() —
+// generate token verifikasi baru, simpan HASH-nya ke DB, lalu kirim emailnya.
+// Sama seperti reset password: token asli hanya ada di email, DB cuma simpan hash.
+const generateAndSendVerification = async (user) => {
+  const rawToken = crypto.randomBytes(32).toString('hex')
+  const verification_token_hash = crypto.createHash('sha256').update(rawToken).digest('hex')
+  const verification_token_expires = new Date(Date.now() + VERIFICATION_TOKEN_TTL_MS)
+
+  await prisma.user.update({
+    where: { id: user.id },
+    data: { verification_token_hash, verification_token_expires },
+  })
+
+  const verifyLink = `${process.env.BACKEND_URL}/auth/verify-email?token=${rawToken}`
+  await sendVerificationEmail({ to: user.email, verifyLink })
+}
 
 // SERVICE = tempat business logic.
 // Controller hanya terima request dan kirim response.
@@ -62,6 +88,14 @@ const register = async ({ name, email, phone_number, password, language_code }) 
   })
 
   const tokens = generateTokens({ id: user.id, email: user.email })
+
+  // Kirim email verifikasi di background — tidak perlu ditunggu (await)
+  // supaya proses register tidak lambat kalau SMTP-nya lemot.
+  // Kalau gagal kirim, tidak menggagalkan register — user masih bisa
+  // minta kirim ulang lewat endpoint resend-verification.
+  generateAndSendVerification(user).catch((err) => {
+    console.error('Gagal kirim email verifikasi:', err.message)
+  })
 
   return { user, ...tokens }
 }
@@ -173,10 +207,146 @@ const loginWithGoogleIdToken = async (idToken) => {
   }
 }
 
+// POST /auth/forgot-password
+// Selalu balas sukses walau email tidak ditemukan — jangan bocorkan
+// apakah sebuah email terdaftar atau tidak (mencegah user enumeration).
+const forgotPassword = async (email) => {
+  const user = await prisma.user.findUnique({ where: { email } })
+
+  // User daftar via Google tanpa password_hash tidak bisa reset password biasa
+  if (!user || !user.password_hash) {
+    return
+  }
+
+  // Token asli dikirim ke email user, tapi yang disimpan di DB
+  // adalah HASH-nya saja (sama seperti password) — supaya kalau
+  // DB bocor, token mentah tidak ikut bocor.
+  const rawToken = crypto.randomBytes(32).toString('hex')
+  const reset_token_hash = crypto.createHash('sha256').update(rawToken).digest('hex')
+  const reset_token_expires = new Date(Date.now() + RESET_TOKEN_TTL_MS)
+
+  await prisma.user.update({
+    where: { id: user.id },
+    data: { reset_token_hash, reset_token_expires },
+  })
+
+  const resetLink = `${process.env.RESET_PASSWORD_URL}?token=${rawToken}`
+  await sendResetPasswordEmail({ to: user.email, resetLink })
+}
+
+// POST /auth/reset-password
+const resetPassword = async ({ token, password }) => {
+  const reset_token_hash = crypto.createHash('sha256').update(token).digest('hex')
+
+  const user = await prisma.user.findFirst({
+    where: {
+      reset_token_hash,
+      reset_token_expires: { gt: new Date() }, // belum kadaluarsa
+    },
+  })
+
+  if (!user) {
+    const err = new Error('Token reset password tidak valid atau sudah kadaluarsa.')
+    err.statusCode = 400
+    throw err
+  }
+
+  const password_hash = await bcrypt.hash(password, 10)
+
+  await prisma.user.update({
+    where: { id: user.id },
+    data: {
+      password_hash,
+      reset_token_hash: null,
+      reset_token_expires: null,
+    },
+  })
+}
+
+// GET /auth/verify-email?token=xxxx
+// Dipanggil saat user klik link di email. Beda dari reset-password,
+// endpoint ini langsung menandai user terverifikasi (tidak perlu form lanjutan).
+const verifyEmail = async (token) => {
+  const verification_token_hash = crypto.createHash('sha256').update(token).digest('hex')
+
+  const user = await prisma.user.findFirst({
+    where: {
+      verification_token_hash,
+      verification_token_expires: { gt: new Date() }, // belum kadaluarsa
+    },
+  })
+
+  if (!user) {
+    const err = new Error('Token verifikasi tidak valid atau sudah kadaluarsa.')
+    err.statusCode = 400
+    throw err
+  }
+
+  await prisma.user.update({
+    where: { id: user.id },
+    data: {
+      email_verified: true,
+      verification_token_hash: null,
+      verification_token_expires: null,
+    },
+  })
+}
+
+// POST /auth/resend-verification
+// Selalu balas sukses walau email tidak ditemukan/sudah terverifikasi —
+// sama seperti forgotPassword, ini untuk mencegah user enumeration.
+const resendVerificationEmail = async (email) => {
+  const user = await prisma.user.findUnique({ where: { email } })
+
+  if (!user || user.email_verified) {
+    return
+  }
+
+  await generateAndSendVerification(user)
+}
+
+// DELETE /auth/account
+// Kalau user punya password (daftar via email), wajib konfirmasi password
+// dulu sebelum akun dihapus. User yang daftar via Google (tanpa password)
+// cukup terautentikasi lewat token JWT.
+// Semua data turunan (profile, progress, quiz_attempts, dll) otomatis
+// ikut terhapus karena relasinya sudah onDelete: Cascade di schema.
+const deleteAccount = async (userId, password) => {
+  const user = await prisma.user.findUnique({ where: { id: userId } })
+
+  if (!user) {
+    const err = new Error('User tidak ditemukan.')
+    err.statusCode = 404
+    throw err
+  }
+
+  if (user.password_hash) {
+    if (!password) {
+      const err = new Error('Password wajib diisi untuk menghapus akun.')
+      err.statusCode = 400
+      throw err
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password_hash)
+    if (!isMatch) {
+      const err = new Error('Password salah.')
+      err.statusCode = 401
+      throw err
+    }
+  }
+
+  await prisma.user.delete({ where: { id: userId } })
+}
+
 module.exports = {
   register,
   login,
   refresh,
   findOrCreateGoogleUser,
   loginWithGoogleIdToken,
+  forgotPassword,
+  resetPassword,
+  verifyEmail,
+  resendVerificationEmail,
+  deleteAccount,
 }
