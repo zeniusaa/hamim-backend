@@ -58,8 +58,8 @@ const updateProgress = async (req, res) => {
 
 const getProgressBySurah = async (req, res) => {
   try {
-    const surahId = parseInt(req.params.surahId)
-    if (isNaN(surahId)) return error(res, 'surahId tidak valid', 400)
+    const surahId = req.params.surahId
+    if (!surahId) return error(res, 'surahId tidak valid', 400)
 
     const data = await progressService.getProgressBySurah(req.user.id, surahId)
     return success(res, 'Berhasil mengambil progress surat', data)

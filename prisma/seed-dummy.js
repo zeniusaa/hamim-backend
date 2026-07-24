@@ -484,6 +484,37 @@ async function main() {
     ],
   })
 
+  // ─── 12. User Lives (nyawa + premium) — beda kondisi tiap user biar semua skenario bisa ditest ───
+  const HOUR = 60 * 60 * 1000
+  const now = Date.now()
+
+  const livesData = [
+    // Raka: fresh, nyawa penuh (kondisi default user baru)
+    { user_id: user1.id, current_lives: 3, max_lives: 3, last_life_lost_at: null, is_premium: false, premium_expires_at: null },
+    // Aisyah: sisa 1 nyawa, baru hilang 3 jam lalu -> regen berikutnya masih ~5 jam lagi.
+    //   Test: GET /lives harus balikin current_lives=1, next_regen_at ~5 jam dari sekarang.
+    { user_id: user2.id, current_lives: 1, max_lives: 3, last_life_lost_at: new Date(now - 3 * HOUR), is_premium: false, premium_expires_at: null },
+    // Budi: nyawa habis, tapi sudah lewat 9 jam sejak kehilangan nyawa terakhir -> saat GET /lives
+    //   dipanggil, harus auto-regen jadi 1 nyawa (lazy calc, walau app tidak pernah dibuka).
+    { user_id: user3.id, current_lives: 0, max_lives: 3, last_life_lost_at: new Date(now - 9 * HOUR), is_premium: false, premium_expires_at: null },
+    // Fatimah: user premium aktif -> GET /lives harus balikin unlimited=true, current_lives=null.
+    { user_id: user4.id, current_lives: 2, max_lives: 3, last_life_lost_at: new Date(now - 1 * HOUR), is_premium: true, premium_expires_at: new Date(now + 30 * 24 * HOUR) },
+    // Fadhil: premium SUDAH KADALUARSA kemarin -> GET /lives harus auto-downgrade ke free
+    //   dan kembali menghitung nyawa dari current_lives yang tersisa di row.
+    { user_id: user5.id, current_lives: 2, max_lives: 3, last_life_lost_at: new Date(now - 2 * HOUR), is_premium: true, premium_expires_at: new Date(now - 1 * 24 * HOUR) },
+    // Hasan: nyawa baru saja habis (0), baru 5 menit lalu -> POST /quiz/attempt untuk user ini
+    //   harus ditolak 403 NO_LIVES_LEFT. Cocok juga buat test POST /lives/watch-ad (+1 nyawa).
+    { user_id: user6.id, current_lives: 0, max_lives: 3, last_life_lost_at: new Date(now - 5 * 60 * 1000), is_premium: false, premium_expires_at: null },
+  ]
+
+  for (const lv of livesData) {
+    await prisma.userLives.upsert({
+      where: { user_id: lv.user_id },
+      update: lv,
+      create: lv,
+    })
+  }
+
   console.log('✅ Seed dummy selesai:')
   console.log(`   - 6 users total (5 di leaderboard + 1 edge-case belum onboarding)`)
   console.log(`     ${user1.email}, ${user2.email}, ${user3.email} (no leaderboard),`)
@@ -495,6 +526,13 @@ async function main() {
   console.log('   - 12 user level history')
   console.log('   - 5 leaderboard snapshot (rank: Fadhil > Fatimah > Raka > Hasan > Aisyah)')
   console.log('   - 7 activity log')
+  console.log('   - 6 user lives row:')
+  console.log(`       ${user1.email}      -> 3/3 nyawa (fresh/default)`)
+  console.log(`       ${user2.email}   -> 1/3 nyawa, regen berikutnya ~5 jam lagi`)
+  console.log(`       ${user3.email}    -> 0/3 nyawa TAPI sudah 9 jam -> auto-regen jadi 1 saat GET /lives`)
+  console.log(`       ${user4.email}   -> PREMIUM aktif (unlimited)`)
+  console.log(`       ${user5.email}     -> premium SUDAH EXPIRED -> auto-downgrade ke free`)
+  console.log(`       ${user6.email}      -> 0/3 nyawa, baru habis -> POST /quiz/attempt ditolak 403`)
   console.log('\n   Password login semua dummy user: password123')
 }
 

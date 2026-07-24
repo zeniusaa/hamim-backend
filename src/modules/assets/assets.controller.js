@@ -13,8 +13,8 @@ const listBundles = async (req, res) => {
 
 const getBundleDetail = async (req, res) => {
   try {
-    const bundleId = parseInt(req.params.id)
-    if (isNaN(bundleId)) return error(res, 'bundleId tidak valid', 400)
+    const bundleId = req.params.id
+    if (!bundleId) return error(res, 'bundleId tidak valid', 400)
 
     const data = await assetsService.getBundleDetail(bundleId)
     return success(res, 'Berhasil mengambil detail bundle', data)

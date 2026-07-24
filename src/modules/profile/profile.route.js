@@ -10,6 +10,9 @@ router.use(authMiddleware)
 // PATCH /profile/onboarding — dipanggil sekali setelah register/login pertama kali
 router.patch('/onboarding', controller.completeOnboarding)
 
+// PATCH /profile — ubah profil sewaktu-waktu setelah onboarding (avatar, nama, dll)
+router.patch('/', controller.updateProfile)
+
 // GET /profile/me — ambil profil lengkap (buat layar profil di app)
 router.get('/me', controller.me)
 
