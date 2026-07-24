@@ -46,4 +46,14 @@ const getMyProfile = async (userId) => {
   })
 }
 
-module.exports = { completeOnboarding, getMyProfile }
+// PATCH /profile — update field profil sewaktu-waktu (avatar, nama, target harian, dst).
+// Bedanya dari completeOnboarding: ini bisa dipanggil berkali-kali, kapan saja,
+// dan cuma update field yang benar-benar dikirim (partial update).
+const updateProfile = async (userId, data) => {
+  return prisma.userProfile.update({
+    where: { user_id: userId },
+    data,
+  })
+}
+
+module.exports = { completeOnboarding, updateProfile, getMyProfile }

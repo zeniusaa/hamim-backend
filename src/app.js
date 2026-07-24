@@ -1,4 +1,10 @@
 require('dotenv').config()
+
+// Paling atas & sebelum apa pun — supaya semua timestamp yang dikirim lewat
+// JSON (res.json) tampil dalam WIB (UTC+7), bukan UTC. Lihat komentar di file
+// itu untuk detail; ini tidak mengubah cara waktu disimpan di database.
+const { toWIBString } = require('./utils/timezone')
+
 const express = require('express')
 const cors = require('cors')
 const helmet = require('helmet')
@@ -38,7 +44,7 @@ if (process.env.NODE_ENV === 'development') {
 // Endpoint sederhana untuk cek apakah server hidup.
 // Berguna untuk monitoring atau load balancer.
 app.get('/health', (req, res) => {
-  res.json({ status: 'OK', timestamp: new Date().toISOString() })
+  res.json({ status: 'OK', timestamp: toWIBString(new Date()) })
 })
 
 // ─── Routes ──────────────────────────────────────────────────
@@ -50,6 +56,7 @@ app.use('/assets',    require('./modules/assets/assets.route'))
 app.use('/progress',  require('./modules/progress/progress.route'))
 app.use('/level',     require('./modules/level/level.route'))
 app.use('/quiz',      require('./modules/quiz/quiz.route'))
+app.use('/lives',     require('./modules/lives/lives.route'))
 // Modul lain akan didaftarkan di sini seiring pengembangan:
 // app.use('/user', require('./modules/user/user.route'))
 // app.use('/quran', require('./modules/quran/quran.route'))
@@ -69,6 +76,11 @@ app.listen(PORT, () => {
   console.log(`\n🕌 HAMIM Backend berjalan di http://localhost:${PORT}`)
   console.log(`   Mode: ${process.env.NODE_ENV || 'development'}`)
   console.log(`   Health check: http://localhost:${PORT}/health\n`)
+
+  // Cek & hapus permanen akun yang sudah 30 hari soft-deleted.
+  // Jalan sekali saat startup, lalu berulang tiap 6 jam selama server hidup.
+  const { startCleanupScheduler } = require('./utils/cleanupDeletedUsers')
+  startCleanupScheduler()
 })
 
 module.exports = app

@@ -78,7 +78,10 @@ const login = async (req, res, next) => {
     const data = loginSchema.parse(req.body)
     const result = await authService.login(data)
 
-    return success(res, 'Login berhasil.', result)
+    const message = result.account_restored
+      ? 'Login berhasil. Akun kamu yang sempat diminta hapus sudah dipulihkan.'
+      : 'Login berhasil.'
+    return success(res, message, result)
   } catch (err) {
     next(err)
   }
@@ -127,7 +130,10 @@ const googleNative = async (req, res, next) => {
     const { idToken } = googleNativeSchema.parse(req.body)
     const result = await authService.loginWithGoogleIdToken(idToken)
 
-    return success(res, 'Login Google berhasil.', result)
+    const message = result.account_restored
+      ? 'Login Google berhasil. Akun kamu yang sempat diminta hapus sudah dipulihkan.'
+      : 'Login Google berhasil.'
+    return success(res, message, result)
   } catch (err) {
     next(err)
   }
@@ -224,7 +230,7 @@ const deleteAccount = async (req, res, next) => {
     const data = deleteAccountSchema.parse(req.body)
     await authService.deleteAccount(req.user.id, data.password)
 
-    return success(res, 'Akun berhasil dihapus.')
+    return success(res, 'Akun kamu dijadwalkan dihapus permanen dalam 30 hari. Login kembali kapan saja sebelum itu untuk membatalkan.')
   } catch (err) {
     next(err)
   }

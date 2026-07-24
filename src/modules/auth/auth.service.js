@@ -38,7 +38,10 @@ const register = async ({ name, email, phone_number, password, language_code }) 
   // Cek apakah email sudah terdaftar
   const existingEmail = await prisma.user.findUnique({ where: { email } })
   if (existingEmail) {
-    const err = new Error('Email sudah terdaftar.')
+    const message = existingEmail.deleted_at
+      ? 'Email ini terhubung dengan akun yang sedang dalam proses penghapusan. Silakan login untuk memulihkan akun tersebut.'
+      : 'Email sudah terdaftar.'
+    const err = new Error(message)
     err.statusCode = 409
     throw err
   }
@@ -101,7 +104,8 @@ const register = async ({ name, email, phone_number, password, language_code }) 
 }
 
 const login = async ({ email, password }) => {
-  // Cari user berdasarkan email
+  // Cari user berdasarkan email (termasuk yang deleted_at-nya terisi,
+  // supaya kita bisa deteksi & auto-restore kalau dia login lagi)
   const user = await prisma.user.findUnique({ where: { email } })
 
   // Pesan error sengaja dibuat generik — jangan beritahu apakah
@@ -119,6 +123,12 @@ const login = async ({ email, password }) => {
     throw err
   }
 
+  // Akun sedang dalam masa tunggu hapus (< 30 hari) -> login lagi = batal hapus otomatis
+  const accountRestored = !!user.deleted_at
+  if (accountRestored) {
+    await prisma.user.update({ where: { id: user.id }, data: { deleted_at: null } })
+  }
+
   const tokens = generateTokens({ id: user.id, email: user.email })
 
   return {
@@ -127,6 +137,7 @@ const login = async ({ email, password }) => {
       email: user.email,
       is_onboarded: user.is_onboarded,
     },
+    account_restored: accountRestored,
     ...tokens,
   }
 }
@@ -155,39 +166,56 @@ const refresh = async (refreshToken) => {
     throw err
   }
 
+  // Akun sedang dalam masa tunggu hapus — jangan perpanjang sesi lewat refresh token.
+  // User harus login ulang (email/password atau Google) supaya akunnya di-restore dulu.
+  if (user.deleted_at) {
+    const err = new Error('Akun sedang dalam proses penghapusan. Silakan login ulang untuk memulihkan akun.')
+    err.statusCode = 403
+    throw err
+  }
+
   const tokens = generateTokens({ id: user.id, email: user.email })
   return tokens
 }
 
 // Dipakai bareng oleh flow web (passport, browser) dan flow native (Flutter).
 // Supaya logic "cari atau buat user dari data Google" tidak duplikat di 2 tempat.
+// Sekalian handle auto-restore: kalau user ini sedang dalam masa tunggu hapus akun
+// (deleted_at terisi) dan berhasil login lagi, penghapusannya otomatis dibatalkan.
 const findOrCreateGoogleUser = async ({ googleId, email, displayName, avatarUrl }) => {
   // Sudah pernah login Google sebelumnya?
   let user = await prisma.user.findUnique({ where: { google_id: googleId } })
-  if (user) return user
 
   // Email sudah ada (misal daftar manual pakai email/password)? Tautkan google_id-nya.
-  user = await prisma.user.findUnique({ where: { email } })
-  if (user) {
-    return prisma.user.update({
-      where: { email },
-      data: { google_id: googleId },
-    })
+  if (!user) {
+    user = await prisma.user.findUnique({ where: { email } })
+    if (user) {
+      user = await prisma.user.update({ where: { email }, data: { google_id: googleId } })
+    }
   }
 
   // Belum ada sama sekali → buat akun baru
-  return prisma.user.create({
-    data: {
-      email,
-      google_id: googleId,
-      profile: {
-        create: {
-          display_name: displayName,
-          avatar_url: avatarUrl ?? null,
+  if (!user) {
+    return prisma.user.create({
+      data: {
+        email,
+        google_id: googleId,
+        profile: {
+          create: {
+            display_name: displayName,
+            avatar_url: avatarUrl ?? null,
+          },
         },
       },
-    },
-  })
+    })
+  }
+
+  if (user.deleted_at) {
+    user = await prisma.user.update({ where: { id: user.id }, data: { deleted_at: null } })
+    user.was_restored = true // flag sementara (bukan kolom DB), dibaca oleh caller
+  }
+
+  return user
 }
 
 // POST /auth/google/native — dipanggil dari Flutter setelah dapat idToken
@@ -203,6 +231,7 @@ const loginWithGoogleIdToken = async (idToken) => {
       email: user.email,
       is_onboarded: user.is_onboarded,
     },
+    account_restored: !!user.was_restored,
     ...tokens,
   }
 }
@@ -307,10 +336,14 @@ const resendVerificationEmail = async (email) => {
 
 // DELETE /auth/account
 // Kalau user punya password (daftar via email), wajib konfirmasi password
-// dulu sebelum akun dihapus. User yang daftar via Google (tanpa password)
+// dulu sebelum akun ditandai hapus. User yang daftar via Google (tanpa password)
 // cukup terautentikasi lewat token JWT.
-// Semua data turunan (profile, progress, quiz_attempts, dll) otomatis
-// ikut terhapus karena relasinya sudah onDelete: Cascade di schema.
+//
+// SOFT DELETE: akun tidak langsung dihapus dari DB, cuma ditandai `deleted_at`.
+// Selama 30 hari, kalau user ini login lagi (email/password atau Google),
+// penghapusannya otomatis dibatalkan (lihat login() & findOrCreateGoogleUser()).
+// Setelah 30 hari tanpa login, baru dihapus PERMANEN oleh scheduler
+// (src/utils/cleanupDeletedUsers.js, dijalankan otomatis dari app.js tiap hari).
 const deleteAccount = async (userId, password) => {
   const user = await prisma.user.findUnique({ where: { id: userId } })
 
@@ -335,7 +368,7 @@ const deleteAccount = async (userId, password) => {
     }
   }
 
-  await prisma.user.delete({ where: { id: userId } })
+  await prisma.user.update({ where: { id: userId }, data: { deleted_at: new Date() } })
 }
 
 module.exports = {
