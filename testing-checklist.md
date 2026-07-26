@@ -44,7 +44,14 @@ curl -X POST http://localhost:3000/auth/login \
   -H "Content-Type: application/json" \
   -d '{"email":"test1@hamim.dev","password":"password123"}'
 ```
+⚠️ **User baru register belum verifikasi email → login ini sekarang HARUS ditolak 403**,
+bukan berhasil (lihat langkah 5a). Body error-nya harus punya `"code":"EMAIL_NOT_VERIFIED"`,
+supaya kelanjutan test login sukses ada di langkah 5a setelah token verifikasi dipakai.
+
 Coba juga dengan password salah → harus 401, bukan 500.
+
+✅ Setelah email diverifikasi (langkah 5a) dan login berhasil, cek response `data.user` punya
+field `display_name` (bukan `null`/`undefined`, harus sesuai nama yang diisi saat register).
 
 ## 4. Auth — Refresh Token
 ```bash
@@ -78,11 +85,21 @@ benar-benar terkirim — cukup **di-log ke terminal server**:
 Salin token dari log itu untuk langkah di bawah.
 
 ```bash
+# Coba login DULU sebelum verifikasi → harus 403 "code":"EMAIL_NOT_VERIFIED"
+curl -X POST http://localhost:3000/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"test1@hamim.dev","password":"password123"}'
+
 # Klik link verifikasi (GET, bukan POST — memang diakses dari link email)
 curl "http://localhost:3000/auth/verify-email?token=<token dari log>"
 
 # Cek /auth/me lagi — email_verified harus jadi true
 curl http://localhost:3000/auth/me -H "Authorization: Bearer $TOKEN"
+
+# Login lagi SETELAH verifikasi → sekarang harus berhasil, dan data.user harus punya display_name
+curl -X POST http://localhost:3000/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"test1@hamim.dev","password":"password123"}'
 
 # Coba pakai token yang sama lagi (replay) → harus ditolak 400, bukan diloloskan
 curl "http://localhost:3000/auth/verify-email?token=<token yang sama>"
@@ -93,7 +110,10 @@ curl -X POST http://localhost:3000/auth/resend-verification \
   -d '{"email":"test1@hamim.dev"}'
 ```
 ✅ Cek:
-- Token cuma bisa dipakai sekali.
+- Login **tidak bisa** berhasil sebelum email diverifikasi — hanya berlaku untuk akun
+  email/password. Login via Google tetap bisa langsung (Google dianggap sudah verifikasi
+  emailnya), cek di langkah 8a.
+- Token verifikasi cuma bisa dipakai sekali.
 - `resend-verification` **selalu** balas sukses generik (email tidak terdaftar / sudah terverifikasi / valid, responsnya sama) — ini disengaja, bukan bug.
 - Rate limit `resend-verification`: 10x/15 menit/IP → request ke-11 harus 429.
 
@@ -121,7 +141,7 @@ curl -X POST http://localhost:3000/auth/login \
   -H "Content-Type: application/json" \
   -d '{"email":"test1@hamim.dev","password":"password123"}'
 
-# Login pakai password baru → harus berhasil
+# Login pakai password baru → harus berhasil (asumsi email sudah diverifikasi di 5a)
 curl -X POST http://localhost:3000/auth/login \
   -H "Content-Type: application/json" \
   -d '{"email":"test1@hamim.dev","password":"passwordBaru123"}'
@@ -201,6 +221,34 @@ curl http://localhost:3000/audio/ayah/1 \
 
 ---
 
+## 8a. Surah — daftar & filter by juz (BARU)
+```bash
+# Semua surat (114)
+curl http://localhost:3000/surah -H "Authorization: Bearer $TOKEN"
+
+# Cuma surat yang punya ayah di juz 1
+curl "http://localhost:3000/surah?juz=1" -H "Authorization: Bearer $TOKEN"
+
+# Juz di luar rentang → harus 422, bukan 500 atau array kosong diam-diam
+curl "http://localhost:3000/surah?juz=31" -H "Authorization: Bearer $TOKEN"
+curl "http://localhost:3000/surah?juz=0" -H "Authorization: Bearer $TOKEN"
+
+# juz bukan angka → harus 422
+curl "http://localhost:3000/surah?juz=abc" -H "Authorization: Bearer $TOKEN"
+
+# Tanpa token → harus 401
+curl "http://localhost:3000/surah?juz=1"
+```
+✅ Cek:
+- `GET /surah?juz=1` harus balikin **Al-Fatihah** dan **Al-Baqarah** (Al-Baqarah dimulai di juz 1
+  tapi lanjut sampai juz 3 — filternya pakai `Ayah.juz_number` per-ayat, bukan `Surah.juz_start`,
+  supaya surat yang lintas juz tetap ketemu di juz manapun dia punya ayah).
+- Tiap item hasil filter punya `ayah_range_in_juz: { start, end, count }` — nomor ayah dari surat
+  itu yang termasuk juz yang diminta (misal Al-Baqarah di juz 1 → `start: 1, end: 141`).
+- `GET /surah` tanpa query → semua 114 surat, tanpa field `ayah_range_in_juz`.
+
+---
+
 ## 9. Assets
 ```bash
 curl http://localhost:3000/assets/bundles -H "Authorization: Bearer $TOKEN"
@@ -265,19 +313,3 @@ curl -X POST http://localhost:3000/quiz/attempt \
 
 curl http://localhost:3000/quiz/history -H "Authorization: Bearer $TOKEN"
 ```
-
----
-
-## 13. Error cases umum yang wajib dicoba
-- Endpoint yang butuh auth, dipanggil tanpa token → harus **401**, bukan 500.
-- ID yang tidak ada di DB (mis. `/audio/surah/9999`) → harus response rapi, bukan crash server.
-- Route yang tidak ada (mis. `/foo/bar`) → harus **404** `"Endpoint tidak ditemukan."`
-
----
-
-## Yang perlu dilaporkan balik ke aku
-1. Apapun yang **500** (internal server error) — paste stack trace-nya dari terminal server.
-2. Response yang isinya beda dari ekspektasi di atas (mis. field hilang, format aneh).
-3. Endpoint mana yang datanya kosong padahal seharusnya ada (biasanya artinya perlu seed tambahan).
-4. Token verifikasi email / reset password yang **masih bisa dipakai ulang** setelah sukses sekali → bug.
-5. `resend-verification` yang ternyata **tetap mengirim email baru** untuk akun yang sudah `email_verified: true` → bug kecil (boros kirim email meski responsnya tetap generik).
