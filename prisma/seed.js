@@ -4,8 +4,24 @@
 //  Mengisi: surahs (114), ayahs (per surah), audio_files
 // ============================================================
 require('dotenv').config()
+const path = require('path')
+const fs = require('fs')
 const { PrismaClient } = require('@prisma/client')
+const { getJuzNumber } = require('./juz-boundaries')
+const { loadQuranText } = require('./quran-text')
+const { parseSqlFile } = require('./audio-maqdis-parser')
 const prisma = new PrismaClient()
+
+// ─── CLI args ────────────────────────────────────────────────
+// node prisma/seed.js
+// node prisma/seed.js --audio-file="./prisma/tbl_surat.sql"   (default path ini)
+const args = {}
+process.argv.slice(2).forEach((arg) => {
+  const [key, val] = arg.replace(/^--/, '').split('=')
+  args[key] = val ?? true
+})
+const AUDIO_SQL_FILE = args['audio-file'] || path.join(__dirname, 'tbl_surat.sql')
+const QARI_NAME = args['qari'] || 'Maqdis'
 
 // ─── 1. DATA SURAH (114 surah lengkap) ──────────────────────
 const SURAHS = [
@@ -125,11 +141,11 @@ const SURAHS = [
   {number:114,name_arabic:"الناس",          name_transliteration:"An-Nas",         name_translation_id:"Manusia",                      name_translation_en:"Mankind",                           juz_start:30, total_ayah:6,   revelation_type:"makkiyah"},
 ]
 
-// ─── 2. AUDIO URL BUILDER ────────────────────────────────────
-// Menggunakan CDN EveryAyah (Maqdis / Mishary) — URL publik, gratis
-// Format: https://everyayah.com/data/Maqdis_Murattal_64kbps/SSSAAA.mp3
-// SSS = nomor surah 3 digit, AAA = nomor ayat 3 digit
-function audioUrl(surahNumber, ayahNumber) {
+// ─── 2. AUDIO URL BUILDER (fallback placeholder) ─────────────
+// Dipakai HANYA untuk surat yang belum ada di tbl_surat.sql (data asli
+// Maqdis baru mencakup surat 1, 36, 58–114 / Juz 28–30 per catatan file).
+// CDN EveryAyah publik, gratis — 1 file audio per ayah.
+function placeholderAudioUrl(surahNumber, ayahNumber) {
   const s = String(surahNumber).padStart(3, '0')
   const a = String(ayahNumber).padStart(3, '0')
   return `https://everyayah.com/data/Maqdis_Murattal_64kbps/${s}${a}.mp3`
@@ -139,7 +155,7 @@ function audioUrl(surahNumber, ayahNumber) {
 async function main() {
   console.log('🌱 Memulai seed database HAMIM...\n')
 
-  // ── Seed Surahs ──────────────────────────────────────────
+  // ── 3a. Seed Surahs ──────────────────────────────────────
   console.log('📖 Seeding 114 surah...')
   let surahCount = 0
   for (const s of SURAHS) {
@@ -161,60 +177,125 @@ async function main() {
   }
   console.log(` ${surahCount} surah selesai                      `)
 
-  // ── Seed Ayahs + Audio Files ─────────────────────────────
-  console.log('Seeding ayat dan audio...')
+  // ── 3b. Ambil teks Arab asli (uthmani + imlaei simple) ───
+  console.log('\n📥 Mengambil teks Al-Quran dari api.quran.com (cache lokal jika sudah pernah)...')
+  const { uthmaniMap, simpleMap } = await loadQuranText()
+  if (uthmaniMap) {
+    console.log(`   ✅ Teks Utsmani & Arab sederhana siap (${uthmaniMap.size} ayat)`)
+  }
+
+  // ── 3c. Parse data audio Maqdis (tbl_surat.sql) jika ada ─
+  let audioBySurah = new Map()
+  if (fs.existsSync(AUDIO_SQL_FILE)) {
+    console.log(`\n🎧 Membaca data audio dari ${AUDIO_SQL_FILE}...`)
+    const parsed = parseSqlFile(AUDIO_SQL_FILE)
+    audioBySurah = parsed.bySurah
+    console.log(`   ✅ ${parsed.rows.length} baris audio valid, mencakup surat: ${[...audioBySurah.keys()].sort((a, b) => a - b).join(', ')}`)
+  } else {
+    console.log(`\n🎧 File audio (${AUDIO_SQL_FILE}) tidak ditemukan — semua surat akan pakai placeholder EveryAyah.`)
+  }
+
+  // ── 3d. Seed Ayahs (teks + juz_number yang benar) + Audio ─
+  console.log('\nSeeding ayat dan audio...')
   let totalAyah = 0
-  let totalAudio = 0
+  let totalAudioAsli = 0
+  let totalAudioPlaceholder = 0
+  let totalTeksAsli = 0
+  let totalTeksPlaceholder = 0
 
   for (const surahData of SURAHS) {
-    // Ambil ID surah dari DB
     const surah = await prisma.surah.findUnique({ where: { number: surahData.number } })
     if (!surah) continue
 
+    // -- upsert semua ayat surat ini, simpan referensinya untuk audio --
+    const ayahByNumber = new Map()
     for (let ayahNum = 1; ayahNum <= surahData.total_ayah; ayahNum++) {
-      // Upsert ayah
+      const verseKey = `${surahData.number}:${ayahNum}`
+      const juzNumber = getJuzNumber(surahData.number, ayahNum) // ✅ fix bug juz
+
+      const uthmaniText = uthmaniMap?.get(verseKey)
+      const simpleText = simpleMap?.get(verseKey)
+      const hasRealText = Boolean(uthmaniText)
+
+      const textUthmani = uthmaniText || `[${surahData.name_transliteration} : ${ayahNum}]`
+      const textArabic = simpleText || uthmaniText || `[${surahData.name_transliteration} : ${ayahNum}]`
+
       const ayah = await prisma.ayah.upsert({
         where: { surah_id_ayah_number: { surah_id: surah.id, ayah_number: ayahNum } },
-        update: { juz_number: surahData.juz_start },
+        update: {
+          juz_number: juzNumber,
+          text_arabic: textArabic,
+          text_uthmani: textUthmani,
+        },
         create: {
-          surah_id:     surah.id,
-          ayah_number:  ayahNum,
-          juz_number:   surahData.juz_start,
-          // text_arabic & text_uthmani diisi placeholder — ganti dengan data Quran lengkap
-          text_arabic:  `[${surahData.name_transliteration} : ${ayahNum}]`,
-          text_uthmani: `[${surahData.name_transliteration} : ${ayahNum}]`,
+          surah_id: surah.id,
+          ayah_number: ayahNum,
+          juz_number: juzNumber,
+          text_arabic: textArabic,
+          text_uthmani: textUthmani,
         },
       })
+      ayahByNumber.set(ayahNum, ayah)
       totalAyah++
+      hasRealText ? totalTeksAsli++ : totalTeksPlaceholder++
+    }
 
-      // Upsert audio file (1 per ayah, qari Maqdis)
-      const url = audioUrl(surahData.number, ayahNum)
-      const existing = await prisma.audioFile.findFirst({
-        where: { ayah_id: ayah.id, qari_name: 'Maqdis' }
-      })
-      if (!existing) {
-        await prisma.audioFile.create({
-          data: {
-            ayah_id:   ayah.id,
-            qari_name: 'Maqdis',
-            file_url:  url,
-          },
+    // -- audio: pakai data Maqdis asli kalau surat ini tercakup, else placeholder --
+    const audioItems = audioBySurah.get(surahData.number)
+    if (audioItems && audioItems.length > 0) {
+      let order = 1
+      for (const item of audioItems) {
+        const ayah = ayahByNumber.get(item.ayahStart)
+        if (!ayah) continue // ayat di luar rentang total_ayah (data sumber tidak konsisten)
+
+        const existing = await prisma.audioFile.findFirst({
+          where: { ayah_id: ayah.id, qari_name: QARI_NAME, file_url: item.urlAudio },
         })
-        totalAudio++
+        if (!existing) {
+          await prisma.audioFile.create({
+            data: {
+              ayah_id: ayah.id,
+              ayah_end_number: item.ayahEnd !== item.ayahStart ? item.ayahEnd : null,
+              audio_order: order,
+              qari_name: QARI_NAME,
+              file_url: item.urlAudio,
+            },
+          })
+          totalAudioAsli++
+        }
+        order++
+      }
+    } else {
+      for (let ayahNum = 1; ayahNum <= surahData.total_ayah; ayahNum++) {
+        const ayah = ayahByNumber.get(ayahNum)
+        const url = placeholderAudioUrl(surahData.number, ayahNum)
+        const existing = await prisma.audioFile.findFirst({
+          where: { ayah_id: ayah.id, qari_name: QARI_NAME },
+        })
+        if (!existing) {
+          await prisma.audioFile.create({
+            data: { ayah_id: ayah.id, qari_name: QARI_NAME, file_url: url },
+          })
+          totalAudioPlaceholder++
+        }
       }
     }
 
     process.stdout.write(`   Surah ${surahData.number}/114 (${surahData.name_transliteration})...\r`)
   }
 
-  console.log(`   ✅ ${totalAyah} ayat + ${totalAudio} audio files selesai`)
-
-  console.log('\n🎉 Seed selesai!')
-  console.log(`   Surah : 114`)
-  console.log(`   Ayat  : ${totalAyah}`)
-  console.log(`   Audio : ${totalAudio}`)
-  console.log('\n⚠️  PENTING: field text_arabic & text_uthmani masih berupa placeholder.')
-  console.log('   Ganti dengan data teks Al-Quran yang benar sebelum production.\n')
+  console.log('\n')
+  console.log('🎉 Seed selesai!')
+  console.log(`   Surah                  : 114`)
+  console.log(`   Ayat                   : ${totalAyah}`)
+  console.log(`   Teks asli (quran.com)  : ${totalTeksAsli}`)
+  console.log(`   Teks placeholder       : ${totalTeksPlaceholder}`)
+  console.log(`   Audio Maqdis asli      : ${totalAudioAsli}`)
+  console.log(`   Audio placeholder      : ${totalAudioPlaceholder}`)
+  if (totalTeksPlaceholder > 0) {
+    console.log('\n⚠️  Sebagian ayat masih placeholder teks (fetch api.quran.com gagal/offline).')
+    console.log('   Jalankan ulang "node prisma/seed.js" saat online untuk melengkapi teksnya.')
+  }
 }
 
 main()

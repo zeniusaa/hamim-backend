@@ -11,5 +11,8 @@ router.get('/bundles', authMiddleware, assetsController.listBundles)
 router.get('/bundles/:id', authMiddleware, assetsController.getBundleDetail)
 router.post('/download/confirm', authMiddleware, assetsController.confirmDownload)
 router.get('/check-updates', authMiddleware, assetsController.checkUpdates)
+router.get('/icons', authMiddleware, assetsController.listIcons)
+router.get('/backgrounds', authMiddleware, assetsController.listBackgrounds)
+router.get('/music', authMiddleware, assetsController.listMusic)
 
 module.exports = router

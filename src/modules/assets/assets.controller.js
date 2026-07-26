@@ -13,8 +13,8 @@ const listBundles = async (req, res) => {
 
 const getBundleDetail = async (req, res) => {
   try {
-    const bundleId = parseInt(req.params.id)
-    if (isNaN(bundleId)) return error(res, 'bundleId tidak valid', 400)
+    const bundleId = req.params.id
+    if (!bundleId) return error(res, 'bundleId tidak valid', 400)
 
     const data = await assetsService.getBundleDetail(bundleId)
     return success(res, 'Berhasil mengambil detail bundle', data)
@@ -50,4 +50,34 @@ const checkUpdates = async (req, res) => {
   }
 }
 
-module.exports = { listBundles, getBundleDetail, confirmDownload, checkUpdates }
+const listIcons = async (req, res) => {
+  try {
+    const data = await assetsService.listIcons()
+    return success(res, 'Berhasil mengambil daftar ikon', data)
+  } catch (err) {
+    console.error('[listIcons]', err)
+    return error(res, 'Terjadi kesalahan server', 500)
+  }
+}
+
+const listBackgrounds = async (req, res) => {
+  try {
+    const data = await assetsService.listBackgrounds()
+    return success(res, 'Berhasil mengambil daftar latar', data)
+  } catch (err) {
+    console.error('[listBackgrounds]', err)
+    return error(res, 'Terjadi kesalahan server', 500)
+  }
+}
+
+const listMusic = async (req, res) => {
+  try {
+    const data = await assetsService.listMusic()
+    return success(res, 'Berhasil mengambil daftar musik', data)
+  } catch (err) {
+    console.error('[listMusic]', err)
+    return error(res, 'Terjadi kesalahan server', 500)
+  }
+}
+
+module.exports = { listBundles, getBundleDetail, confirmDownload, checkUpdates, listIcons, listBackgrounds, listMusic }

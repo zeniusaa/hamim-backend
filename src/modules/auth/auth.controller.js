@@ -29,6 +29,37 @@ const loginSchema = z.object({
   password: z.string().min(1, 'Password tidak boleh kosong.'),
 })
 
+// Body dari Flutter: cuma idToken hasil google_sign_in SDK
+const googleNativeSchema = z.object({
+  idToken: z.string().min(10, 'idToken tidak boleh kosong.'),
+})
+
+const forgotPasswordSchema = z.object({
+  email: z.string().email('Format email tidak valid.'),
+})
+
+const resetPasswordSchema = z.object({
+  token: z.string().min(10, 'Token tidak valid.'),
+  password: z
+    .string()
+    .min(8, 'Password minimal 8 karakter.')
+    .max(100, 'Password terlalu panjang.'),
+})
+
+const verifyEmailSchema = z.object({
+  token: z.string().min(10, 'Token tidak valid.'),
+})
+
+const resendVerificationSchema = z.object({
+  email: z.string().email('Format email tidak valid.'),
+})
+
+const deleteAccountSchema = z.object({
+  // Opsional di level validasi — wajib-tidaknya dicek di service,
+  // karena tergantung apakah user daftar via email atau Google.
+  password: z.string().optional(),
+})
+
 // POST /auth/register
 const register = async (req, res, next) => {
   try {
@@ -47,7 +78,10 @@ const login = async (req, res, next) => {
     const data = loginSchema.parse(req.body)
     const result = await authService.login(data)
 
-    return success(res, 'Login berhasil.', result)
+    const message = result.account_restored
+      ? 'Login berhasil. Akun kamu yang sempat diminta hapus sudah dipulihkan.'
+      : 'Login berhasil.'
+    return success(res, message, result)
   } catch (err) {
     next(err)
   }
@@ -66,7 +100,7 @@ const refresh = async (req, res, next) => {
 }
 
 // GET /auth/google/callback
-// Dipanggil setelah Google redirect balik ke app kita.
+// Dipanggil setelah Google redirect balik ke app kita (flow WEB via browser).
 // Passport sudah proses user-nya, kita tinggal buat token.
 const googleCallback = async (req, res, next) => {
   try {
@@ -80,9 +114,35 @@ const googleCallback = async (req, res, next) => {
     // Tim mobile bisa tangkap ini via deep link
     // const redirectUrl = `hamim://auth/callback?accessToken=${tokens.accessToken}&refreshToken=${tokens.refreshToken}`
 
-    // GANTI SEMENTARA (untuk testing di browser/Postman) 
-    return res.json({ accessToken: tokens.accessToken, refreshToken: tokens.refreshToken })
+    // GANTI SEMENTARA (untuk testing di browser/Postman)
+    return res.json({
+      accessToken: tokens.accessToken,
+      refreshToken: tokens.refreshToken,
+      user: {
+        id: req.user.id,
+        email: req.user.email,
+        display_name: req.user.profile?.display_name ?? null,
+        is_onboarded: req.user.is_onboarded,
+      },
+    })
     return res.redirect(redirectUrl)
+  } catch (err) {
+    next(err)
+  }
+}
+
+// POST /auth/google/native
+// Dipanggil dari Flutter (flow NATIVE, tanpa buka browser).
+// Body: { idToken } hasil Google Sign-In SDK di sisi mobile.
+const googleNative = async (req, res, next) => {
+  try {
+    const { idToken } = googleNativeSchema.parse(req.body)
+    const result = await authService.loginWithGoogleIdToken(idToken)
+
+    const message = result.account_restored
+      ? 'Login Google berhasil. Akun kamu yang sempat diminta hapus sudah dipulihkan.'
+      : 'Login Google berhasil.'
+    return success(res, message, result)
   } catch (err) {
     next(err)
   }
@@ -99,6 +159,7 @@ const me = async (req, res, next) => {
         email: true,
         phone_number: true,
         is_onboarded: true,
+        email_verified: true,
         language_id: true,
         created_at: true,
         profile: {
@@ -120,4 +181,80 @@ const me = async (req, res, next) => {
   }
 }
 
-module.exports = { register, login, refresh, googleCallback, me }
+// POST /auth/forgot-password
+const forgotPassword = async (req, res, next) => {
+  try {
+    const data = forgotPasswordSchema.parse(req.body)
+    await authService.forgotPassword(data.email)
+
+    // Pesan generik — tidak membedakan email terdaftar atau tidak
+    return success(res, 'Jika email terdaftar, link reset password sudah dikirim.')
+  } catch (err) {
+    next(err)
+  }
+}
+
+// POST /auth/reset-password
+const resetPassword = async (req, res, next) => {
+  try {
+    const data = resetPasswordSchema.parse(req.body)
+    await authService.resetPassword(data)
+
+    return success(res, 'Password berhasil direset. Silakan login dengan password baru.')
+  } catch (err) {
+    next(err)
+  }
+}
+
+// GET /auth/verify-email?token=xxxx
+// Diakses langsung dari link di email (bukan dipanggil dari app),
+// jadi token diambil dari query string, bukan body.
+const verifyEmail = async (req, res, next) => {
+  try {
+    const data = verifyEmailSchema.parse(req.query)
+    await authService.verifyEmail(data.token)
+
+    return success(res, 'Email berhasil diverifikasi. Silakan kembali ke aplikasi.')
+  } catch (err) {
+    next(err)
+  }
+}
+
+// POST /auth/resend-verification
+const resendVerification = async (req, res, next) => {
+  try {
+    const data = resendVerificationSchema.parse(req.body)
+    await authService.resendVerificationEmail(data.email)
+
+    // Pesan generik — tidak membedakan email terdaftar/sudah terverifikasi atau tidak
+    return success(res, 'Jika email terdaftar dan belum terverifikasi, link verifikasi sudah dikirim.')
+  } catch (err) {
+    next(err)
+  }
+}
+
+// DELETE /auth/account
+const deleteAccount = async (req, res, next) => {
+  try {
+    const data = deleteAccountSchema.parse(req.body)
+    await authService.deleteAccount(req.user.id, data.password)
+
+    return success(res, 'Akun kamu dijadwalkan dihapus permanen dalam 30 hari. Login kembali kapan saja sebelum itu untuk membatalkan.')
+  } catch (err) {
+    next(err)
+  }
+}
+
+module.exports = {
+  register,
+  login,
+  refresh,
+  googleCallback,
+  googleNative,
+  me,
+  forgotPassword,
+  resetPassword,
+  verifyEmail,
+  resendVerification,
+  deleteAccount,
+}

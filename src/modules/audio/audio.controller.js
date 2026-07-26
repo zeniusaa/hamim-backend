@@ -3,8 +3,8 @@ const { success, error } = require('../../utils/response')
 
 const getAudioBySurah = async (req, res) => {
   try {
-    const surahId = parseInt(req.params.surahId)
-    if (isNaN(surahId)) return error(res, 'surahId tidak valid', 400)
+    const surahId = req.params.surahId
+    if (!surahId) return error(res, 'surahId tidak valid', 400)
 
     const data = await audioService.getAudioBySurah(surahId)
     return success(res, 'Berhasil mengambil audio surah', data)
@@ -17,8 +17,8 @@ const getAudioBySurah = async (req, res) => {
 
 const getAudioByAyah = async (req, res) => {
   try {
-    const ayahId = parseInt(req.params.ayahId)
-    if (isNaN(ayahId)) return error(res, 'ayahId tidak valid', 400)
+    const ayahId = req.params.ayahId
+    if (!ayahId) return error(res, 'ayahId tidak valid', 400)
 
     const data = await audioService.getAudioByAyah(ayahId)
     return success(res, 'Berhasil mengambil audio ayat', data)

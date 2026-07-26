@@ -36,6 +36,30 @@ const onboardingSchema = z.object({
     .max(10, 'Maksimal 10x putaran.'),
 })
 
+// PATCH /profile — update profil kapan saja setelah onboarding (avatar, nama, target
+// harian, dll). Semua field opsional — kirim cuma yang mau diubah.
+const updateProfileSchema = z.object({
+  display_name: z.string().min(1, 'Nama tidak boleh kosong.').max(100, 'Terlalu panjang.').optional(),
+  avatar_url: z.string().url('URL avatar tidak valid.').optional(),
+  learning_start: z
+    .enum(['juz_awal', 'juz_akhir'], { errorMap: () => ({ message: 'Pilih juz_awal atau juz_akhir.' }) })
+    .optional(),
+  referral_source: z.string().max(100, 'Terlalu panjang.').optional(),
+  motivation_text: z.string().max(500, 'Terlalu panjang.').optional(),
+  daily_target_minutes: z
+    .number()
+    .refine((v) => ALLOWED_DAILY_TARGETS.includes(v), {
+      message: `Target harian harus salah satu dari: ${ALLOWED_DAILY_TARGETS.join(', ')} menit.`,
+    })
+    .optional(),
+  audio_repeat_count: z
+    .number()
+    .int('Harus bilangan bulat.')
+    .min(1, 'Minimal 1x putaran.')
+    .max(10, 'Maksimal 10x putaran.')
+    .optional(),
+})
+
 // PATCH /profile/onboarding
 const completeOnboarding = async (req, res, next) => {
   try {
@@ -43,6 +67,22 @@ const completeOnboarding = async (req, res, next) => {
     const profile = await profileService.completeOnboarding(req.user.id, data)
 
     return success(res, 'Profil berhasil dilengkapi.', profile)
+  } catch (err) {
+    next(err)
+  }
+}
+
+// PATCH /profile — ubah profil sewaktu-waktu (bukan cuma sekali saat onboarding)
+const updateProfile = async (req, res, next) => {
+  try {
+    const data = updateProfileSchema.parse(req.body)
+
+    if (Object.keys(data).length === 0) {
+      return error(res, 'Tidak ada field yang dikirim untuk diubah.', 400)
+    }
+
+    const profile = await profileService.updateProfile(req.user.id, data)
+    return success(res, 'Profil berhasil diperbarui.', profile)
   } catch (err) {
     next(err)
   }
@@ -60,4 +100,4 @@ const me = async (req, res, next) => {
   }
 }
 
-module.exports = { completeOnboarding, me }
+module.exports = { completeOnboarding, updateProfile, me }

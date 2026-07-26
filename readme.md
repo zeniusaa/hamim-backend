@@ -13,18 +13,48 @@ Backend untuk **HAMIM** (Hafalan Al-Quran Menggunakan Irama Maqdis) — aplikasi
 
 ## Daftar isi
 
-1. [Format response](#format-response)
-2. [Alur autentikasi & onboarding](#alur-autentikasi--onboarding)
-3. [Health check](#health-check)
-4. [Languages](#languages)
-5. [Auth](#auth)
-6. [Profile](#profile)
-7. [Audio](#audio)
-8. [Assets](#assets)
-9. [Progress](#progress)
-10. [Level & Leaderboard](#level--leaderboard)
-11. [Kode error](#kode-error)
-12. [Contoh test cepat (curl)](#contoh-test-cepat-curl)
+1. [Setup lokal & seed database](#setup-lokal--seed-database)
+2. [Format response](#format-response)
+3. [Alur autentikasi & onboarding](#alur-autentikasi--onboarding)
+4. [Health check](#health-check)
+5. [Languages](#languages)
+6. [Auth](#auth)
+7. [Profile](#profile)
+8. [Audio](#audio)
+9. [Assets](#assets)
+10. [Quiz](#quiz)
+11. [Progress](#progress)
+12. [Level & Leaderboard](#level--leaderboard)
+13. [Kode error](#kode-error)
+14. [Contoh test cepat (curl)](#contoh-test-cepat-curl)
+
+---
+
+## Setup lokal & seed database
+
+```bash
+npm install
+# isi .env (lihat .env.example)
+
+npx prisma migrate dev --name init
+npx prisma generate
+
+# urutan wajib — masing-masing butuh data dari langkah sebelumnya
+node prisma/seed-languages.js   # 1. bahasa (id, en)
+node prisma/seed.js             # 2. 114 surah + ayat + audio
+node prisma/seed-dummy.js       # 3. dummy user, asset, progress, quiz, level, dll
+
+npm run dev
+```
+
+> **Catatan skema database:** nama tabel & kolom di MySQL (`pengguna`, `surah`, `ayat`, `soal_kuis`, dst) sudah pakai Bahasa Indonesia lewat `@map`/`@@map` di `schema.prisma`. Ini **transparan buat kode dan API** — semua endpoint di bawah tetap pakai nama field Inggris (`email`, `password_hash`, dst) persis seperti sebelumnya, jadi tidak ada breaking change buat tim mobile.
+
+Akun dummy hasil `seed-dummy.js` (password semua: `password123`):
+| Email | Keterangan |
+|---|---|
+| `dummy.raka@hamim.test` | sudah onboarding, level 3, ada progress & quiz attempt |
+| `dummy.aisyah@hamim.test` | sudah onboarding, level 1 |
+| `dummy.google@hamim.test` | simulasi akun Google, belum onboarding, tidak punya password (login via `/auth/google/native` saja) |
 
 ---
 
@@ -220,6 +250,96 @@ Setiap login/register berhasil mengembalikan `accessToken` (7 hari) dan `refresh
 
 ---
 
+### `POST /auth/google/native`
+**Publik.** Login Google khusus **Flutter/mobile** — tanpa buka browser. Flutter pakai SDK `google_sign_in` (dengan `serverClientId` = Web Client ID di `.env`), dapat `idToken`, lalu kirim ke sini. Backend verifikasi `idToken` langsung ke Google (`google-auth-library`), lalu buat/cari user — logic user-nya sama persis dengan flow `/auth/google/callback` di atas.
+
+**Body:**
+```json
+{ "idToken": "eyJhbGciOiJSUzI1NiIs..." }
+```
+
+**Response 200:**
+```json
+{
+  "success": true,
+  "message": "Login Google berhasil.",
+  "data": {
+    "user": { "id": "uuid", "email": "raka@example.com", "is_onboarded": false },
+    "accessToken": "...",
+    "refreshToken": "..."
+  }
+}
+```
+
+**Error khas:** `401` — `idToken` tidak valid, sudah expired, atau `audience`-nya tidak cocok dengan `GOOGLE_CLIENT_ID` (biasanya karena Flutter lupa set `serverClientId`).
+
+---
+
+### `POST /auth/forgot-password`
+**Publik.** Minta link reset password dikirim ke email. Rate limit sama seperti register/login.
+
+**Body:**
+```json
+{ "email": "raka@example.com" }
+```
+
+**Response 200** (selalu sukses, apa pun kondisinya):
+```json
+{ "success": true, "message": "Jika email terdaftar, link reset password sudah dikirim." }
+```
+> Pesan sengaja generik dan **selalu balas sukses** — walau email tidak terdaftar, atau akunnya daftar via Google (tidak punya password) — supaya tidak bisa dipakai untuk menebak email mana yang terdaftar (*user enumeration*). Link asli dikirim lewat email; kalau SMTP belum dikonfigurasi di `.env`, link cukup di-log ke terminal server.
+
+Token reset berlaku **1 jam**.
+
+---
+
+### `POST /auth/reset-password`
+**Publik.** Submit token dari email + password baru.
+
+**Body:**
+```json
+{ "token": "<token dari email/log>", "password": "passwordBaru123" }
+```
+
+**Response 200:**
+```json
+{ "success": true, "message": "Password berhasil direset. Silakan login dengan password baru." }
+```
+
+**Error khas:** `400` — token tidak valid, sudah dipakai, atau sudah kadaluarsa (>1 jam).
+
+---
+
+### `GET /auth/verify-email?token=xxxx`
+**Publik.** Diklik langsung dari link di email verifikasi (bukan dipanggil dari app/mobile). Menandai `email_verified` jadi `true`.
+
+**Response 200:**
+```json
+{ "success": true, "message": "Email berhasil diverifikasi. Silakan kembali ke aplikasi." }
+```
+
+**Error khas:** `400` — token tidak valid, sudah dipakai (sekali pakai), atau sudah kadaluarsa (>24 jam).
+
+> Catatan: saat ini `email_verified` bersifat informatif saja — belum dipakai untuk membatasi akses ke endpoint lain (belum ada *enforcement*).
+
+---
+
+### `POST /auth/resend-verification`
+**Publik.** Kirim ulang link verifikasi (misal karena email pertama tidak sampai atau kadaluarsa). Rate limit sama seperti register/login.
+
+**Body:**
+```json
+{ "email": "raka@example.com" }
+```
+
+**Response 200** (selalu sukses, apa pun kondisinya):
+```json
+{ "success": true, "message": "Jika email terdaftar dan belum terverifikasi, link verifikasi sudah dikirim." }
+```
+> Sama seperti `forgot-password`, pesan sengaja generik untuk mencegah *user enumeration* — baik email tidak terdaftar maupun email yang **sudah** terverifikasi tetap dibalas sukses, tapi email baru **hanya** benar-benar dikirim kalau user ada dan belum terverifikasi. Mengirim ulang otomatis menerbitkan token baru (24 jam) dan token lama otomatis tidak berlaku lagi.
+
+---
+
 ### `GET /auth/me`
 **Butuh login.** Cek token masih valid + ambil data dasar user.
 
@@ -233,6 +353,7 @@ Setiap login/register berhasil mengembalikan `accessToken` (7 hari) dan `refresh
     "email": "raka@example.com",
     "phone_number": "081234567890",
     "is_onboarded": true,
+    "email_verified": false,
     "language_id": 1,
     "created_at": "2026-07-03T10:00:00.000Z",
     "profile": {
@@ -244,6 +365,23 @@ Setiap login/register berhasil mengembalikan `accessToken` (7 hari) dan `refresh
   }
 }
 ```
+
+---
+
+### `DELETE /auth/account`
+**Butuh login.** Hapus akun permanen. Semua data turunan (profile, progress, quiz attempt, dll) otomatis ikut terhapus (cascade).
+
+**Body** (wajib **hanya** kalau akun daftar via email/password; akun Google tanpa `password_hash` tidak perlu kirim ini):
+```json
+{ "password": "password123" }
+```
+
+**Response 200:**
+```json
+{ "success": true, "message": "Akun berhasil dihapus." }
+```
+
+**Error khas:** `400` — password wajib diisi (akun email tapi tidak kirim password). `401` — password salah.
 
 ---
 
@@ -434,6 +572,19 @@ Sistem aset (icon, background, music) yang di-bundle dan bisa di-download client
 ```
 **Error khas:** `400` — `bundle_id` tidak dikirim. `404` — bundle tidak ditemukan.
 
+### `GET /assets/icons` · `GET /assets/backgrounds` · `GET /assets/music`
+**Butuh login.** Detail aset satu-per-satu (bukan lewat bundle) — dipakai untuk layar semacam "Toko Tema" / "Ganti Ikon" yang butuh preview per item, bukan cuma download massal.
+
+**Response 200** (`/assets/icons`):
+```json
+{
+  "data": [
+    { "id": 1, "name": "icon_home", "category": "ui", "file_url": "https://...", "file_size_bytes": 2048, "version": 1 }
+  ]
+}
+```
+`/assets/backgrounds` dan `/assets/music` bentuknya sama, field `category` diganti `theme` (background) atau `type` (music).
+
 ### `GET /assets/check-updates?versions=juz_30_audio:1,ui_basic:2`
 **Butuh login.** Client kirim versi bundle yang sudah dimiliki, server balas mana yang perlu di-update.
 
@@ -445,6 +596,61 @@ Sistem aset (icon, background, music) yang di-bundle dan bisa di-download client
     "updates": [{ "id": 1, "name": "juz_30_audio", "version": 2, "total_size_bytes": 15000000, "needs_update": true }],
     "up_to_date": ["ui_basic"]
   }
+}
+```
+
+---
+
+## Quiz
+
+Bank soal per ayat, dipakai di tahap `quiz` (lihat [Progress](#progress)). `is_correct` sengaja **tidak pernah** dikirim ke client saat ambil soal — biar tidak bisa dicontek dari response; benar/salahnya dihitung di server saat submit jawaban.
+
+### `GET /quiz/ayah/:ayahId?language_code=id`
+**Butuh login.** List soal kuis untuk 1 ayat, sesuai bahasa (`language_code`, default `"id"`).
+
+**Response 200:**
+```json
+{
+  "data": [
+    {
+      "id": 1,
+      "type": "multiple_choice",
+      "question_text": "Ayat pertama Al-Fatihah dimulai dengan lafaz apa?",
+      "options": [
+        { "id": 1, "option_text": "Bismillahirrahmanirrahim", "order_index": 0 },
+        { "id": 2, "option_text": "Alhamdulillah", "order_index": 1 }
+      ]
+    }
+  ]
+}
+```
+**Error khas:** `404` — kode bahasa tidak ditemukan.
+
+### `POST /quiz/attempt`
+**Butuh login.** Submit jawaban 1 soal. Server yang menentukan benar/salah, bukan client.
+
+**Body:**
+```json
+{ "question_id": 1, "selected_option_id": 2, "time_taken_seconds": 4.1 }
+```
+
+**Response 200:**
+```json
+{
+  "data": { "attempt_id": 15, "is_correct": false, "correct_option_id": 1 }
+}
+```
+**Error khas:** `404` — soal tidak ditemukan. `400` — `selected_option_id` bukan opsi dari soal tersebut.
+
+### `GET /quiz/history`
+**Butuh login.** 50 riwayat jawaban terakhir user, terbaru dulu.
+
+**Response 200:**
+```json
+{
+  "data": [
+    { "id": 15, "is_correct": false, "time_taken_seconds": 4.1, "attempted_at": "...", "question": { "id": 1, "question_text": "...", "type": "multiple_choice" } }
+  ]
 }
 ```
 
@@ -623,6 +829,7 @@ Sistem 15 tingkatan, tiap level butuh 2 juz selesai (semua ayat, semua tahap ter
 | `404` | Data tidak ditemukan (surah, ayah, bundle, dll) |
 | `409` | Data bentrok — email/nomor HP sudah dipakai (juga otomatis untuk constraint unik Prisma `P2002`) |
 | `422` | Validasi Zod gagal — cek array `errors` untuk detail per field |
+| `429` | Rate limit terlampaui — maksimal 10 request/15 menit/IP untuk endpoint `auth` yang pakai `authLimiter` (`register`, `login`, `forgot-password`, `reset-password`, `resend-verification`, `google/native`) |
 | `500` | Error server/database tak terduga |
 
 ---
@@ -651,4 +858,40 @@ curl -X PATCH http://localhost:3000/profile/onboarding \
 
 # 5. Cek profil
 curl http://localhost:3000/profile/me -H "Authorization: Bearer <TOKEN>"
+
+# 6. Login pakai akun dummy (hasil seed-dummy.js)
+curl -X POST http://localhost:3000/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"dummy.raka@hamim.test","password":"password123"}'
+
+# 7. Ambil soal kuis untuk ayat pertama Al-Fatihah (ayah_id sesuaikan hasil seed)
+curl http://localhost:3000/quiz/ayah/1 -H "Authorization: Bearer <TOKEN>"
+
+# 8. Lihat daftar ikon aset
+curl http://localhost:3000/assets/icons -H "Authorization: Bearer <TOKEN>"
+
+# 9. Verifikasi email — ambil <TOKEN_VERIFIKASI> dari log terminal server
+#    (kalau SMTP belum dikonfigurasi) atau dari email asli
+curl "http://localhost:3000/auth/verify-email?token=<TOKEN_VERIFIKASI>"
+
+# 10. Kirim ulang link verifikasi (kalau token/link pertama kadaluarsa)
+curl -X POST http://localhost:3000/auth/resend-verification \
+  -H "Content-Type: application/json" \
+  -d '{"email":"raka@example.com"}'
+
+# 11. Lupa password — minta link reset
+curl -X POST http://localhost:3000/auth/forgot-password \
+  -H "Content-Type: application/json" \
+  -d '{"email":"raka@example.com"}'
+
+# 12. Reset password — ambil <TOKEN_RESET> dari log terminal server / email
+curl -X POST http://localhost:3000/auth/reset-password \
+  -H "Content-Type: application/json" \
+  -d '{"token":"<TOKEN_RESET>","password":"passwordBaru123"}'
+
+# 13. Hapus akun (perlu password kalau daftar via email)
+curl -X DELETE http://localhost:3000/auth/account \
+  -H "Authorization: Bearer <TOKEN>" \
+  -H "Content-Type: application/json" \
+  -d '{"password":"password123"}'
 ```
