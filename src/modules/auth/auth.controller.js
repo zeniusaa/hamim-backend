@@ -115,7 +115,16 @@ const googleCallback = async (req, res, next) => {
     // const redirectUrl = `hamim://auth/callback?accessToken=${tokens.accessToken}&refreshToken=${tokens.refreshToken}`
 
     // GANTI SEMENTARA (untuk testing di browser/Postman)
-    return res.json({ accessToken: tokens.accessToken, refreshToken: tokens.refreshToken })
+    return res.json({
+      accessToken: tokens.accessToken,
+      refreshToken: tokens.refreshToken,
+      user: {
+        id: req.user.id,
+        email: req.user.email,
+        display_name: req.user.profile?.display_name ?? null,
+        is_onboarded: req.user.is_onboarded,
+      },
+    })
     return res.redirect(redirectUrl)
   } catch (err) {
     next(err)

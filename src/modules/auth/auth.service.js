@@ -105,8 +105,12 @@ const register = async ({ name, email, phone_number, password, language_code }) 
 
 const login = async ({ email, password }) => {
   // Cari user berdasarkan email (termasuk yang deleted_at-nya terisi,
-  // supaya kita bisa deteksi & auto-restore kalau dia login lagi)
-  const user = await prisma.user.findUnique({ where: { email } })
+  // supaya kita bisa deteksi & auto-restore kalau dia login lagi).
+  // Sertakan relasi profile supaya display_name bisa dikembalikan ke frontend.
+  const user = await prisma.user.findUnique({
+    where: { email },
+    include: { profile: { select: { display_name: true } } },
+  })
 
   // Pesan error sengaja dibuat generik — jangan beritahu apakah
   // email tidak ada atau password salah (security best practice)
@@ -123,6 +127,15 @@ const login = async ({ email, password }) => {
     throw err
   }
 
+  // Wajib verifikasi email dulu sebelum bisa login (khusus akun email/password —
+  // akun Google otomatis terverifikasi karena Google sudah memvalidasi emailnya).
+  if (!user.email_verified) {
+    const err = new Error('Email belum diverifikasi. Silakan cek email Anda atau minta kirim ulang link verifikasi.')
+    err.statusCode = 403
+    err.code = 'EMAIL_NOT_VERIFIED'
+    throw err
+  }
+
   // Akun sedang dalam masa tunggu hapus (< 30 hari) -> login lagi = batal hapus otomatis
   const accountRestored = !!user.deleted_at
   if (accountRestored) {
@@ -135,6 +148,7 @@ const login = async ({ email, password }) => {
     user: {
       id: user.id,
       email: user.email,
+      display_name: user.profile?.display_name ?? null,
       is_onboarded: user.is_onboarded,
     },
     account_restored: accountRestored,
@@ -184,22 +198,35 @@ const refresh = async (refreshToken) => {
 // (deleted_at terisi) dan berhasil login lagi, penghapusannya otomatis dibatalkan.
 const findOrCreateGoogleUser = async ({ googleId, email, displayName, avatarUrl }) => {
   // Sudah pernah login Google sebelumnya?
-  let user = await prisma.user.findUnique({ where: { google_id: googleId } })
+  let user = await prisma.user.findUnique({
+    where: { google_id: googleId },
+    include: { profile: { select: { display_name: true } } },
+  })
 
   // Email sudah ada (misal daftar manual pakai email/password)? Tautkan google_id-nya.
+  // Sekalian tandai email_verified — Google sudah memverifikasi kepemilikan email ini,
+  // jadi user yang tadinya belum verifikasi manual otomatis lolos.
   if (!user) {
-    user = await prisma.user.findUnique({ where: { email } })
+    user = await prisma.user.findUnique({
+      where: { email },
+      include: { profile: { select: { display_name: true } } },
+    })
     if (user) {
-      user = await prisma.user.update({ where: { email }, data: { google_id: googleId } })
+      user = await prisma.user.update({
+        where: { email },
+        data: { google_id: googleId, email_verified: true },
+        include: { profile: { select: { display_name: true } } },
+      })
     }
   }
 
-  // Belum ada sama sekali → buat akun baru
+  // Belum ada sama sekali → buat akun baru, langsung terverifikasi
   if (!user) {
     return prisma.user.create({
       data: {
         email,
         google_id: googleId,
+        email_verified: true,
         profile: {
           create: {
             display_name: displayName,
@@ -207,11 +234,16 @@ const findOrCreateGoogleUser = async ({ googleId, email, displayName, avatarUrl 
           },
         },
       },
+      include: { profile: { select: { display_name: true } } },
     })
   }
 
   if (user.deleted_at) {
-    user = await prisma.user.update({ where: { id: user.id }, data: { deleted_at: null } })
+    user = await prisma.user.update({
+      where: { id: user.id },
+      data: { deleted_at: null },
+      include: { profile: { select: { display_name: true } } },
+    })
     user.was_restored = true // flag sementara (bukan kolom DB), dibaca oleh caller
   }
 
@@ -229,6 +261,7 @@ const loginWithGoogleIdToken = async (idToken) => {
     user: {
       id: user.id,
       email: user.email,
+      display_name: user.profile?.display_name ?? null,
       is_onboarded: user.is_onboarded,
     },
     account_restored: !!user.was_restored,

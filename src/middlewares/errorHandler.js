@@ -39,6 +39,9 @@ const errorHandler = (err, req, res, next) => {
   return res.status(statusCode).json({
     success: false,
     message: err.message || 'Terjadi kesalahan pada server.',
+    // err.code di sini adalah kode custom yang kita lempar sendiri (mis. EMAIL_NOT_VERIFIED),
+    // bukan kode Prisma — supaya frontend bisa branch tanpa parsing pesan teks.
+    code: err.code || undefined,
     errors: null,
   })
 }
