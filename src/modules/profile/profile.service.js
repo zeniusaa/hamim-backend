@@ -1,5 +1,8 @@
+const path = require('path')
+const fs = require('fs/promises')
 const { prisma } = require('../../config/database')
 const livesService = require('../lives/lives.service')
+const { AVATAR_DIR } = require('../../middlewares/upload')
 
 // Dipanggil sekali setelah user selesai isi form onboarding
 // (avatar, mulai dari juz mana, kenapa hafalan, target harian, dst).
@@ -105,4 +108,36 @@ const updateProfile = async (userId, data) => {
   })
 }
 
-module.exports = { completeOnboarding, updateProfile, getMyProfile }
+// POST /profile/avatar — dipanggil setelah multer selesai simpan file baru
+// di disk. Beda dari updateProfile: ini juga ngurusin hapus file avatar
+// LAMA dari disk (kalau lama juga upload lokal), supaya /uploads/avatars
+// nggak numpuk file yatim tiap kali user ganti foto.
+const updateAvatarFile = async (userId, { fileName, backendUrl }) => {
+  const current = await prisma.userProfile.findUnique({
+    where: { user_id: userId },
+    select: { avatar_url: true },
+  })
+
+  const newAvatarUrl = `${backendUrl}/uploads/avatars/${fileName}`
+
+  const profile = await prisma.userProfile.update({
+    where: { user_id: userId },
+    data: { avatar_url: newAvatarUrl },
+  })
+
+  // Hapus file lama dari disk KALAU dia juga hasil upload lokal (bukan
+  // URL dari Google/luar) — biar folder uploads/avatars nggak numpuk.
+  // Gagal hapus (mis. file memang sudah tidak ada) sengaja diabaikan,
+  // bukan hal fatal buat request ini.
+  const oldUrl = current?.avatar_url
+  if (oldUrl?.includes('/uploads/avatars/')) {
+    const oldFileName = oldUrl.split('/uploads/avatars/')[1]
+    if (oldFileName && oldFileName !== fileName) {
+      fs.unlink(path.join(AVATAR_DIR, oldFileName)).catch(() => {})
+    }
+  }
+
+  return profile
+}
+
+module.exports = { completeOnboarding, updateProfile, getMyProfile, updateAvatarFile }

@@ -9,6 +9,7 @@ const express = require('express')
 const cors = require('cors')
 const helmet = require('helmet')
 const morgan = require('morgan')
+const path = require('path')
 
 const errorHandler = require('./middlewares/errorHandler')
 
@@ -34,6 +35,21 @@ app.use(cors({
 // Parse JSON body dari request
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+
+// ─── File Upload (avatar, dll) ──────────────────────────────
+// Sajikan folder /uploads sebagai file statis publik, contoh:
+// http://localhost:3000/uploads/avatars/<nama-file>.jpg
+// crossOriginResourcePolicy di-set 'cross-origin' khusus di sini supaya
+// gambarnya tetap bisa di-load dari domain/app lain (helmet defaultnya
+// 'same-origin', yang bakal ngeblok <img> dari luar origin backend ini).
+app.use(
+  '/uploads',
+  (req, res, next) => {
+    res.set('Cross-Origin-Resource-Policy', 'cross-origin')
+    next()
+  },
+  express.static(path.join(process.cwd(), 'uploads'))
+)
 
 // Logger HTTP request — hanya tampil saat development
 if (process.env.NODE_ENV === 'development') {

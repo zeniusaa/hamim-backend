@@ -100,4 +100,25 @@ const me = async (req, res, next) => {
   }
 }
 
-module.exports = { completeOnboarding, updateProfile, me }
+// POST /profile/avatar — multipart/form-data, field "avatar" (JPG/PNG/WEBP, maks 2MB)
+// File-nya sendiri sudah disimpan ke disk oleh middleware multer (uploadAvatar)
+// SEBELUM controller ini jalan — di sini tinggal simpan URL-nya ke DB.
+const uploadAvatar = async (req, res, next) => {
+  try {
+    if (!req.file) {
+      return error(res, 'File avatar tidak ditemukan. Kirim dengan field "avatar".', 400)
+    }
+
+    const backendUrl = process.env.BACKEND_URL || `${req.protocol}://${req.get('host')}`
+    const profile = await profileService.updateAvatarFile(req.user.id, {
+      fileName: req.file.filename,
+      backendUrl,
+    })
+
+    return success(res, 'Foto profil berhasil diperbarui.', profile)
+  } catch (err) {
+    next(err)
+  }
+}
+
+module.exports = { completeOnboarding, updateProfile, me, uploadAvatar }

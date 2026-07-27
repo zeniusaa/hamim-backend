@@ -34,6 +34,20 @@ const errorHandler = (err, req, res, next) => {
     })
   }
 
+  // Error dari Multer (upload file) — mis. file kegedean, atau field yang
+  // tidak diharapkan multer dikirim di form-data
+  if (err.name === 'MulterError') {
+    const messages = {
+      LIMIT_FILE_SIZE: 'Ukuran file terlalu besar. Maksimal 2 MB.',
+      LIMIT_UNEXPECTED_FILE: 'Field file tidak sesuai. Kirim dengan nama field "avatar".',
+    }
+    return res.status(400).json({
+      success: false,
+      message: messages[err.code] || 'Gagal mengunggah file.',
+      errors: null,
+    })
+  }
+
   // Error umum
   const statusCode = err.statusCode || 500
   return res.status(statusCode).json({
