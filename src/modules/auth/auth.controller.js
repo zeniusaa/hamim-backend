@@ -121,11 +121,17 @@ const googleCallback = async (req, res, next) => {
       user: {
         id: req.user.id,
         email: req.user.email,
+        phone_number: req.user.phone_number,
         display_name: req.user.profile?.display_name ?? null,
+        avatar_url: req.user.profile?.avatar_url ?? null,
+        learning_start: req.user.profile?.learning_start ?? null,
+        daily_target_minutes: req.user.profile?.daily_target_minutes ?? null,
         is_onboarded: req.user.is_onboarded,
+        email_verified: req.user.email_verified,
+        language_id: req.user.language_id,
+        created_at: req.user.created_at,
       },
     })
-    return res.redirect(redirectUrl)
   } catch (err) {
     next(err)
   }

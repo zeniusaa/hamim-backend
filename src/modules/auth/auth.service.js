@@ -109,7 +109,11 @@ const login = async ({ email, password }) => {
   // Sertakan relasi profile supaya display_name bisa dikembalikan ke frontend.
   const user = await prisma.user.findUnique({
     where: { email },
-    include: { profile: { select: { display_name: true } } },
+    include: {
+      profile: {
+        select: { display_name: true, avatar_url: true, learning_start: true, daily_target_minutes: true },
+      },
+    },
   })
 
   // Pesan error sengaja dibuat generik — jangan beritahu apakah
@@ -148,8 +152,15 @@ const login = async ({ email, password }) => {
     user: {
       id: user.id,
       email: user.email,
+      phone_number: user.phone_number,
       display_name: user.profile?.display_name ?? null,
+      avatar_url: user.profile?.avatar_url ?? null,
+      learning_start: user.profile?.learning_start ?? null,
+      daily_target_minutes: user.profile?.daily_target_minutes ?? null,
       is_onboarded: user.is_onboarded,
+      email_verified: user.email_verified,
+      language_id: user.language_id,
+      created_at: user.created_at,
     },
     account_restored: accountRestored,
     ...tokens,
@@ -197,10 +208,18 @@ const refresh = async (refreshToken) => {
 // Sekalian handle auto-restore: kalau user ini sedang dalam masa tunggu hapus akun
 // (deleted_at terisi) dan berhasil login lagi, penghapusannya otomatis dibatalkan.
 const findOrCreateGoogleUser = async ({ googleId, email, displayName, avatarUrl }) => {
+  // Select profile ini dipakai berulang di bawah — disamakan dengan field
+  // yang dikembalikan GET /auth/me supaya response login Google juga lengkap.
+  const profileSelect = {
+    profile: {
+      select: { display_name: true, avatar_url: true, learning_start: true, daily_target_minutes: true },
+    },
+  }
+
   // Sudah pernah login Google sebelumnya?
   let user = await prisma.user.findUnique({
     where: { google_id: googleId },
-    include: { profile: { select: { display_name: true } } },
+    include: profileSelect,
   })
 
   // Email sudah ada (misal daftar manual pakai email/password)? Tautkan google_id-nya.
@@ -209,13 +228,13 @@ const findOrCreateGoogleUser = async ({ googleId, email, displayName, avatarUrl 
   if (!user) {
     user = await prisma.user.findUnique({
       where: { email },
-      include: { profile: { select: { display_name: true } } },
+      include: profileSelect,
     })
     if (user) {
       user = await prisma.user.update({
         where: { email },
         data: { google_id: googleId, email_verified: true },
-        include: { profile: { select: { display_name: true } } },
+        include: profileSelect,
       })
     }
   }
@@ -234,7 +253,7 @@ const findOrCreateGoogleUser = async ({ googleId, email, displayName, avatarUrl 
           },
         },
       },
-      include: { profile: { select: { display_name: true } } },
+      include: profileSelect,
     })
   }
 
@@ -242,7 +261,7 @@ const findOrCreateGoogleUser = async ({ googleId, email, displayName, avatarUrl 
     user = await prisma.user.update({
       where: { id: user.id },
       data: { deleted_at: null },
-      include: { profile: { select: { display_name: true } } },
+      include: profileSelect,
     })
     user.was_restored = true // flag sementara (bukan kolom DB), dibaca oleh caller
   }
@@ -261,8 +280,15 @@ const loginWithGoogleIdToken = async (idToken) => {
     user: {
       id: user.id,
       email: user.email,
+      phone_number: user.phone_number,
       display_name: user.profile?.display_name ?? null,
+      avatar_url: user.profile?.avatar_url ?? null,
+      learning_start: user.profile?.learning_start ?? null,
+      daily_target_minutes: user.profile?.daily_target_minutes ?? null,
       is_onboarded: user.is_onboarded,
+      email_verified: user.email_verified,
+      language_id: user.language_id,
+      created_at: user.created_at,
     },
     account_restored: !!user.was_restored,
     ...tokens,
