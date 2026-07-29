@@ -16,6 +16,7 @@ model User {
   phone_verified              Boolean               @default(false)
   email_verified              Boolean               @default(false)
   is_onboarded                Boolean               @default(false)
+  first_session_completed     Boolean               @default(false)
   deleted_at                  DateTime?
   reset_token_hash            String?               @db.VarChar(255)
   reset_token_expires         DateTime?

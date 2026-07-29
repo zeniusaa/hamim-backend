@@ -107,11 +107,28 @@ const submitAttempt = async (userId, { question_id, selected_option_id, time_tak
     livesStatus = await livesService.consumeLife(userId)
   }
 
+  // First Session = quiz attempt pertama user, apa pun hasilnya (benar/salah).
+  // Cek dulu biar tidak nulis ke DB terus-terusan tiap attempt setelah yang pertama —
+  // field ini sekali set (false -> true), tidak pernah balik ke false.
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { first_session_completed: true },
+  })
+  let firstSessionCompleted = user?.first_session_completed ?? false
+  if (!firstSessionCompleted) {
+    await prisma.user.update({
+      where: { id: userId },
+      data: { first_session_completed: true },
+    })
+    firstSessionCompleted = true
+  }
+
   return {
     attempt_id: attempt.id,
     is_correct: isCorrect,
     correct_option_id: correctOption?.id ?? null,
     lives: livesStatus,
+    first_session_completed: firstSessionCompleted,
   }
 }
 
