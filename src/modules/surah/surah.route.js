@@ -8,4 +8,7 @@ const router = express.Router()
 // GET /surah?juz=5     — cuma surat yang punya ayah di juz 5
 router.get('/', authMiddleware, controller.list)
 
+// GET /surah/:id/ayahs — semua ayat 1 surat, teks Arab saja
+router.get('/:id/ayahs', authMiddleware, controller.listArabicAyahs)
+
 module.exports = router

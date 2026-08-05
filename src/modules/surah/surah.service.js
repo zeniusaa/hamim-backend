@@ -59,4 +59,32 @@ const getSurahs = async (juzNumber) => {
   })
 }
 
-module.exports = { getSurahs }
+// GET /surah/:id/ayahs
+// Ambil semua ayat dalam 1 surat, teks Arab saja (tanpa terjemahan/transliterasi)
+const getArabicAyahsBySurah = async (surahId) => {
+  const surah = await prisma.surah.findUnique({
+    where: { id: surahId },
+    select: {
+      id: true,
+      number: true,
+      name_arabic: true,
+      name_transliteration: true,
+      total_ayah: true,
+    },
+  })
+  if (!surah) throw new Error('SURAH_NOT_FOUND')
+
+  const ayahs = await prisma.ayah.findMany({
+    where: { surah_id: surahId },
+    orderBy: { ayah_number: 'asc' },
+    select: {
+      id: true,
+      ayah_number: true,
+      text_uthmani: true,
+    },
+  })
+
+  return { surah, ayahs }
+}
+
+module.exports = { getSurahs, getArabicAyahsBySurah }
