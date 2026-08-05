@@ -147,8 +147,7 @@ async function main() {
   console.log(`   Soal baru dibuat : ${created}`)
   console.log(`   Sudah ada (skip) : ${skipped}`)
   console.log('\nCatatan: Al-Ikhlas/Al-Falaq/An-Nas kemungkinan besar semuanya ke-skip')
-  console.log('(sudah dibuat seed-quiz-package.js tanpa konteks). Gabungkan dengan soal')
-  console.log('arti ayat (multiple_choice) supaya tiap bagian nyampe 5-10 soal.')
+  console.log('(sudah dibuat seed-quiz-package.js tanpa konteks).')
 }
 
 main()

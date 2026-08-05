@@ -28,16 +28,17 @@ async function main() {
       console.log(`ayah_id: ${ayah.id}`)
 
       const question = await prisma.quizQuestion.findFirst({
-        where: { ayah_id: ayah.id, language_id: bahasaId.id, type: 'multiple_choice' },
-        include: { options: true },
+        where: { ayah_id: ayah.id, language_id: bahasaId.id, type: 'drag_ayat' },
+        include: { options: { orderBy: { order_index: 'asc' } } },
       })
       if (!question) {
         console.log('  (belum ada soal — jalankan dulu: node prisma/seed-quiz-package.js)')
         continue
       }
       console.log(`question_id: ${question.id}`)
+      console.log('  submitted_order (urutan benar):')
       question.options.forEach((o) => {
-        console.log(`  option_id: ${o.id}  ${o.is_correct ? '<-- BENAR' : ''}`)
+        console.log(`    order_index ${o.order_index}: option_id ${o.id}  (${o.option_text})`)
       })
     }
   }

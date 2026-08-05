@@ -1,4 +1,5 @@
 const { prisma } = require('../../config/database')
+const livesService = require('../lives/lives.service')
 
 // ─── Helper: bangun info ayat dalam 1 kelompok audio ─────────
 // Dari audio yang punya ayah_start + ayah_end_number,
@@ -174,4 +175,155 @@ const getAudioByAyah = async (ayahId) => {
   }
 }
 
-module.exports = { getAudioBySurah, getAudioByAyah }
+// ─── Helper: bangun payload 1 kelompok (audio + arabic + quiz) dari 1 AudioFile ──
+const buildGroupPayload = async (surahId, af, language) => {
+  const ayahStartNumber = af.ayah.ayah_number
+  const ayahEndNumber   = af.ayah_end_number
+
+  const ayahsInGroup = await buildAyahGroup(surahId, ayahStartNumber, ayahEndNumber)
+  const ayahIds = ayahsInGroup.map((a) => a.id)
+
+  // Soal melengkapi ayat (drag_ayat) untuk semua ayat dalam kelompok ini.
+  const quizQuestions = await prisma.quizQuestion.findMany({
+    where: { ayah_id: { in: ayahIds }, language_id: language.id },
+    select: {
+      id: true,
+      ayah_id: true,
+      question_text: true,
+      options: {
+        select: { id: true, option_text: true, order_index: true },
+        orderBy: { order_index: 'asc' },
+      },
+    },
+  })
+
+  return {
+    audio: {
+      audio_id:         af.id,
+      audio_order:      af.audio_order,
+      qari_name:        af.qari_name,
+      file_url:         af.file_url,
+      duration_seconds: af.duration_seconds,
+      file_size_bytes:  af.file_size_bytes,
+    },
+    ayah_start: ayahStartNumber,
+    ayah_end:   ayahEndNumber ?? ayahStartNumber,
+    ayah_count: ayahsInGroup.length,
+    // Teks arab (uthmani), terjemahan, transliterasi per ayat dalam kelompok.
+    ayahs: ayahsInGroup,
+    quiz: {
+      total_quiz: quizQuestions.length,
+      questions:  quizQuestions,
+    },
+  }
+}
+
+// ─── GET kelompok lengkap per surah: audio + arabic + quiz langsung ──
+// Dipakai FE supaya 1x panggilan API dapat SEMUANYA untuk 1 kelompok ayat
+// (audio, teks arab/terjemahan, dan soal kuis melengkapi ayat), tanpa perlu
+// panggil /quiz/package terpisah. Pembagian kelompok SAMA PERSIS dengan
+// kelompok audio (berdasarkan AudioFile.ayah_end_number) — idealnya tiap
+// kelompok berisi 5 soal melengkapi ayat (drag_ayat).
+// Sekalian disisipkan status nyawa user (sekarang cuma 1 nyawa, dipotong
+// setelah user POST /quiz/group-attempt untuk kelompok tsb).
+const getGroupsBySurah = async (surahId, userId, languageCode = 'id') => {
+  const language = await prisma.language.findUnique({ where: { code: languageCode } })
+  if (!language) throw new Error('LANGUAGE_NOT_FOUND')
+
+  const surah = await prisma.surah.findUnique({
+    where: { id: surahId },
+    select: {
+      id: true,
+      number: true,
+      name_arabic: true,
+      name_transliteration: true,
+      total_ayah: true,
+    },
+  })
+  if (!surah) throw new Error('SURAH_NOT_FOUND')
+
+  const [audioFiles, livesStatus] = await Promise.all([
+    prisma.audioFile.findMany({
+      where: { ayah: { surah_id: surahId } },
+      orderBy: { audio_order: 'asc' },
+      select: {
+        id: true,
+        audio_order: true,
+        ayah_end_number: true,
+        qari_name: true,
+        file_url: true,
+        duration_seconds: true,
+        file_size_bytes: true,
+        ayah: { select: { id: true, ayah_number: true } },
+      },
+    }),
+    livesService.getStatus(userId),
+  ])
+
+  const groups = await Promise.all(audioFiles.map((af) => buildGroupPayload(surahId, af, language)))
+
+  return {
+    surah,
+    lives: livesStatus,
+    total_groups: groups.length,
+    groups,
+  }
+}
+
+// ─── GET 1 kelompok ayat spesifik (misal cuma ayat 1-4 saja) ─────────
+// Dipakai FE kalau cuma mau load/mulai 1 kelompok tertentu, bukan semua
+// kelompok dalam 1 surat sekaligus. Cukup kasih 1 nomor ayat yang ADA DI
+// DALAM kelompok itu (tidak harus tahu persis ayat_start-nya) — misal
+// kelompoknya ayat 1-4, minta ayah_number=1, 2, 3, ATAU 4 sama-sama
+// balikin kelompok yang sama.
+const getGroupByAyahNumber = async (surahId, ayahNumber, userId, languageCode = 'id') => {
+  const language = await prisma.language.findUnique({ where: { code: languageCode } })
+  if (!language) throw new Error('LANGUAGE_NOT_FOUND')
+
+  const surah = await prisma.surah.findUnique({
+    where: { id: surahId },
+    select: {
+      id: true,
+      number: true,
+      name_arabic: true,
+      name_transliteration: true,
+      total_ayah: true,
+    },
+  })
+  if (!surah) throw new Error('SURAH_NOT_FOUND')
+
+  const [audioFiles, livesStatus] = await Promise.all([
+    prisma.audioFile.findMany({
+      where: { ayah: { surah_id: surahId } },
+      orderBy: { audio_order: 'asc' },
+      select: {
+        id: true,
+        audio_order: true,
+        ayah_end_number: true,
+        qari_name: true,
+        file_url: true,
+        duration_seconds: true,
+        file_size_bytes: true,
+        ayah: { select: { id: true, ayah_number: true } },
+      },
+    }),
+    livesService.getStatus(userId),
+  ])
+
+  const matchingAudio = audioFiles.find((af) => {
+    const start = af.ayah.ayah_number
+    const end   = af.ayah_end_number ?? start
+    return ayahNumber >= start && ayahNumber <= end
+  })
+  if (!matchingAudio) throw new Error('GROUP_NOT_FOUND')
+
+  const group = await buildGroupPayload(surahId, matchingAudio, language)
+
+  return {
+    surah,
+    lives: livesStatus,
+    group,
+  }
+}
+
+module.exports = { getAudioBySurah, getAudioByAyah, getGroupsBySurah, getGroupByAyahNumber }

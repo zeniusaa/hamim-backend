@@ -4,7 +4,7 @@ const { prisma } = require('../../config/database')
 const REGEN_INTERVAL_MS = 8 * 60 * 60 * 1000
 
 // Ambil (atau buat) row UserLives untuk user.
-// Baru daftar / belum pernah main quiz => otomatis dikasih 3 nyawa penuh.
+// Baru daftar / belum pernah main quiz => otomatis dikasih 1 nyawa penuh.
 const getOrCreateLivesRow = async (userId) => {
   let row = await prisma.userLives.findUnique({ where: { user_id: userId } })
   if (!row) {
@@ -94,7 +94,10 @@ const getStatus = async (userId) => {
   }
 }
 
-// Dipanggil dari quiz.service saat user salah jawab.
+// Dipanggil dari quiz.service setelah user SELESAI mengerjakan (POST) 1 kelompok
+// ayat kuis — dipotong 1x per kelompok, bukan lagi tiap salah jawab 1 soal.
+// Karena max_lives sekarang cuma 1, ini biasanya langsung menghabiskan nyawa
+// user sampai regen 8 jam berikutnya (atau nonton iklan / premium).
 // Melempar NO_LIVES_LEFT kalau nyawa user sudah habis dan bukan premium.
 const consumeLife = async (userId) => {
   const status = await getStatus(userId)

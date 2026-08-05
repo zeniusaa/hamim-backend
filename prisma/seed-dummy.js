@@ -295,142 +295,98 @@ async function main() {
   }
 
   // ─── 7. Quiz Question + Option (Bahasa Indonesia & English) ─
-  const q1 = await prisma.quizQuestion.create({
-    data: {
-      ayah_id: ayahFatihah1.id,
-      type: 'multiple_choice',
-      question_text: 'Ayat pertama Al-Fatihah dimulai dengan lafaz apa?',
-      language_id: bahasaId.id,
-      options: {
-        create: [
-          { option_text: 'Bismillahirrahmanirrahim', is_correct: true, order_index: 0 },
-          { option_text: 'Alhamdulillah', is_correct: false, order_index: 1 },
-          { option_text: 'Iyyaka na\'budu', is_correct: false, order_index: 2 },
-          { option_text: 'Maliki yaumiddin', is_correct: false, order_index: 3 },
-        ],
-      },
-    },
-    include: { options: true },
-  })
+  // Sekarang cuma 1 tipe kuis: drag_ayat (melengkapi ayat / drag and drop
+  // arabic) — susun potongan kata ayat (diambil dari text_uthmani) sesuai
+  // urutan yang benar. Tipe multiple_choice sudah dihapus dari QuizType.
+  // SETIAP ayat dibuat 2 soal: bahasa Indonesia + English. Idempotent —
+  // kombinasi ayah + tipe + bahasa yang sudah ada (termasuk yang dibuat
+  // seed-quiz-package.js / seed-quiz2.js) di-skip, tidak dibuat ulang.
+  const wordsOf = (ayah) => ayah.text_uthmani.trim().split(/\s+/)
 
-  const q2 = await prisma.quizQuestion.create({
-    data: {
-      ayah_id: ayahFatihah1.id,
-      type: 'multiple_choice',
-      question_text: 'The first ayah of Al-Fatihah begins with which phrase?',
-      language_id: bahasaEn.id,
-      options: {
-        create: [
-          { option_text: 'Bismillahirrahmanirrahim', is_correct: true, order_index: 0 },
-          { option_text: 'Alhamdulillah', is_correct: false, order_index: 1 },
-          { option_text: 'Iyyaka na\'budu', is_correct: false, order_index: 2 },
-        ],
-      },
-    },
-    include: { options: true },
-  })
+  // Buat soal kalau belum ada; kalau sudah ada, kembalikan yang lama.
+  // optionChunks opsional: potongan yang lebih besar (2 kata per opsi);
+  // kalau tidak dikirim, otomatis 1 kata per opsi dari text_uthmani.
+  const createQuizQuestionIfMissing = async ({ ayah, questionText, languageId, optionChunks }) => {
+    const existing = await prisma.quizQuestion.findFirst({
+      where: { ayah_id: ayah.id, type: 'drag_ayat', language_id: languageId },
+      // Wajib: soal yang dikembalikan (baik yang baru dibuat maupun yang
+      // sudah ada) dipakai lagi oleh bagian User Quiz Attempt lewat
+      // q.options (correctOrder/shuffledOrder).
+      include: { options: true },
+    })
+    if (existing) return existing
 
-  const q3 = await prisma.quizQuestion.create({
-    data: {
-      ayah_id: ayahFatihah2.id,
-      type: 'drag_ayat',
-      question_text: 'Susun kembali potongan ayat kedua Al-Fatihah sesuai urutan.',
-      language_id: bahasaId.id,
-      options: {
-        create: [
-          { option_text: 'الْحَمْدُ لِلَّهِ', is_correct: true, order_index: 0 },
-          { option_text: 'رَبِّ الْعَالَمِينَ', is_correct: true, order_index: 1 },
-        ],
-      },
-    },
-    include: { options: true },
-  })
+    const optionRows = optionChunks
+      ? optionChunks.map((text, i) => ({ option_text: text, is_correct: true, order_index: i }))
+      : wordsOf(ayah).map((w, i) => ({ option_text: w, is_correct: true, order_index: i }))
 
-  const q4 = await prisma.quizQuestion.create({
-    data: {
-      ayah_id: ayahBaqarah1.id,
-      type: 'multiple_choice',
-      question_text: 'Surah Al-Baqarah ayat 1 terdiri dari huruf-huruf apa (huruf muqatta\'ah)?',
-      language_id: bahasaId.id,
-      options: {
-        create: [
-          { option_text: 'Alif Lam Mim', is_correct: true, order_index: 0 },
-          { option_text: 'Ya Sin', is_correct: false, order_index: 1 },
-          { option_text: 'Ha Mim', is_correct: false, order_index: 2 },
-          { option_text: 'Kaf Ha Ya Ain Sad', is_correct: false, order_index: 3 },
-        ],
+    return prisma.quizQuestion.create({
+      data: {
+        ayah_id: ayah.id,
+        type: 'drag_ayat',
+        question_text: questionText,
+        language_id: languageId,
+        options: { create: optionRows },
       },
-    },
-    include: { options: true },
-  })
+      include: { options: true },
+    })
+  }
 
-  const q5 = await prisma.quizQuestion.create({
-    data: {
-      ayah_id: ayahAnNas1.id,
-      type: 'multiple_choice',
-      question_text: 'Surah An-Nas ayat 1 memerintahkan kita berlindung kepada siapa?',
-      language_id: bahasaId.id,
-      options: {
-        create: [
-          { option_text: 'Rabb (Tuhan) manusia', is_correct: true, order_index: 0 },
-          { option_text: 'Raja manusia', is_correct: false, order_index: 1 },
-          { option_text: 'Malaikat', is_correct: false, order_index: 2 },
-        ],
-      },
-    },
-    include: { options: true },
-  })
-
-  const q6 = await prisma.quizQuestion.create({
-    data: {
-      ayah_id: ayahAnNas1.id,
-      type: 'multiple_choice',
-      question_text: 'Surah An-Nas ayah 1 tells us to seek refuge with whom?',
-      language_id: bahasaEn.id,
-      options: {
-        create: [
-          { option_text: 'The Lord of mankind', is_correct: true, order_index: 0 },
-          { option_text: 'The King of mankind', is_correct: false, order_index: 1 },
-          { option_text: 'The angels', is_correct: false, order_index: 2 },
-        ],
-      },
-    },
-    include: { options: true },
-  })
-
-  const q7 = await prisma.quizQuestion.create({
-    data: {
-      ayah_id: ayahIkhlas1.id,
-      type: 'drag_ayat',
-      question_text: 'Susun kembali potongan Surah Al-Ikhlas ayat 1 sesuai urutan.',
-      language_id: bahasaId.id,
-      options: {
-        create: [
-          { option_text: 'قُلْ هُوَ اللَّهُ', is_correct: true, order_index: 0 },
-          { option_text: 'أَحَدٌ', is_correct: true, order_index: 1 },
-        ],
-      },
-    },
-    include: { options: true },
-  })
+  // Semua 5 ayat dummy dibuat 2 soal: ID + EN (10 soal total).
+  // q1/q4/q5 dipakai lagi di bagian User Quiz Attempt di bawah.
+  const [q1, q2, q3, q4, q5, q6, q7, q8, q9, q10] = await Promise.all([
+    // Al-Fatihah 1 — ID & EN
+    createQuizQuestionIfMissing({ ayah: ayahFatihah1, languageId: bahasaId.id, questionText: 'Susun kembali potongan ayat pertama Al-Fatihah sesuai urutan yang benar.' }),
+    createQuizQuestionIfMissing({ ayah: ayahFatihah1, languageId: bahasaEn.id, questionText: 'Rearrange the pieces of the first ayah of Al-Fatihah into the correct order.' }),
+    // Al-Fatihah 2 — ID & EN (potongan lebih besar: 2 kata per opsi)
+    createQuizQuestionIfMissing({
+      ayah: ayahFatihah2, languageId: bahasaId.id, questionText: 'Susun kembali potongan ayat kedua Al-Fatihah sesuai urutan.',
+      optionChunks: ['الْحَمْدُ لِلَّهِ', 'رَبِّ الْعَالَمِينَ'],
+    }),
+    // Al-Baqarah 1 — ID & EN (ayat pendek: Alif Lam Mim)
+    createQuizQuestionIfMissing({ ayah: ayahBaqarah1, languageId: bahasaId.id, questionText: 'Susun kembali potongan ayat pertama Al-Baqarah sesuai urutan yang benar.' }),
+    // An-Nas 1 — ID & EN
+    createQuizQuestionIfMissing({ ayah: ayahAnNas1, languageId: bahasaId.id, questionText: 'Susun kembali potongan ayat pertama An-Nas sesuai urutan yang benar.' }),
+    createQuizQuestionIfMissing({ ayah: ayahAnNas1, languageId: bahasaEn.id, questionText: 'Rearrange the pieces of the first ayah of An-Nas into the correct order.' }),
+    // Al-Ikhlas 1 — ID & EN (potongan lebih besar: 2 kata per opsi)
+    createQuizQuestionIfMissing({
+      ayah: ayahIkhlas1, languageId: bahasaId.id, questionText: 'Susun kembali potongan Surah Al-Ikhlas ayat 1 sesuai urutan.',
+      optionChunks: ['قُلْ هُوَ اللَّهُ', 'أَحَدٌ'],
+    }),
+    // English untuk ayat yang tadinya cuma ID (Al-Fatihah 2, Al-Baqarah 1, Al-Ikhlas 1)
+    createQuizQuestionIfMissing({
+      ayah: ayahFatihah2, languageId: bahasaEn.id, questionText: 'Rearrange the pieces of the second ayah of Al-Fatihah into the correct order.',
+      optionChunks: ['الْحَمْدُ لِلَّهِ', 'رَبِّ الْعَالَمِينَ'],
+    }),
+    createQuizQuestionIfMissing({ ayah: ayahBaqarah1, languageId: bahasaEn.id, questionText: 'Rearrange the pieces of the first ayah of Al-Baqarah into the correct order.' }),
+    createQuizQuestionIfMissing({
+      ayah: ayahIkhlas1, languageId: bahasaEn.id, questionText: 'Rearrange the pieces of Surah Al-Ikhlas ayah 1 into the correct order.',
+      optionChunks: ['قُلْ هُوَ اللَّهُ', 'أَحَدٌ'],
+    }),
+  ])
 
   // ─── 8. User Quiz Attempt ────────────────────────────────────
-  const correctOptionQ1 = q1.options.find((o) => o.is_correct)
-  const wrongOptionQ1 = q1.options.find((o) => !o.is_correct)
-  const correctOptionQ4 = q4.options.find((o) => o.is_correct)
-  const correctOptionQ5 = q5.options.find((o) => o.is_correct)
+  // submitted_order = urutan option_id yang "disusun" user. Dibandingkan
+  // dengan urutan benar (option.order_index) untuk menentukan is_correct.
+  const correctOrder = (q) => [...q.options].sort((a, b) => a.order_index - b.order_index).map((o) => o.id)
+  const shuffledOrder = (q) => {
+    const ids = correctOrder(q)
+    // Tukar 2 elemen pertama biar jelas urutannya SALAH (kalau cuma 1 kata, biarkan saja).
+    if (ids.length > 1) [ids[0], ids[1]] = [ids[1], ids[0]]
+    return ids
+  }
 
   await prisma.userQuizAttempt.create({
-    data: { user_id: user1.id, question_id: q1.id, selected_option_id: wrongOptionQ1.id, is_correct: false, time_taken_seconds: 8.2 },
+    data: { user_id: user1.id, question_id: q1.id, submitted_order: shuffledOrder(q1), is_correct: false, time_taken_seconds: 8.2 },
   })
   await prisma.userQuizAttempt.create({
-    data: { user_id: user1.id, question_id: q1.id, selected_option_id: correctOptionQ1.id, is_correct: true, time_taken_seconds: 4.1 },
+    data: { user_id: user1.id, question_id: q1.id, submitted_order: correctOrder(q1), is_correct: true, time_taken_seconds: 4.1 },
   })
   await prisma.userQuizAttempt.create({
-    data: { user_id: user2.id, question_id: q4.id, selected_option_id: correctOptionQ4.id, is_correct: true, time_taken_seconds: 6.0 },
+    data: { user_id: user2.id, question_id: q4.id, submitted_order: correctOrder(q4), is_correct: true, time_taken_seconds: 6.0 },
   })
   await prisma.userQuizAttempt.create({
-    data: { user_id: user5.id, question_id: q5.id, selected_option_id: correctOptionQ5.id, is_correct: true, time_taken_seconds: 3.4 },
+    data: { user_id: user5.id, question_id: q5.id, submitted_order: correctOrder(q5), is_correct: true, time_taken_seconds: 3.4 },
   })
 
   // ─── 9. User Level (riwayat naik level) ─────────────────────
@@ -489,22 +445,24 @@ async function main() {
   const now = Date.now()
 
   const livesData = [
-    // Raka: fresh, nyawa penuh (kondisi default user baru)
-    { user_id: user1.id, current_lives: 3, max_lives: 3, last_life_lost_at: null, is_premium: false, premium_expires_at: null },
-    // Aisyah: sisa 1 nyawa, baru hilang 3 jam lalu -> regen berikutnya masih ~5 jam lagi.
-    //   Test: GET /lives harus balikin current_lives=1, next_regen_at ~5 jam dari sekarang.
-    { user_id: user2.id, current_lives: 1, max_lives: 3, last_life_lost_at: new Date(now - 3 * HOUR), is_premium: false, premium_expires_at: null },
+    // Raka: fresh, nyawa penuh (kondisi default user baru). Nyawa cuma 1 sekarang.
+    { user_id: user1.id, current_lives: 1, max_lives: 1, last_life_lost_at: null, is_premium: false, premium_expires_at: null },
+    // Aisyah: nyawa habis, baru hilang 3 jam lalu (habis setelah menyelesaikan 1 kelompok
+    //   ayat kuis) -> regen berikutnya masih ~5 jam lagi.
+    //   Test: GET /lives harus balikin current_lives=0, next_regen_at ~5 jam dari sekarang.
+    { user_id: user2.id, current_lives: 0, max_lives: 1, last_life_lost_at: new Date(now - 3 * HOUR), is_premium: false, premium_expires_at: null },
     // Budi: nyawa habis, tapi sudah lewat 9 jam sejak kehilangan nyawa terakhir -> saat GET /lives
     //   dipanggil, harus auto-regen jadi 1 nyawa (lazy calc, walau app tidak pernah dibuka).
-    { user_id: user3.id, current_lives: 0, max_lives: 3, last_life_lost_at: new Date(now - 9 * HOUR), is_premium: false, premium_expires_at: null },
+    { user_id: user3.id, current_lives: 0, max_lives: 1, last_life_lost_at: new Date(now - 9 * HOUR), is_premium: false, premium_expires_at: null },
     // Fatimah: user premium aktif -> GET /lives harus balikin unlimited=true, current_lives=null.
-    { user_id: user4.id, current_lives: 2, max_lives: 3, last_life_lost_at: new Date(now - 1 * HOUR), is_premium: true, premium_expires_at: new Date(now + 30 * 24 * HOUR) },
+    { user_id: user4.id, current_lives: 1, max_lives: 1, last_life_lost_at: null, is_premium: true, premium_expires_at: new Date(now + 30 * 24 * HOUR) },
     // Fadhil: premium SUDAH KADALUARSA kemarin -> GET /lives harus auto-downgrade ke free
-    //   dan kembali menghitung nyawa dari current_lives yang tersisa di row.
-    { user_id: user5.id, current_lives: 2, max_lives: 3, last_life_lost_at: new Date(now - 2 * HOUR), is_premium: true, premium_expires_at: new Date(now - 1 * 24 * HOUR) },
-    // Hasan: nyawa baru saja habis (0), baru 5 menit lalu -> POST /quiz/attempt untuk user ini
-    //   harus ditolak 403 NO_LIVES_LEFT. Cocok juga buat test POST /lives/watch-ad (+1 nyawa).
-    { user_id: user6.id, current_lives: 0, max_lives: 3, last_life_lost_at: new Date(now - 5 * 60 * 1000), is_premium: false, premium_expires_at: null },
+    //   dan kembali menghitung nyawa dari current_lives yang tersisa di row (masih regen, ~6 jam lagi).
+    { user_id: user5.id, current_lives: 0, max_lives: 1, last_life_lost_at: new Date(now - 2 * HOUR), is_premium: true, premium_expires_at: new Date(now - 1 * 24 * HOUR) },
+    // Hasan: nyawa baru saja habis (0), baru 5 menit lalu (baru selesai 1 kelompok ayat) ->
+    //   POST /quiz/group-attempt untuk user ini harus ditolak 403 NO_LIVES_LEFT.
+    //   Cocok juga buat test POST /lives/watch-ad (+1 nyawa).
+    { user_id: user6.id, current_lives: 0, max_lives: 1, last_life_lost_at: new Date(now - 5 * 60 * 1000), is_premium: false, premium_expires_at: null },
   ]
 
   for (const lv of livesData) {
@@ -521,18 +479,18 @@ async function main() {
   console.log(`     ${user4.email}, ${user5.email}, ${user6.email}`)
   console.log('   - 2 asset icon, 1 background, 2 music, 2 asset bundle + items')
   console.log('   - 11 user progress row')
-  console.log('   - 7 quiz question + options (mix ID/EN, multiple_choice/drag_ayat)')
+  console.log('   - 10 quiz question + options (setiap ayat ID & EN, semuanya tipe drag_ayat)')
   console.log('   - 4 quiz attempt')
   console.log('   - 12 user level history')
   console.log('   - 5 leaderboard snapshot (rank: Fadhil > Fatimah > Raka > Hasan > Aisyah)')
   console.log('   - 7 activity log')
-  console.log('   - 6 user lives row:')
-  console.log(`       ${user1.email}      -> 3/3 nyawa (fresh/default)`)
-  console.log(`       ${user2.email}   -> 1/3 nyawa, regen berikutnya ~5 jam lagi`)
-  console.log(`       ${user3.email}    -> 0/3 nyawa TAPI sudah 9 jam -> auto-regen jadi 1 saat GET /lives`)
+  console.log('   - 6 user lives row (nyawa sekarang cuma 1, habis setelah 1 kelompok ayat selesai):')
+  console.log(`       ${user1.email}      -> 1/1 nyawa (fresh/default)`)
+  console.log(`       ${user2.email}   -> 0/1 nyawa, regen berikutnya ~5 jam lagi`)
+  console.log(`       ${user3.email}    -> 0/1 nyawa TAPI sudah 9 jam -> auto-regen jadi 1 saat GET /lives`)
   console.log(`       ${user4.email}   -> PREMIUM aktif (unlimited)`)
-  console.log(`       ${user5.email}     -> premium SUDAH EXPIRED -> auto-downgrade ke free`)
-  console.log(`       ${user6.email}      -> 0/3 nyawa, baru habis -> POST /quiz/attempt ditolak 403`)
+  console.log(`       ${user5.email}     -> premium SUDAH EXPIRED -> auto-downgrade ke free, masih regen`)
+  console.log(`       ${user6.email}      -> 0/1 nyawa, baru habis -> POST /quiz/group-attempt ditolak 403`)
   console.log('\n   Password login semua dummy user: password123')
 }
 

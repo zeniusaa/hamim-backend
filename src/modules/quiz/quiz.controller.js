@@ -2,10 +2,25 @@ const { z } = require('zod')
 const quizService = require('./quiz.service')
 const { success, error } = require('../../utils/response')
 
+// Jawaban tipe drag_ayat = urutan option_id yang disusun user (potongan kata).
+const submittedOrderSchema = z.array(z.string().uuid()).min(1)
+
 const submitAttemptSchema = z.object({
   question_id: z.string().uuid(),
-  selected_option_id: z.string().uuid(),
+  submitted_order: submittedOrderSchema,
   time_taken_seconds: z.number().nonnegative().optional(),
+})
+
+const submitGroupAttemptSchema = z.object({
+  answers: z
+    .array(
+      z.object({
+        question_id: z.string().uuid(),
+        submitted_order: submittedOrderSchema,
+        time_taken_seconds: z.number().nonnegative().optional(),
+      })
+    )
+    .min(1),
 })
 
 const getQuestionsByAyah = async (req, res) => {
@@ -25,7 +40,7 @@ const getQuestionsByAyah = async (req, res) => {
 }
 
 // GET /quiz/package?ayah_ids=uuid1,uuid2,uuid3&language_code=id
-// Satu kali panggilan -> semua soal+jawaban+jenis soal untuk 1 kelompok ayat, plus status nyawa.
+// Satu kali panggilan -> semua soal untuk 1 kelompok ayat, plus status nyawa.
 const getQuestionPackage = async (req, res) => {
   try {
     const rawIds = req.query.ayah_ids
@@ -50,6 +65,7 @@ const getQuestionPackage = async (req, res) => {
   }
 }
 
+// POST /quiz/attempt — submit 1 jawaban soal (tidak memotong nyawa)
 const submitAttempt = async (req, res) => {
   try {
     const data = submitAttemptSchema.parse(req.body)
@@ -57,11 +73,27 @@ const submitAttempt = async (req, res) => {
 
     return success(res, 'Jawaban berhasil disimpan', result)
   } catch (err) {
-    if (err.message === 'NO_LIVES_LEFT') return error(res, 'Nyawa kamu sudah habis', 403)
     if (err.message === 'QUESTION_NOT_FOUND') return error(res, 'Soal tidak ditemukan', 404)
-    if (err.message === 'OPTION_NOT_FOUND') return error(res, 'Opsi jawaban tidak valid', 400)
     if (err.name === 'ZodError') return error(res, 'Input tidak valid', 400, err.issues)
     console.error('[submitAttempt]', err)
+    return error(res, 'Terjadi kesalahan server', 500)
+  }
+}
+
+// POST /quiz/group-attempt — submit semua jawaban 1 kelompok ayat sekaligus,
+// nyawa dipotong 1x setelah kelompok ini selesai dikerjakan.
+const submitGroupAttempt = async (req, res) => {
+  try {
+    const data = submitGroupAttemptSchema.parse(req.body)
+    const result = await quizService.submitGroupAttempt(req.user.id, data)
+
+    return success(res, 'Kelompok ayat berhasil diselesaikan', result)
+  } catch (err) {
+    if (err.message === 'NO_LIVES_LEFT') return error(res, 'Nyawa kamu sudah habis', 403)
+    if (err.message === 'ANSWERS_REQUIRED') return error(res, 'answers wajib diisi', 400)
+    if (err.message === 'QUESTION_NOT_FOUND') return error(res, 'Soal tidak ditemukan', 404)
+    if (err.name === 'ZodError') return error(res, 'Input tidak valid', 400, err.issues)
+    console.error('[submitGroupAttempt]', err)
     return error(res, 'Terjadi kesalahan server', 500)
   }
 }
@@ -76,4 +108,10 @@ const getUserHistory = async (req, res) => {
   }
 }
 
-module.exports = { getQuestionsByAyah, getQuestionPackage, submitAttempt, getUserHistory }
+module.exports = {
+  getQuestionsByAyah,
+  getQuestionPackage,
+  submitAttempt,
+  submitGroupAttempt,
+  getUserHistory,
+}

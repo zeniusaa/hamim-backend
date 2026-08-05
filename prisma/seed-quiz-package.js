@@ -5,17 +5,14 @@
 //    node prisma/seed.js
 //    node prisma/seed-quiz-package.js
 //
-//  Bikin soal untuk 4 surah pendek (22 ayat total) — 2 tipe soal per
+//  Bikin soal untuk 4 surah pendek (22 ayat total) — 1 tipe soal per
 //  ayat per bahasa (ID & EN):
-//    - drag_ayat        : susun potongan kata ayat sesuai urutan.
-//                          Kata-katanya diambil LANGSUNG dari text_uthmani
-//                          yang sudah ada di DB (hasil seed.js dari
-//                          api.quran.com) — bukan hasil ketikan manual,
-//                          jadi dijamin sama persis dengan mushaf.
-//    - multiple_choice  : arti ayat, 1 jawaban benar + 2 pengecoh.
-//                          Pengecoh diambil dari terjemahan ayat LAIN
-//                          di paket yang sama (bukan karangan), supaya
-//                          tetap akurat walau salah untuk soal ini.
+//    - drag_ayat  : melengkapi ayat / drag and drop arabic, susun potongan
+//                    kata ayat sesuai urutan. Kata-katanya diambil LANGSUNG
+//                    dari text_uthmani yang sudah ada di DB (hasil seed.js
+//                    dari api.quran.com) — bukan hasil ketikan manual, jadi
+//                    dijamin sama persis dengan mushaf. Ini SATU-SATUNYA
+//                    tipe kuis yang tersisa (multiple_choice sudah dihapus).
 //
 //  Idempotent: kalau kombinasi ayah + type + language sudah ada soalnya
 //  (misal dari seed-dummy.js), akan di-skip, bukan bikin duplikat.
@@ -68,31 +65,6 @@ const MEANINGS = {
 
 const SURAH_NAMES = { 1: 'Al-Fatihah', 112: 'Al-Ikhlas', 113: 'Al-Falaq', 114: 'An-Nas' }
 
-// ─── Bangun kumpulan datar semua ayat (buat cari pengecoh lintas ayat) ───
-function buildMeaningPool() {
-  const pool = []
-  for (const surahNumber of Object.keys(MEANINGS)) {
-    for (const ayahNumber of Object.keys(MEANINGS[surahNumber])) {
-      pool.push({
-        surahNumber: Number(surahNumber),
-        ayahNumber: Number(ayahNumber),
-        ...MEANINGS[surahNumber][ayahNumber],
-      })
-    }
-  }
-  return pool
-}
-
-// Ambil 2 pengecoh dari ayat lain di pool (deterministic, bukan acak,
-// biar hasil seed konsisten tiap dijalankan ulang).
-function pickDistractors(pool, exclude, lang) {
-  const candidates = pool.filter((p) => !(p.surahNumber === exclude.surahNumber && p.ayahNumber === exclude.ayahNumber))
-  const baseIndex = pool.findIndex((p) => p.surahNumber === exclude.surahNumber && p.ayahNumber === exclude.ayahNumber)
-  const offset1 = candidates[(baseIndex + 3) % candidates.length][lang]
-  const offset2 = candidates[(baseIndex + 9) % candidates.length][lang]
-  return [offset1, offset2]
-}
-
 const questionExists = (ayahId, type, languageId) =>
   prisma.quizQuestion.findFirst({ where: { ayah_id: ayahId, type, language_id: languageId } })
 
@@ -120,39 +92,6 @@ async function createDragQuestion(ayah, surahNumber, ayahNumber, languageId, lan
   return true
 }
 
-async function createMcQuestion(ayah, surahNumber, ayahNumber, languageId, lang, pool) {
-  const existing = await questionExists(ayah.id, 'multiple_choice', languageId)
-  if (existing) return false
-
-  const correctText = MEANINGS[surahNumber][ayahNumber][lang]
-  const distractors = pickDistractors(pool, { surahNumber, ayahNumber }, lang)
-  const questionText =
-    lang === 'id'
-      ? `Apa arti ${SURAH_NAMES[surahNumber]} ayat ${ayahNumber}?`
-      : `What does ${SURAH_NAMES[surahNumber]} ayah ${ayahNumber} mean?`
-
-  // Urutan opsi tetap (bukan jawaban benar selalu di posisi 0) —
-  // benar ditaruh di tengah supaya tidak mudah ditebak dari posisi.
-  const options = [
-    { option_text: distractors[0], is_correct: false },
-    { option_text: correctText, is_correct: true },
-    { option_text: distractors[1], is_correct: false },
-  ]
-
-  await prisma.quizQuestion.create({
-    data: {
-      ayah_id: ayah.id,
-      type: 'multiple_choice',
-      question_text: questionText,
-      language_id: languageId,
-      options: {
-        create: options.map((o, i) => ({ ...o, order_index: i })),
-      },
-    },
-  })
-  return true
-}
-
 async function main() {
   console.log('🌱 Seeding paket kuis: Al-Fatihah, Al-Ikhlas, Al-Falaq, An-Nas...\n')
 
@@ -161,8 +100,6 @@ async function main() {
   if (!bahasaId || !bahasaEn) {
     throw new Error('Data bahasa belum ada. Jalankan dulu: node prisma/seed-languages.js')
   }
-
-  const pool = buildMeaningPool()
 
   let created = 0
   let skipped = 0
@@ -188,8 +125,6 @@ async function main() {
       const results = await Promise.all([
         createDragQuestion(ayah, surahNumber, ayahNumber, bahasaId.id, 'id'),
         createDragQuestion(ayah, surahNumber, ayahNumber, bahasaEn.id, 'en'),
-        createMcQuestion(ayah, surahNumber, ayahNumber, bahasaId.id, 'id', pool),
-        createMcQuestion(ayah, surahNumber, ayahNumber, bahasaEn.id, 'en', pool),
       ])
       created += results.filter(Boolean).length
       skipped += results.filter((r) => !r).length

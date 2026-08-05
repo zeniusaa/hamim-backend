@@ -55,15 +55,18 @@ model UserProfile {
 }
 
 // Nyawa (lives) + status premium user.
-// Free user: max 3 nyawa, berkurang 1 tiap salah jawab quiz.
+// Free user: HANYA 1 nyawa. Nyawa habis (jadi 0) setelah user SELESAI
+//   mengerjakan (POST) 1 kelompok ayat kuis — bukan lagi tiap salah jawab.
+//   Benar/salah tiap soal tetap dicatat (UserQuizAttempt), tapi nyawa
+//   cuma dipotong 1x per kelompok ayat yang diselesaikan.
 // Regen 1 nyawa tiap 8 jam, dihitung lazy dari last_life_lost_at (tanpa cron)
 //   supaya tetap jalan walau user tidak buka app.
 // Premium user: nyawa unlimited selama premium_expires_at masih berlaku.
 model UserLives {
   id                  String    @id @default(uuid()) @db.VarChar(36)
   user_id             String    @unique @db.VarChar(36)
-  current_lives       Int       @default(3)
-  max_lives           Int       @default(3)
+  current_lives       Int       @default(1)
+  max_lives           Int       @default(1)
   last_life_lost_at   DateTime?
   is_premium          Boolean   @default(false)
   premium_expires_at  DateTime?
@@ -234,7 +237,11 @@ model UserQuizAttempt {
   id                  String       @id @default(uuid()) @db.VarChar(36)
   user_id             String       @db.VarChar(36)
   question_id         String       @db.VarChar(36)
+  // Legacy, dipertahankan untuk kompatibilitas data lama (tipe multiple_choice yang sudah dihapus).
   selected_option_id  String?      @db.VarChar(36)
+  // Urutan option_id yang disusun user untuk soal melengkapi ayat / drag and drop arabic (drag_ayat).
+  // Dibandingkan dengan urutan benar (option.order_index) untuk menentukan is_correct.
+  submitted_order     Json?
   is_correct          Boolean
   time_taken_seconds  Float?
   attempted_at        DateTime     @default(now())
@@ -292,8 +299,9 @@ enum RevelationType {
   madaniyah
 }
 
+// Sekarang cuma 1 tipe kuis: melengkapi ayat / drag and drop arabic
+// (susun potongan kata jadi urutan yang benar). Tipe multiple_choice dihapus.
 enum QuizType {
-  multiple_choice
   drag_ayat
 }
 
