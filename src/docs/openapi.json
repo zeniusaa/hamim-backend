@@ -1,0 +1,313 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "HAMIM Backend API",
+    "version": "1.0.0",
+    "description": "Backend HAMIM — Hafalan Al-Quran Menggunakan Irama Maqdis.\n\nDokumentasi ini ringkasan endpoint utama. Untuk dokumentasi lengkap (request/response detail per endpoint), lihat README.md.\n\nAuth: hampir semua endpoint butuh header `Authorization: Bearer <accessToken>`."
+  },
+  "servers": [{ "url": "http://localhost:3000", "description": "Development" }],
+  "tags": [
+    { "name": "Auth", "description": "Register, login, refresh token, Google OAuth" },
+    { "name": "Lives", "description": "Nyawa (lazy regen, iklan, premium)" },
+    { "name": "Quiz", "description": "Soal kuis drag_ayat & submit jawaban" },
+    { "name": "Progress", "description": "Progress belajar per ayat/surah" },
+    { "name": "Level", "description": "Level, leaderboard, riwayat level" },
+    { "name": "Assets", "description": "Bundle ikon/musik/download (BigInt-safe sejak v1.1)" },
+    { "name": "Audio", "description": "Kelompok audio per surah" }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": { "type": "http", "scheme": "bearer", "bearerFormat": "JWT" }
+    },
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean", "example": false },
+          "message": { "type": "string" },
+          "errors": { "type": "array", "items": { "type": "object" }, "nullable": true }
+        }
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "email": { "type": "string", "format": "email" },
+          "email_verified": { "type": "boolean" },
+          "is_onboarded": { "type": "boolean" }
+        }
+      },
+      "LivesStatus": {
+        "type": "object",
+        "properties": {
+          "is_premium": { "type": "boolean" },
+          "unlimited": { "type": "boolean" },
+          "current_lives": { "type": "integer", "nullable": true },
+          "max_lives": { "type": "integer" },
+          "next_regen_at": { "type": "string", "format": "date-time", "nullable": true }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/health": {
+      "get": {
+        "tags": ["Health"],
+        "summary": "Cek server + koneksi DB",
+        "responses": {
+          "200": { "description": "Server & DB sehat" },
+          "503": { "description": "DB down (status DEGRADED)" }
+        }
+      }
+    },
+    "/auth/register": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Daftar akun baru (email + password)",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["name", "email", "password", "language_code"],
+                "properties": {
+                  "name": { "type": "string" },
+                  "email": { "type": "string", "format": "email" },
+                  "phone_number": { "type": "string" },
+                  "password": { "type": "string", "minLength": 8 },
+                  "language_code": { "type": "string", "example": "id" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Akun dibuat, return accessToken + refreshToken" },
+          "400": { "description": "Validasi gagal", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "429": { "description": "Rate limit (10 request/15 menit per IP)" }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Login email + password",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["email", "password"],
+                "properties": {
+                  "email": { "type": "string", "format": "email" },
+                  "password": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Login sukses, return accessToken + refreshToken" },
+          "401": { "description": "Email/password salah" }
+        }
+      }
+    },
+    "/auth/refresh": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Rotasi refresh token → accessToken baru",
+        "description": "Refresh token lama dinonaktifkan & diganti yang baru (rotation).",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["refreshToken"],
+                "properties": { "refreshToken": { "type": "string" } }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Token baru" },
+          "401": { "description": "Refresh token tidak valid / sudah dipakai" }
+        }
+      }
+    },
+    "/auth/me": {
+      "get": {
+        "tags": ["Auth"],
+        "security": [{ "bearerAuth": [] }],
+        "summary": "Data user yang sedang login",
+        "responses": {
+          "200": { "description": "Data user", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/User" } } } },
+          "401": { "description": "Token tidak valid / belum login" }
+        }
+      }
+    },
+    "/lives": {
+      "get": {
+        "tags": ["Lives"],
+        "security": [{ "bearerAuth": [] }],
+        "summary": "Status nyawa saat ini (lazy regen otomatis)",
+        "responses": {
+          "200": { "description": "Status nyawa", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/LivesStatus" } } } }
+        }
+      }
+    },
+    "/lives/watch-ad": {
+      "post": {
+        "tags": ["Lives"],
+        "security": [{ "bearerAuth": [] }],
+        "summary": "Klaim +1 nyawa dari iklan",
+        "description": "Rate limit: maks 5 klaim per 10 menit per user.",
+        "responses": {
+          "200": { "description": "Nyawa bertambah / sudah penuh (added: false)" },
+          "429": { "description": "Terlalu banyak klaim iklan" }
+        }
+      }
+    },
+    "/quiz/package": {
+      "get": {
+        "tags": ["Quiz"],
+        "security": [{ "bearerAuth": [] }],
+        "summary": "Package soal kuis untuk 1 kelompok ayat",
+        "description": "Options diacak server-side; order_index tidak dikirim (anti bocor kunci jawaban).",
+        "parameters": [
+          { "name": "ayah_ids", "in": "query", "required": true, "schema": { "type": "string" }, "description": "UUID ayat pisah koma" },
+          { "name": "language_code", "in": "query", "schema": { "type": "string", "default": "id" } }
+        ],
+        "responses": {
+          "200": { "description": "Package soal + status nyawa" },
+          "400": { "description": "ayah_ids kosong" },
+          "404": { "description": "Bahasa tidak ditemukan" }
+        }
+      }
+    },
+    "/quiz/group-attempt": {
+      "post": {
+        "tags": ["Quiz"],
+        "security": [{ "bearerAuth": [] }],
+        "summary": "Submit semua jawaban 1 kelompok ayat (memotong 1 nyawa, transaksional)",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["answers"],
+                "properties": {
+                  "answers": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": ["question_id", "submitted_order"],
+                      "properties": {
+                        "question_id": { "type": "string", "format": "uuid" },
+                        "submitted_order": { "type": "array", "items": { "type": "string", "format": "uuid" } },
+                        "time_taken_seconds": { "type": "number" }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Hasil koreksi + lives baru" },
+          "403": { "description": "Nyawa habis (NO_LIVES_LEFT)" }
+        }
+      }
+    },
+    "/progress": {
+      "post": {
+        "tags": ["Progress"],
+        "security": [{ "bearerAuth": [] }],
+        "summary": "Tandai progress 1 stage selesai",
+        "description": "Stage 'quiz' hanya bisa ditandai kalau ada UserQuizAttempt (anti-cheat).",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["ayah_id", "surah_id", "stage"],
+                "properties": {
+                  "ayah_id": { "type": "string", "format": "uuid" },
+                  "ayah_ids": { "type": "array", "items": { "type": "string", "format": "uuid" }, "description": "Wajib untuk stage listening" },
+                  "surah_id": { "type": "string", "format": "uuid" },
+                  "stage": { "type": "string", "enum": ["listening", "reading", "quiz"] },
+                  "score": { "type": "integer" },
+                  "duration_seconds": { "type": "number" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Progress tersimpan (+ level_update kalau naik level)" },
+          "403": { "description": "QUIZ_NOT_ATTEMPTED — selesaikan kuis dulu" }
+        }
+      }
+    },
+    "/level/me": {
+      "get": {
+        "tags": ["Level"],
+        "security": [{ "bearerAuth": [] }],
+        "summary": "Level & progress ke level berikutnya",
+        "responses": {
+          "200": { "description": "Data level" }
+        }
+      }
+    },
+    "/level/leaderboard": {
+      "get": {
+        "tags": ["Level"],
+        "security": [{ "bearerAuth": [] }],
+        "summary": "Papan peringkat (dari LeaderboardSnapshot)",
+        "responses": {
+          "200": { "description": "Daftar peringkat" }
+        }
+      }
+    },
+    "/assets/icons": {
+      "get": {
+        "tags": ["Assets"],
+        "security": [{ "bearerAuth": [] }],
+        "summary": "Daftar asset ikon (BigInt-safe: ukuran file dikirim sebagai string)",
+        "responses": {
+          "200": { "description": "Daftar ikon" }
+        }
+      }
+    },
+    "/assets/check-updates": {
+      "get": {
+        "tags": ["Assets"],
+        "security": [{ "bearerAuth": [] }],
+        "summary": "Cek update bundle asset",
+        "responses": {
+          "200": { "description": "Status update" }
+        }
+      }
+    },
+    "/audio/surah/{surahId}/groups": {
+      "get": {
+        "tags": ["Audio"],
+        "security": [{ "bearerAuth": [] }],
+        "summary": "Kelompok audio 1 surah (audio + arabic + quiz sekaligus)",
+        "parameters": [
+          { "name": "surahId", "in": "path", "required": true, "schema": { "type": "string" } },
+          { "name": "language_code", "in": "query", "schema": { "type": "string", "default": "id" } }
+        ],
+        "responses": {
+          "200": { "description": "Daftar kelompok" },
+          "404": { "description": "Surah tidak ditemukan" }
+        }
+      }
+    }
+  }
+}

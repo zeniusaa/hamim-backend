@@ -29,6 +29,7 @@ model User {
   activity_logs               UserActivityLog[]
   downloaded_assets           UserDownloadedAsset[]
   user_levels                 UserLevel[]
+  refresh_tokens              RefreshToken[]
   profile                     UserProfile?
   progress                    UserProgress[]
   quiz_attempts               UserQuizAttempt[]
@@ -37,6 +38,21 @@ model User {
 
   @@index([language_id])
   @@index([deleted_at])
+}
+
+// Refresh token aktif milik user — disimpan sebagai HASH (bukan plaintext),
+// pola yang sama seperti reset_token_hash. Token dirotasi setiap kali dipakai
+// (refresh lama dinonaktifkan, yang baru disimpan), jadi token yang dicuri
+// hanya bisa dipakai sekali sebelum kehilangan validitasnya.
+model RefreshToken {
+  id          String    @id @default(uuid()) @db.VarChar(36)
+  user_id     String    @db.VarChar(36)
+  token_hash  String    @unique @db.VarChar(64)
+  expires_at  DateTime
+  created_at  DateTime  @default(now())
+  user        User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@index([user_id])
 }
 
 model UserProfile {
@@ -237,6 +253,12 @@ model UserQuizAttempt {
   id                  String       @id @default(uuid()) @db.VarChar(36)
   user_id             String       @db.VarChar(36)
   question_id         String       @db.VarChar(36)
+  // Idempotency key dari client (opsional) — mencegah double-submit.
+  // Client kirim key unik per group-attempt; kalau submit yang sama (user +
+  // question + key sama) masuk dua kali (retry jaringan, double-tap tombol),
+  // key kedua ditolak & hasil yang sudah tersimpan dikembalikan.
+  // NULL untuk request lama yang tidak kirim key.
+  idempotency_key     String?      @db.VarChar(64)
   // Legacy, dipertahankan untuk kompatibilitas data lama (tipe multiple_choice yang sudah dihapus).
   selected_option_id  String?      @db.VarChar(36)
   // Urutan option_id yang disusun user untuk soal melengkapi ayat / drag and drop arabic (drag_ayat).
@@ -252,6 +274,7 @@ model UserQuizAttempt {
   @@index([question_id])
   @@index([selected_option_id])
   @@index([user_id])
+  @@unique([user_id, question_id, idempotency_key])
 }
 
 model UserLevel {

@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs')
 const crypto = require('crypto')
-const prisma = require('../../config/database')
+const { prisma } = require('../../config/database')
 const { generateTokens, verifyRefreshToken } = require('../../utils/jwt')
 const { verifyGoogleIdToken } = require('../../utils/googleAuth')
 const { sendResetPasswordEmail, sendVerificationEmail } = require('../../utils/email')
@@ -11,6 +11,51 @@ const RESET_TOKEN_TTL_MS = 60 * 60 * 1000
 // Token verifikasi email berlaku lebih lama dari reset password (24 jam),
 // karena user mungkin tidak langsung buka emailnya setelah daftar.
 const VERIFICATION_TOKEN_TTL_MS = 24 * 60 * 60 * 1000
+
+// Helper: hash refresh token sebelum disimpan ke DB (pola sama seperti
+// reset_token_hash / verification_token_hash — DB cuma simpan hash).
+const hashRefreshToken = (token) => crypto.createHash('sha256').update(token).digest('hex')
+
+// Parse durasi JWT ("30d", "7d", "12h") → milidetik. Default 30 hari.
+const parseJwtDurationMs = (duration) => {
+  const match = String(duration || '30d').match(/^(\d+)([smhd])$/)
+  if (!match) return 30 * 24 * 60 * 60 * 1000
+  const n = parseInt(match[1], 10)
+  const unitMs = { s: 1000, m: 60 * 1000, h: 60 * 60 * 1000, d: 24 * 60 * 60 * 1000 }[match[2]]
+  return n * unitMs
+}
+
+// Generate sepasang token + simpan hash refresh token ke DB (rotasi).
+// Dipakai di semua titik yang mengeluarkan token: register, login,
+// login Google, dan refresh. Dijamin tidak ada refresh token yang
+// "terbit" tanpa tercatat di DB.
+const issueTokens = async (user) => {
+  const tokens = generateTokens({ id: user.id, email: user.email })
+  const refreshExpiresMs = parseJwtDurationMs(process.env.JWT_REFRESH_EXPIRES_IN)
+  await rotateRefreshToken(user.id, tokens.refreshToken, new Date(Date.now() + refreshExpiresMs))
+  return tokens
+}
+
+// Simpan hash refresh token baru ke tabel RefreshToken, dan matikan token lama
+// yang masih aktif milik user (ROTASI). Kalau refresh token dicuri, pemilik
+// lama tidak bisa memakainya lagi setelah token baru dirotasi.
+const rotateRefreshToken = async (userId, refreshToken, expiresAt) => {
+  const token_hash = hashRefreshToken(refreshToken)
+
+  // Nonaktifkan semua refresh token lama user yang masih aktif (rotasi penuh:
+  // 1 user = 1 refresh token valid pada satu waktu).
+  await prisma.refreshToken.deleteMany({
+    where: { user_id: userId, expires_at: { gt: new Date() } },
+  })
+
+  await prisma.refreshToken.create({
+    data: {
+      user_id: userId,
+      token_hash,
+      expires_at: expiresAt,
+    },
+  })
+}
 
 // Helper dipakai bareng oleh register() dan resendVerificationEmail() —
 // generate token verifikasi baru, simpan HASH-nya ke DB, lalu kirim emailnya.
@@ -79,6 +124,12 @@ const register = async ({ name, email, phone_number, password, language_code }) 
       profile: {
         create: { display_name: name },
       },
+      // Snapshot leaderboard dibuat SEKALIAN saat register (level 1, 0 juz).
+      // Tanpa ini user baru tidak muncul di leaderboard sampai dia hit
+      // /level/me (yang dulu jadi satu-satunya tempat snapshot dibuat).
+      leaderboard_snapshot: {
+        create: { total_juz_completed: 0, current_level: 1 },
+      },
     },
     select: {
       id: true,
@@ -91,8 +142,6 @@ const register = async ({ name, email, phone_number, password, language_code }) 
     },
   })
 
-  const tokens = generateTokens({ id: user.id, email: user.email })
-
   // Kirim email verifikasi di background — tidak perlu ditunggu (await)
   // supaya proses register tidak lambat kalau SMTP-nya lemot.
   // Kalau gagal kirim, tidak menggagalkan register — user masih bisa
@@ -100,6 +149,9 @@ const register = async ({ name, email, phone_number, password, language_code }) 
   generateAndSendVerification(user).catch((err) => {
     console.error('Gagal kirim email verifikasi:', err.message)
   })
+
+  // Simpan hash refresh token ke DB (rotasi) sebelum token dikirim ke client
+  const tokens = await issueTokens(user)
 
   return { user, ...tokens }
 }
@@ -147,7 +199,8 @@ const login = async ({ email, password }) => {
     await prisma.user.update({ where: { id: user.id }, data: { deleted_at: null } })
   }
 
-  const tokens = generateTokens({ id: user.id, email: user.email })
+  // Simpan hash refresh token ke DB (rotasi) sebelum token dikirim ke client
+  const tokens = await issueTokens(user)
 
   return {
     user: {
@@ -169,6 +222,14 @@ const login = async ({ email, password }) => {
   }
 }
 
+// POST /auth/refresh
+// Rotasi refresh token: setiap kali token dipakai, token LAMA langsung
+// dinonaktifkan dan token BARU dibuat + hash-nya disimpan di DB.
+// Konsekuensi keamanan:
+//   - Token yang dicuri hanya valid sampai dipakai 1x (atau sampai diganti token
+//     berikutnya) — pencuri tidak bisa "refresh terus-menerus" dengan token lama.
+//   - Refresh token yang tidak tercatat di DB (tidak pernah di-issue, atau sudah
+//     dirotasi/dihapus) langsung ditolak, walau JWT-nya masih valid secara kriptografis.
 const refresh = async (refreshToken) => {
   if (!refreshToken) {
     const err = new Error('Refresh token tidak ditemukan.')
@@ -180,6 +241,19 @@ const refresh = async (refreshToken) => {
   try {
     decoded = verifyRefreshToken(refreshToken)
   } catch {
+    const err = new Error('Refresh token tidak valid atau sudah expired.')
+    err.statusCode = 401
+    throw err
+  }
+
+  // ── Validasi hash di DB (inti rotasi) ────────────────────────
+  // Token harus TERDAFTAR di tabel RefreshToken (hash cocok & belum expired).
+  // Token yang sudah dirotasi / tidak pernah di-issue = hash tidak ditemukan
+  // → ditolak walau JWT-nya masih sah. Ini yang bikin token curian mati.
+  const stored = await prisma.refreshToken.findUnique({
+    where: { token_hash: hashRefreshToken(refreshToken) },
+  })
+  if (!stored || stored.user_id !== decoded.id || stored.expires_at <= new Date()) {
     const err = new Error('Refresh token tidak valid atau sudah expired.')
     err.statusCode = 401
     throw err
@@ -201,7 +275,8 @@ const refresh = async (refreshToken) => {
     throw err
   }
 
-  const tokens = generateTokens({ id: user.id, email: user.email })
+  // Rotasi: buang token lama yang barusan dipakai, issue token baru + simpan hash-nya.
+  const tokens = await issueTokens(user)
   return tokens
 }
 
@@ -276,7 +351,9 @@ const findOrCreateGoogleUser = async ({ googleId, email, displayName, avatarUrl 
 const loginWithGoogleIdToken = async (idToken) => {
   const payload = await verifyGoogleIdToken(idToken)
   const user = await findOrCreateGoogleUser(payload)
-  const tokens = generateTokens({ id: user.id, email: user.email })
+
+  // Simpan hash refresh token ke DB (rotasi) sebelum token dikirim ke client
+  const tokens = await issueTokens(user)
 
   return {
     user: {
@@ -430,7 +507,13 @@ const deleteAccount = async (userId, password) => {
     }
   }
 
-  await prisma.user.update({ where: { id: userId }, data: { deleted_at: new Date() } })
+  // Soft delete akun + NONAKTIFKAN SEMUA refresh token aktif milik user.
+  // Kalau tidak, token lama masih bisa dipakai untuk refresh selama 30 hari
+  // masa tunggu — padahal akunnya sudah ditandai hapus.
+  await Promise.all([
+    prisma.user.update({ where: { id: userId }, data: { deleted_at: new Date() } }),
+    prisma.refreshToken.deleteMany({ where: { user_id: userId } }),
+  ])
 }
 
 module.exports = {
@@ -439,6 +522,7 @@ module.exports = {
   refresh,
   findOrCreateGoogleUser,
   loginWithGoogleIdToken,
+  issueTokens,
   forgotPassword,
   resetPassword,
   verifyEmail,

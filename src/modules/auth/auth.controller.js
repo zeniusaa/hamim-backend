@@ -1,6 +1,6 @@
 const { z } = require('zod')
 const authService = require('./auth.service')
-const { generateTokens } = require('../../utils/jwt')
+const { prisma } = require('../../config/database')
 const { success, error } = require('../../utils/response')
 
 // CONTROLLER = jembatan antara HTTP request dan service.
@@ -9,6 +9,16 @@ const { success, error } = require('../../utils/response')
 
 // Schema validasi dengan Zod
 // Zod akan otomatis throw error jika input tidak sesuai
+
+// Password policy: minimal 8 karakter + wajib ada huruf besar & angka.
+// Regex di .regex dipakai dengan `new RegExp` supaya zod v4 kompatibel.
+const passwordSchema = z
+  .string()
+  .min(8, 'Password minimal 8 karakter.')
+  .max(100, 'Password terlalu panjang.')
+  .regex(new RegExp('[A-Z]'), 'Password harus mengandung huruf besar.')
+  .regex(new RegExp('[0-9]'), 'Password harus mengandung angka.')
+
 const registerSchema = z.object({
   name: z.string().min(2, 'Nama minimal 2 karakter.').max(100, 'Nama terlalu panjang.'),
   email: z.string().email('Format email tidak valid.'),
@@ -16,10 +26,7 @@ const registerSchema = z.object({
     .string()
     .min(8, 'Nomor HP/WA tidak valid.')
     .max(20, 'Nomor HP/WA terlalu panjang.'),
-  password: z
-    .string()
-    .min(8, 'Password minimal 8 karakter.')
-    .max(100, 'Password terlalu panjang.'),
+  password: passwordSchema,
   // Dikirim dari layar "pilih bahasa" — opsional, contoh: "id" atau "en"
   language_code: z.string().min(2).max(5).optional(),
 })
@@ -40,10 +47,7 @@ const forgotPasswordSchema = z.object({
 
 const resetPasswordSchema = z.object({
   token: z.string().min(10, 'Token tidak valid.'),
-  password: z
-    .string()
-    .min(8, 'Password minimal 8 karakter.')
-    .max(100, 'Password terlalu panjang.'),
+  password: passwordSchema,
 })
 
 const verifyEmailSchema = z.object({
@@ -108,7 +112,10 @@ const googleCallback = async (req, res, next) => {
       return error(res, 'Login Google gagal.', 401)
     }
 
-    const tokens = generateTokens({ id: req.user.id, email: req.user.email })
+    // Issue token + simpan hash refresh token ke DB (rotasi), sama seperti
+    // login native — supaya refresh token hasil Google web callback juga
+    // tervalidasi & dirotasi lewat tabel RefreshToken.
+    const tokens = await authService.issueTokens(req.user)
 
     // Untuk mobile app: redirect dengan token di query string
     // Tim mobile bisa tangkap ini via deep link
@@ -158,7 +165,6 @@ const googleNative = async (req, res, next) => {
 // GET /auth/me — cek siapa yang sedang login
 const me = async (req, res, next) => {
   try {
-    const prisma = require('../../config/database')
     const user = await prisma.user.findUnique({
       where: { id: req.user.id },
       select: {

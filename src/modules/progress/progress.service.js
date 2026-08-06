@@ -1,5 +1,6 @@
 const { prisma } = require('../../config/database')
 const { checkAndUpdateLevel } = require('../level/level.service')
+const HttpError = require('../../utils/HttpError')
 
 // Ambil semua progress user, dikelompokkan per surat
 const getProgress = async (userId) => {
@@ -87,94 +88,129 @@ const getHistory = async (userId, page, limit) => {
 // Untuk stage 'reading' & 'quiz':
 //   - cukup kirim ayah_id tunggal (per ayat individual)
 const updateProgress = async (userId, { ayah_id, ayah_ids, surah_id, stage, score, duration_seconds }) => {
-  let updatedProgress = []
+  // SEMUA operasi (upsert progress, activity log, cek surah selesai, naik level)
+  // dibungkus dalam SATU transaksi supaya tidak ada state setengah jalan:
+  //   - progress tersimpan tapi log gagal → rollback (bukan "ayat selesai" tanpa bukti)
+  //   - dua request paralel tidak bisa dobel-log surah_completed (dicek di dalam tx)
+  return prisma.$transaction(async (tx) => {
+    let updatedProgress = []
 
-  if (stage === 'listening') {
-    // Mark semua ayat dalam kelompok audio sekaligus
-    // ayah_ids = array semua ayah_id dalam kelompok (dikirim dari app)
-    // Fallback ke [ayah_id] kalau app belum kirim ayah_ids
-    const targetIds = Array.isArray(ayah_ids) && ayah_ids.length > 0 ? ayah_ids : [ayah_id]
+    if (stage === 'listening') {
+      // Mark semua ayat dalam kelompok audio sekaligus
+      // ayah_ids = array semua ayah_id dalam kelompok (dikirim dari app)
+      // Fallback ke [ayah_id] kalau app belum kirim ayah_ids
+      const targetIds = Array.isArray(ayah_ids) && ayah_ids.length > 0 ? ayah_ids : [ayah_id]
 
-    updatedProgress = await Promise.all(
-      targetIds.map((id) =>
-        prisma.userProgress.upsert({
-          where: { user_id_ayah_id_stage: { user_id: userId, ayah_id: id, stage: 'listening' } },
-          update: { is_completed: true, completed_at: new Date(), attempt_count: { increment: 1 } },
-          create: { user_id: userId, ayah_id: id, stage: 'listening', is_completed: true, completed_at: new Date(), attempt_count: 1 },
-        })
+      updatedProgress = await Promise.all(
+        targetIds.map((id) =>
+          tx.userProgress.upsert({
+            where: { user_id_ayah_id_stage: { user_id: userId, ayah_id: id, stage: 'listening' } },
+            update: { is_completed: true, completed_at: new Date(), attempt_count: { increment: 1 } },
+            create: { user_id: userId, ayah_id: id, stage: 'listening', is_completed: true, completed_at: new Date(), attempt_count: 1 },
+          })
+        )
       )
-    )
 
-    // Catat 1 activity log mewakili kelompok (pakai ayah_id pertama)
-    await prisma.userActivityLog.create({
-      data: {
-        user_id: userId,
-        surah_id,
-        ayah_id,
-        activity_type: 'listening',
-        duration_seconds: duration_seconds ?? null,
-      },
-    })
-
-  } else {
-    // reading & quiz: per ayat individual
-    const progress = await prisma.userProgress.upsert({
-      where: { user_id_ayah_id_stage: { user_id: userId, ayah_id, stage } },
-      update: { is_completed: true, completed_at: new Date(), attempt_count: { increment: 1 } },
-      create: { user_id: userId, ayah_id, stage, is_completed: true, completed_at: new Date(), attempt_count: 1 },
-    })
-    updatedProgress = [progress]
-
-    // Catat activity log
-    await prisma.userActivityLog.create({
-      data: {
-        user_id: userId,
-        surah_id,
-        ayah_id,
-        activity_type: stage === 'quiz' ? 'quiz_completed' : stage,
-        score: score ?? null,
-        duration_seconds: duration_seconds ?? null,
-      },
-    })
-  }
-
-  // Cek apakah surat ini sudah selesai semua stage semua ayat (hanya saat quiz selesai)
-  let levelResult = null
-  if (stage === 'quiz') {
-    const surah = await prisma.surah.findUnique({
-      where: { id: surah_id },
-      select: { total_ayah: true },
-    })
-
-    if (surah) {
-      const completedQuizCount = await prisma.userProgress.count({
-        where: {
+      // Catat 1 activity log mewakili kelompok (pakai ayah_id pertama)
+      await tx.userActivityLog.create({
+        data: {
           user_id: userId,
-          stage: 'quiz',
-          is_completed: true,
-          ayah: { surah_id },
+          surah_id,
+          ayah_id,
+          activity_type: 'listening',
+          duration_seconds: duration_seconds ?? null,
         },
       })
 
-      if (completedQuizCount >= surah.total_ayah) {
-        // Catat surah selesai
-        await prisma.userActivityLog.create({
-          data: { user_id: userId, surah_id, ayah_id: null, activity_type: 'surah_completed' },
+    } else {
+      // reading & quiz: per ayat individual
+
+      // ── Anti-cheat untuk stage 'quiz' ───────────────────────────
+      // Sebelumnya client bisa spam POST /progress { stage: 'quiz' } dan langsung
+      // menandai ayat selesai tanpa pernah mengerjakan kuis → level & leaderboard
+      // bisa digame. Sekarang progress quiz HANYA bisa ditandai kalau benar-benar
+      // ada UserQuizAttempt untuk ayat ini (artinya user sudah submit jawaban via
+      // POST /quiz/group-attempt — yang juga memotong 1 nyawa).
+      if (stage === 'quiz') {
+        const attemptCount = await tx.userQuizAttempt.count({
+          where: {
+            user_id: userId,
+            question: { ayah_id },
+          },
+        })
+        if (attemptCount === 0) {
+          throw new HttpError('Selesaikan kuis ayat ini terlebih dahulu sebelum menandai progress.', 403, 'QUIZ_NOT_ATTEMPTED')
+        }
+      }
+
+      const progress = await tx.userProgress.upsert({
+        where: { user_id_ayah_id_stage: { user_id: userId, ayah_id, stage } },
+        update: { is_completed: true, completed_at: new Date(), attempt_count: { increment: 1 } },
+        create: { user_id: userId, ayah_id, stage, is_completed: true, completed_at: new Date(), attempt_count: 1 },
+      })
+      updatedProgress = [progress]
+
+      // Catat activity log
+      await tx.userActivityLog.create({
+        data: {
+          user_id: userId,
+          surah_id,
+          ayah_id,
+          activity_type: stage === 'quiz' ? 'quiz_completed' : stage,
+          score: score ?? null,
+          duration_seconds: duration_seconds ?? null,
+        },
+      })
+    }
+
+    // Cek apakah surat ini sudah selesai semua stage semua ayat (hanya saat quiz selesai)
+    let levelResult = null
+    if (stage === 'quiz') {
+      const surah = await tx.surah.findUnique({
+        where: { id: surah_id },
+        select: { total_ayah: true },
+      })
+
+      if (surah) {
+        const completedQuizCount = await tx.userProgress.count({
+          where: {
+            user_id: userId,
+            stage: 'quiz',
+            is_completed: true,
+            ayah: { surah_id },
+          },
         })
 
-        // Cek naik level
-        levelResult = await checkAndUpdateLevel(userId)
-        if (levelResult.leveled_up) {
-          console.log(`🎉 [LEVEL UP] User ${userId}: Level ${levelResult.old_level} → ${levelResult.new_level}`)
+        if (completedQuizCount >= surah.total_ayah) {
+          // Anti dobel-log: cek dulu apakah surah ini sudah pernah dicatat selesai.
+          // Tanpa cek ini, dua request paralel yang sama-sama menyelesaikan ayat
+          // terakhir → surah_completed tercatat 2x (log & statistik jadi dobel).
+          const alreadyLogged = await tx.userActivityLog.findFirst({
+            where: { user_id: userId, surah_id, activity_type: 'surah_completed' },
+            select: { id: true },
+          })
+
+          if (!alreadyLogged) {
+            // Catat surah selesai
+            await tx.userActivityLog.create({
+              data: { user_id: userId, surah_id, ayah_id: null, activity_type: 'surah_completed' },
+            })
+
+            // Cek naik level (pakai tx — lihat level.service)
+            levelResult = await checkAndUpdateLevel(userId, tx)
+            if (levelResult.leveled_up) {
+              console.log(`🎉 [LEVEL UP] User ${userId}: Level ${levelResult.old_level} → ${levelResult.new_level}`)
+            }
+          }
         }
       }
     }
-  }
 
-  return {
-    progress: updatedProgress,
-    level_update: levelResult,
-  }
+    return {
+      progress: updatedProgress,
+      level_update: levelResult,
+    }
+  })
 }
 
 // Progress detail 1 surat (per ayat, per stage)
@@ -183,7 +219,7 @@ const getProgressBySurah = async (userId, surahId) => {
     where: { id: surahId },
     select: { id: true, number: true, name_transliteration: true, total_ayah: true, juz_start: true },
   })
-  if (!surah) throw new Error('SURAH_NOT_FOUND')
+  if (!surah) throw new HttpError('Surah tidak ditemukan', 404, 'SURAH_NOT_FOUND')
 
   const [ayahs, progressList] = await Promise.all([
     prisma.ayah.findMany({

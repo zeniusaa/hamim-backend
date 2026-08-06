@@ -23,7 +23,7 @@ const authMiddleware = async (req, res, next) => {
     // tahu kalau akunnya baru saja ditandai hapus setelah token ini terbit.
     const user = await prisma.user.findUnique({
       where: { id: decoded.id },
-      select: { id: true, deleted_at: true },
+      select: { id: true, deleted_at: true, email_verified: true, google_id: true },
     })
 
     if (!user) {
@@ -32,6 +32,17 @@ const authMiddleware = async (req, res, next) => {
 
     if (user.deleted_at) {
       return error(res, 'Akun sedang dalam proses penghapusan. Silakan login ulang untuk memulihkan akun.', 403)
+    }
+
+    // Enforce email_verified (opt-in via env ENFORCE_EMAIL_VERIFIED=true).
+    // Default mati supaya development tidak ribet, aktifkan di production.
+    // User Google otomatis lolos (email sudah diverifikasi Google).
+    if (
+      process.env.ENFORCE_EMAIL_VERIFIED === 'true' &&
+      !user.email_verified &&
+      !user.google_id
+    ) {
+      return error(res, 'Verifikasi email kamu terlebih dahulu sebelum melanjutkan.', 403)
     }
 
     // decoded berisi payload yang kita simpan saat generate token: { id, email }

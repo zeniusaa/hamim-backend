@@ -25,16 +25,37 @@ const LEVEL_DEFINITIONS = [
 const MAX_LEVEL = 15
 
 // Hitung berapa juz yang sudah selesai semua ayatnya (stage quiz semua selesai)
-const countCompletedJuz = async (userId) => {
+// Optimasi: dulu loop 30 juz × 2 query = 60 query per panggilan.
+// Sekarang cuma 2 query: 1 groupBy total ayat per juz + 1 findMany progress quiz user.
+// `client` = prisma global ATAU tx dari $transaction (biar konsisten di dalam transaksi).
+const countCompletedJuz = async (userId, client = prisma) => {
+  const [totalPerJuz, completedQuiz] = await Promise.all([
+    // Total ayat per juz (30 baris)
+    client.ayah.groupBy({
+      by: ['juz_number'],
+      _count: { _all: true },
+    }),
+    // Ayat yang quiz-nya sudah selesai oleh user ini, lengkap dengan juz-nya
+    client.userProgress.findMany({
+      where: { user_id: userId, stage: 'quiz', is_completed: true },
+      select: { ayah: { select: { juz_number: true } } },
+    }),
+  ])
+
+  const totalMap = new Map(totalPerJuz.map((t) => [t.juz_number, t._count._all]))
+
+  // Hitung berapa ayat quiz yang sudah selesai per juz
+  const completedMap = new Map()
+  for (const p of completedQuiz) {
+    const juz = p.ayah.juz_number
+    completedMap.set(juz, (completedMap.get(juz) || 0) + 1)
+  }
+
   const completedJuzList = []
   for (let juz = 1; juz <= 30; juz++) {
-    const [totalAyah, completedQuiz] = await Promise.all([
-      prisma.ayah.count({ where: { juz_number: juz } }),
-      prisma.userProgress.count({
-        where: { user_id: userId, stage: 'quiz', is_completed: true, ayah: { juz_number: juz } },
-      }),
-    ])
-    if (totalAyah > 0 && completedQuiz >= totalAyah) {
+    const totalAyah = totalMap.get(juz) || 0
+    const completed = completedMap.get(juz) || 0
+    if (totalAyah > 0 && completed >= totalAyah) {
       completedJuzList.push(juz)
     }
   }
@@ -131,12 +152,15 @@ const getLeaderboard = async (limit) => {
 }
 
 // Dipanggil dari progress.service saat surah selesai
-const checkAndUpdateLevel = async (userId) => {
-  const completedJuzList = await countCompletedJuz(userId)
+// `client` = prisma global ATAU tx dari $transaction — kalau dipanggil di
+// dalam transaksi (updateProgress), semua baca/tulis ikut transaksi yang sama
+// supaya countCompletedJuz konsisten dengan progress yang baru saja di-upsert.
+const checkAndUpdateLevel = async (userId, client = prisma) => {
+  const completedJuzList = await countCompletedJuz(userId, client)
   const completedJuzCount = completedJuzList.length
   const newLevel = calculateLevel(completedJuzCount)
 
-  const profile = await prisma.userProfile.findUnique({
+  const profile = await client.userProfile.findUnique({
     where: { user_id: userId },
     select: { current_level: true },
   })
@@ -144,14 +168,14 @@ const checkAndUpdateLevel = async (userId) => {
 
   if (newLevel > oldLevel) {
     await Promise.all([
-      prisma.userProfile.update({
+      client.userProfile.update({
         where: { user_id: userId },
         data: { current_level: newLevel },
       }),
-      prisma.userLevel.create({
+      client.userLevel.create({
         data: { user_id: userId, level: newLevel },
       }),
-      prisma.leaderboardSnapshot.upsert({
+      client.leaderboardSnapshot.upsert({
         where: { user_id: userId },
         update: { current_level: newLevel, total_juz_completed: completedJuzCount },
         create: { user_id: userId, current_level: newLevel, total_juz_completed: completedJuzCount },

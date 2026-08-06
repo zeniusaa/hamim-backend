@@ -1,4 +1,5 @@
 const { prisma } = require('../../config/database')
+const HttpError = require('../../utils/HttpError')
 
 // Interval regen: 1 nyawa tiap 8 jam.
 const REGEN_INTERVAL_MS = 8 * 60 * 60 * 1000
@@ -94,7 +95,13 @@ const getStatus = async (userId) => {
   }
 }
 
-// Dipanggil dari quiz.service setelah user SELESAI mengerjakan (POST) 1 kelompok
+// Nyawa habis — dipakai di 3 tempat (consumeLife, consumeLifeInTransaction, assertHasLives).
+// HttpError 403 supaya errorHandler kasih status yang benar, bukan 500.
+const throwNoLives = () => {
+  throw new HttpError('Nyawa kamu sudah habis', 403, 'NO_LIVES_LEFT')
+}
+
+// Dipanggil dari quiz.service SETELAH user selesai mengerjakan (POST) 1 kelompok
 // ayat kuis — dipotong 1x per kelompok, bukan lagi tiap salah jawab 1 soal.
 // Karena max_lives sekarang cuma 1, ini biasanya langsung menghabiskan nyawa
 // user sampai regen 8 jam berikutnya (atau nonton iklan / premium).
@@ -102,7 +109,7 @@ const getStatus = async (userId) => {
 const consumeLife = async (userId) => {
   const status = await getStatus(userId)
   if (status.unlimited) return status
-  if (status.current_lives <= 0) throw new Error('NO_LIVES_LEFT')
+  if (status.current_lives <= 0) throwNoLives()
 
   const wasFull = status.current_lives === status.max_lives
   const updated = await prisma.userLives.update({
@@ -126,10 +133,68 @@ const consumeLife = async (userId) => {
   }
 }
 
+// VERSI ATOMIK untuk dipakai DI DALAM prisma.$transaction (dari quiz.service).
+// Beda dari consumeLife biasa: semua baca/tulis memakai `tx`, dan potong nyawa
+// pakai updateMany({ current_lives: { gt: 0 } }) = atomic decrement:
+//   - Dua request paralel tidak bisa double-consume (yang kedua dapat count 0).
+//   - Nyawa tidak pernah bisa negatif.
+// Kalau count 0 (nyawa habis) → lempar NO_LIVES_LEFT → transaksi di-rollback,
+// jadi attempt kuis yang barusan dibuat ikut batal (tidak ada attempt "yatim").
+const consumeLifeInTransaction = async (tx, userId) => {
+  let row = await tx.userLives.findUnique({ where: { user_id: userId } })
+  if (!row) {
+    row = await tx.userLives.create({ data: { user_id: userId } })
+  }
+
+  // Premium aktif → tidak potong nyawa
+  if (row.is_premium && (!row.premium_expires_at || row.premium_expires_at > new Date())) {
+    return {
+      is_premium: true,
+      premium_expires_at: row.premium_expires_at,
+      current_lives: null,
+      max_lives: row.max_lives,
+      unlimited: true,
+      next_regen_at: null,
+    }
+  }
+
+  // Terapkan lazy regen dulu (sama seperti getStatus), supaya nyawa yang
+  // baru regen ikut terhitung sebelum decrement.
+  const regen = computeRegen(row)
+  if (regen.changed) {
+    row = await tx.userLives.update({
+      where: { user_id: userId },
+      data: { current_lives: regen.current_lives, last_life_lost_at: regen.last_life_lost_at },
+    })
+  }
+
+  const wasFull = row.current_lives === row.max_lives
+  const result = await tx.userLives.updateMany({
+    where: { user_id: userId, current_lives: { gt: 0 } },
+    data: {
+      current_lives: { decrement: 1 },
+      last_life_lost_at: wasFull ? new Date() : undefined,
+    },
+  })
+  if (result.count === 0) throwNoLives()
+
+  const updated = await tx.userLives.findUnique({ where: { user_id: userId } })
+  return {
+    is_premium: false,
+    premium_expires_at: null,
+    current_lives: updated.current_lives,
+    max_lives: updated.max_lives,
+    unlimited: false,
+    next_regen_at: updated.last_life_lost_at
+      ? new Date(updated.last_life_lost_at.getTime() + REGEN_INTERVAL_MS)
+      : null,
+  }
+}
+
 // Dipanggil sebelum quiz dimulai / submit — blokir kalau nyawa sudah habis & bukan premium.
 const assertHasLives = async (userId) => {
   const status = await getStatus(userId)
-  if (!status.unlimited && status.current_lives <= 0) throw new Error('NO_LIVES_LEFT')
+  if (!status.unlimited && status.current_lives <= 0) throwNoLives()
   return status
 }
 
@@ -176,4 +241,4 @@ const addLifeFromAd = async (userId) => {
   }
 }
 
-module.exports = { getStatus, consumeLife, assertHasLives, addLifeFromAd, REGEN_INTERVAL_MS }
+module.exports = { getStatus, consumeLife, consumeLifeInTransaction, assertHasLives, addLifeFromAd, REGEN_INTERVAL_MS }

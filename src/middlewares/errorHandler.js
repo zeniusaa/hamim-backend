@@ -3,7 +3,12 @@
 // Tujuannya: satu tempat untuk tangani semua error, bukan per-route.
 
 const errorHandler = (err, req, res, next) => {
-  console.error(`[ERROR] ${req.method} ${req.path}:`, err.message)
+  console.error(`[ERROR] ${req.method} ${req.path}`, {
+    req_id: req.id ?? null,
+    message: err.message,
+    code: err.code ?? null,
+    stack: process.env.NODE_ENV === 'development' ? err.stack : undefined,
+  })
 
   // Error dari Prisma (database)
   if (err.code === 'P2002') {
@@ -48,7 +53,7 @@ const errorHandler = (err, req, res, next) => {
     })
   }
 
-  // Error umum
+  // Error umum (termasuk HttpError custom — pakai err.statusCode)
   const statusCode = err.statusCode || 500
   return res.status(statusCode).json({
     success: false,
