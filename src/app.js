@@ -133,6 +133,7 @@ app.use('/level',     require('./modules/level/level.route'))
 app.use('/quiz',      require('./modules/quiz/quiz.route'))
 app.use('/lives',     require('./modules/lives/lives.route'))
 app.use('/surah',     require('./modules/surah/surah.route'))
+app.use('/admin',     require('./modules/admin/admin.route'))
 // Modul lain akan didaftarkan di sini seiring pengembangan:
 // app.use('/user', require('./modules/user/user.route'))
 // app.use('/quran', require('./modules/quran/quran.route'))
