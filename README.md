@@ -27,6 +27,7 @@ Backend untuk **HAMIM** (Hafalan Al-Quran Menggunakan Irama Maqdis) — aplikasi
 12. [Level & Leaderboard](#level--leaderboard)
 13. [Kode error](#kode-error)
 14. [Contoh test cepat (curl)](#contoh-test-cepat-curl)
+15. [Deploy (production)](#deploy-production)
 
 ---
 
@@ -895,3 +896,58 @@ curl -X DELETE http://localhost:3000/auth/account \
   -H "Content-Type: application/json" \
   -d '{"password":"password123"}'
 ```
+
+---
+
+## Deploy (production)
+
+Backend siap dideploy sebagai Docker container (`Dockerfile` sudah disediakan) — langsung jalan di Railway, Render, VPS, atau platform apa pun yang mendukung Docker.
+
+### Variabel env wajib di production
+
+| Variabel | Keterangan |
+|---|---|
+| `NODE_ENV` | `production` |
+| `DATABASE_URL` | URL MySQL produksi (pakai user + password kuat) |
+| `JWT_SECRET` | String acak panjang (min. 32 karakter) |
+| `JWT_REFRESH_SECRET` | String acak lain, beda dari `JWT_SECRET` |
+| `CORS_ORIGINS` | **Wajib diisi** di production, pisah koma. Contoh: `https://app.hamim.id,https://admin.hamim.id`. Kalau kosong → CORS `*` (semua origin), jangan dipakai di production |
+| `BACKEND_URL` | URL publik backend, dipakai untuk link verifikasi email |
+
+Google OAuth (`GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `GOOGLE_CALLBACK_URL`) dan SMTP (`SMTP_*`, `RESET_PASSWORD_URL`) diisi sesuai kebutuhan.
+
+### Deploy pakai Docker
+
+```bash
+docker build -t hamim-backend .
+
+docker run -d --name hamim \
+  -p 3000:3000 \
+  -e NODE_ENV=production \
+  -e DATABASE_URL="mysql://user:pass@host:3306/hamim_db" \
+  -e JWT_SECRET="<acak-panjang>" \
+  -e JWT_REFRESH_SECRET="<acak-lain>" \
+  -e CORS_ORIGINS="https://app.hamim.id" \
+  -e BACKEND_URL="https://api.hamim.id" \
+  -v hamim_uploads:/app/uploads \
+  hamim-backend
+```
+
+- Migrasi database dijalankan otomatis saat container start (`prisma migrate deploy`), lalu server menyala.
+- Folder `/app/uploads` adalah **volume** — mount biar file avatar/upload tidak hilang saat container restart.
+- Health check bawaan: `GET /health` (cek DB juga) — bisa dipakai platform untuk auto-restart.
+
+### Deploy di Railway / Render
+
+1. Push repo ke GitHub, hubungkan ke Railway/Render — keduanya mendeteksi `Dockerfile` otomatis.
+2. Buat database MySQL (Railway MySQL addon, atau Aiven/Clever Cloud gratis).
+3. Set semua env variabel di atas di dashboard platform.
+4. Railway: tab Networking → Generate Domain. Render: Web Service → Create.
+5. Setelah deploy, cek `GET {URL}/health` — harus balik `{"status":"OK","database":"OK"}`.
+
+### Catatan produksi
+
+- **CORS**: pastikan `CORS_ORIGINS` berisi domain frontend/admin yang asli.
+- **Rate limit** sudah aktif di endpoint auth (login/register/reset: 10 request / 15 menit per IP).
+- **Log**: satu baris JSON per request (dengan `req_id`) ke stdout — collect lewat platform log, atau kirim ke ELK/CloudWatch.
+- **Backup**: aktifkan backup harian MySQL di penyedia DB — jangan cuma andalkan satu instance

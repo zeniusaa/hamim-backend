@@ -128,11 +128,13 @@ const markFirstSessionCompleted = async (client, userId) => {
 }
 
 // POST /quiz/attempt
-// Simpan 1 jawaban soal melengkapi ayat / drag and drop arabic (drag_ayat).
-// TIDAK memotong nyawa di sini — nyawa cuma dipotong 1x setelah user
-// menyelesaikan SELURUH kelompok ayat lewat submitGroupAttempt di bawah.
-// Cocok dipakai untuk feedback benar/salah per soal secara real-time saat mengerjakan.
-const submitAttempt = async (userId, { question_id, submitted_order, time_taken_seconds }) => {
+// Cuma GRADING real-time per soal (benar/salah + correct_order) — TIDAK ditulis
+// ke DB. Dipakai buat feedback instan saat user lagi ngerjain soal satu-satu.
+// Sumber kebenaran (persist attempt, potong nyawa, first_session_completed) ada
+// di submitGroupAttempt, dipanggil sekali di akhir kelompok/sesi. Kalau attempt
+// di sini juga di-create() ke DB, hasilnya dobel dengan row yang dibuat
+// submitGroupAttempt untuk question_id yang sama.
+const submitAttempt = async (userId, { question_id, submitted_order }) => {
   const question = await prisma.quizQuestion.findUnique({
     where: { id: question_id },
     include: { options: true },
@@ -141,18 +143,7 @@ const submitAttempt = async (userId, { question_id, submitted_order, time_taken_
 
   const { isCorrect, correctOrder } = gradeDragAnswer(question, submitted_order)
 
-  const attempt = await prisma.userQuizAttempt.create({
-    data: {
-      user_id: userId,
-      question_id,
-      submitted_order,
-      is_correct: isCorrect,
-      time_taken_seconds: time_taken_seconds ?? null,
-    },
-  })
-
   return {
-    attempt_id: attempt.id,
     is_correct: isCorrect,
     correct_order: correctOrder,
   }

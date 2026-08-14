@@ -10,7 +10,6 @@ const submittedOrderSchema = z.array(z.string().uuid()).min(1)
 const submitAttemptSchema = z.object({
   question_id: z.string().uuid(),
   submitted_order: submittedOrderSchema,
-  time_taken_seconds: z.number().nonnegative().optional(),
 })
 
 const submitGroupAttemptSchema = z.object({
@@ -63,12 +62,15 @@ const getQuestionPackage = asyncHandler(async (req, res) => {
   return success(res, 'Berhasil mengambil package soal kuis', data)
 })
 
-// POST /quiz/attempt — submit 1 jawaban soal (tidak memotong nyawa)
+// POST /quiz/attempt — grading real-time 1 soal (feedback benar/salah saja).
+// TIDAK menyimpan apa pun ke DB, tidak memotong nyawa. Jawaban baru benar-benar
+// tersimpan (dan first_session_completed/nyawa diproses) lewat /quiz/group-attempt
+// di akhir kelompok/sesi.
 const submitAttempt = asyncHandler(async (req, res) => {
   const data = submitAttemptSchema.parse(req.body)
   const result = await quizService.submitAttempt(req.user.id, data)
 
-  return success(res, 'Jawaban berhasil disimpan', result)
+  return success(res, 'Jawaban berhasil dinilai', result)
 })
 
 // POST /quiz/group-attempt — submit semua jawaban 1 kelompok ayat sekaligus,
