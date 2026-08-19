@@ -14,20 +14,24 @@ Backend untuk **HAMIM** (Hafalan Al-Quran Menggunakan Irama Maqdis) — aplikasi
 ## Daftar isi
 
 1. [Setup lokal & seed database](#setup-lokal--seed-database)
-2. [Format response](#format-response)
-3. [Alur autentikasi & onboarding](#alur-autentikasi--onboarding)
-4. [Health check](#health-check)
-5. [Languages](#languages)
-6. [Auth](#auth)
-7. [Profile](#profile)
-8. [Audio](#audio)
-9. [Assets](#assets)
-10. [Quiz](#quiz)
-11. [Progress](#progress)
-12. [Level & Leaderboard](#level--leaderboard)
-13. [Kode error](#kode-error)
-14. [Contoh test cepat (curl)](#contoh-test-cepat-curl)
-15. [Deploy (production)](#deploy-production)
+2. [Struktur project](#struktur-project)
+3. [Format response](#format-response)
+4. [Alur autentikasi & onboarding](#alur-autentikasi--onboarding)
+5. [Health check](#health-check)
+6. [Languages](#languages)
+7. [Auth](#auth)
+8. [Profile](#profile)
+9. [Surah](#surah)
+10. [Audio](#audio)
+11. [Assets](#assets)
+12. [Quiz](#quiz)
+13. [Lives (nyawa)](#lives-nyawa)
+14. [Progress](#progress)
+15. [Level & Leaderboard](#level--leaderboard)
+16. [Admin API & dashboard web](#admin-api--dashboard-web)
+17. [Kode error](#kode-error)
+18. [Contoh test cepat (curl)](#contoh-test-cepat-curl)
+19. [Deploy (production)](#deploy-production)
 
 ---
 
@@ -56,6 +60,49 @@ Akun dummy hasil `seed-dummy.js` (password semua: `password123`):
 | `dummy.raka@hamim.test` | sudah onboarding, level 3, ada progress & quiz attempt |
 | `dummy.aisyah@hamim.test` | sudah onboarding, level 1 |
 | `dummy.google@hamim.test` | simulasi akun Google, belum onboarding, tidak punya password (login via `/auth/google/native` saja) |
+
+---
+
+## Struktur project
+
+```
+hamim-backend-main/
+├── src/
+│   ├── app.js                 # entry point Express — middleware, routes, start/shutdown server
+│   ├── config/                # koneksi database (Prisma) & config passport (Google OAuth)
+│   ├── middlewares/           # auth (JWT), admin (role check), error handler global, upload (multer)
+│   ├── modules/                # 1 folder per fitur, semua isinya 3 file: route → controller → service
+│   │   ├── auth/               # register, login, refresh token, Google OAuth, reset/verifikasi email
+│   │   ├── profile/             # onboarding & data profil user
+│   │   ├── surah/               # daftar surat & teks Arab (buat mobile client)
+│   │   ├── audio/                # audio per surat/ayat + "groups" (audio+arabic+quiz sekaligus)
+│   │   ├── assets/                # bundle aset (icon/background/music) & version check
+│   │   ├── quiz/                   # bank soal drag_ayat, submit jawaban, riwayat
+│   │   ├── lives/                   # sistem nyawa (regen otomatis, nonton iklan, premium)
+│   │   ├── progress/                 # tracking hafalan per ayat (listening/reading/quiz) + naik level
+│   │   ├── level/                     # 15 tingkatan & leaderboard
+│   │   └── admin/                      # API khusus dashboard admin web (lihat bagian Admin di bawah)
+│   ├── utils/                  # helper: JWT, response formatter, HttpError, email, timezone, dst.
+│   └── docs/openapi.json      # spec OpenAPI 3.0 — CONTOH SEBAGIAN endpoint saja, belum lengkap
+│                                 semua endpoint (lihat catatan di bagian Deploy). README ini adalah
+│                                 sumber kebenaran yang lebih lengkap & selalu diupdate.
+├── prisma/
+│   ├── schema.prisma            # skema database (sumber kebenaran struktur tabel)
+│   ├── migrations/              # riwayat migration, jangan diedit manual — pakai `prisma migrate`
+│   ├── seed*.js                 # script seed (urutan wajib, lihat bagian Setup di atas)
+│   └── data/                    # dump JSON teks Al-Quran (Uthmani & Imlaei) dipakai `seed.js`
+├── admin-web/                  # dashboard admin — React + Vite + TypeScript, terpisah dari backend
+│                                 ini (punya package.json & README sendiri), konsumsi API `/admin/*`
+├── tests/smoke.test.js         # smoke test dasar (`npm test`) — bukan test suite lengkap
+└── uploads/                    # folder upload user (avatar, dll), di-serve statis di `/uploads/*`
+```
+
+**Pola tiap module (`src/modules/<nama>/`):**
+- `*.route.js` — daftar endpoint + middleware yang dipasang (auth, rate limit). Baca file ini duluan untuk tahu endpoint apa saja yang tersedia di module tsb.
+- `*.controller.js` — terima `req`, validasi input (Zod), panggil service, kirim response lewat `utils/response.js`. Tidak ada business logic di sini.
+- `*.service.js` — semua business logic & akses database (Prisma) ada di sini. Kalau mau paham "cara kerja" sebuah fitur, mulai baca dari file ini.
+
+**Kalau mau menambah module baru:** ikuti pola di atas (route → controller → service), lalu daftarkan route-nya di `src/app.js` (lihat bagian `─── Routes ───`).
 
 ---
 
@@ -468,6 +515,46 @@ Setelah sukses, `is_onboarded` otomatis jadi `true`.
 
 ---
 
+## Surah
+
+Endpoint dasar untuk daftar surat & teks Arab mentah (tanpa audio/quiz — untuk itu lihat [Audio](#audio) bagian "groups").
+
+### `GET /surah`
+**Butuh login.** Semua 114 surat.
+
+### `GET /surah?juz=5`
+**Butuh login.** Cuma surat yang punya ayat di juz tersebut (1–30). Setiap surat yang match juga menyertakan `ayah_range_in_juz` (ayat berapa sampai berapa dari surat itu yang termasuk juz yang diminta) — berguna karena satu surat bisa melintasi beberapa juz (mis. Al-Baqarah).
+
+**Response 200:**
+```json
+{
+  "data": [
+    {
+      "id": "uuid", "number": 1, "name_arabic": "الفاتحة", "name_transliteration": "Al-Fatihah",
+      "name_translation_id": "Pembukaan", "juz_start": 1, "total_ayah": 7, "revelation_type": "Makkiyah",
+      "ayah_range_in_juz": { "start": 1, "end": 7, "count": 7 }
+    }
+  ]
+}
+```
+**Error khas:** `422` — `juz` di luar rentang 1–30.
+
+### `GET /surah/:id/ayahs`
+**Butuh login.** Semua ayat 1 surat, **teks Arab saja** (tanpa terjemahan/transliterasi/audio) — versi ringan untuk kebutuhan yang cuma perlu teks mentah. `:id` adalah UUID surat (bukan nomor 1–114).
+
+**Response 200:**
+```json
+{
+  "data": {
+    "surah": { "id": "uuid", "number": 1, "name_arabic": "الفاتحة", "name_transliteration": "Al-Fatihah", "total_ayah": 7 },
+    "ayahs": [{ "id": "uuid", "ayah_number": 1, "text_uthmani": "بِسْمِ اللَّهِ..." }]
+  }
+}
+```
+**Error khas:** `404` — surat tidak ditemukan. `422` — `id` bukan UUID valid.
+
+---
+
 ## Audio
 
 ### `GET /audio/surah/:surahId`
@@ -524,6 +611,40 @@ Setelah sukses, `is_onboarded` otomatis jadi `true`.
 ```
 
 **Error khas:** `404` — ayat tidak ditemukan.
+
+---
+
+### `GET /audio/surah/:surahId/groups?language_code=id`
+**Butuh login.** Endpoint "gabungan" — dalam **1 kali panggilan** mengembalikan SEMUA kelompok ayat dalam 1 surat, tiap kelompok sudah berisi audio + teks Arab/terjemahan + soal kuis (`drag_ayat`) sekaligus. Dibuat supaya frontend tidak perlu panggil `/audio/surah/:surahId`, `/surah/:id/ayahs`, dan `/quiz/package` terpisah-pisah untuk 1 sesi hafalan — cukup 1 request untuk seluruh surat.
+
+Pembagian "kelompok" **sama persis** dengan pengelompokan audio (berdasarkan `ayah_end_number` di tabel `AudioFile`) — idealnya tiap kelompok berisi 5 soal `drag_ayat`. Response juga menyisipkan status nyawa user (lihat [Lives](#lives-nyawa)), karena kelompok ini nantinya dikerjakan lewat `/quiz/group-attempt` yang memotong nyawa.
+
+**Response 200:**
+```json
+{
+  "data": {
+    "surah": { "id": "uuid", "number": 1, "name_transliteration": "Al-Fatihah", "total_ayah": 7 },
+    "lives": { "is_premium": false, "current_lives": 1, "max_lives": 1, "unlimited": false, "next_regen_at": null },
+    "total_groups": 3,
+    "groups": [
+      {
+        "audio_id": 12, "audio_order": 1, "qari_name": "Maqdis", "file_url": "https://.../001_01-03.mp3",
+        "duration_seconds": 32.5, "ayah_start": 1, "ayah_end": 3,
+        "ayahs": [{ "id": "uuid", "ayah_number": 1, "text_uthmani": "...", "translation_id": "..." }],
+        "questions": [{ "id": "uuid", "type": "drag_ayat", "question_text": "...", "options": [{ "id": "uuid", "option_text": "بِسْمِ" }] }]
+      }
+    ]
+  }
+}
+```
+**Error khas:** `404` — surah tidak ditemukan. `404` — kode bahasa tidak ditemukan (`LANGUAGE_NOT_FOUND`).
+
+### `GET /audio/surah/:surahId/groups/:ayahNumber?language_code=id`
+**Butuh login.** Sama seperti di atas tapi cuma balikin **1 kelompok** yang mencakup `ayahNumber` tersebut — dipakai kalau frontend cuma mau load/mulai 1 kelompok tertentu (misal user melanjutkan dari ayat terakhir yang dikerjakan), bukan seluruh surat. `ayahNumber` tidak harus ayat pertama kelompok — ayat mana pun di dalam range kelompok itu (mis. kelompok ayat 1–4, kirim `1`, `2`, `3`, atau `4`) sama-sama mengembalikan kelompok yang sama.
+
+**Response 200:** sama seperti 1 elemen dari `groups` di atas, dibungkus `{ "surah": {...}, "lives": {...}, "group": {...} }`.
+
+**Error khas:** `404` — surah/bahasa tidak ditemukan, atau tidak ada kelompok yang mencakup `ayahNumber` tsb (`GROUP_NOT_FOUND`).
 
 ---
 
@@ -604,56 +725,147 @@ Sistem aset (icon, background, music) yang di-bundle dan bisa di-download client
 
 ## Quiz
 
-Bank soal per ayat, dipakai di tahap `quiz` (lihat [Progress](#progress)). `is_correct` sengaja **tidak pernah** dikirim ke client saat ambil soal — biar tidak bisa dicontek dari response; benar/salahnya dihitung di server saat submit jawaban.
+> **Catatan penting untuk yang melanjutkan:** modul ini pernah dirombak besar-besaran. Satu-satunya tipe soal yang aktif sekarang adalah **`drag_ayat`** ("melengkapi ayat" — user menyusun potongan kata jadi urutan yang benar); tipe `multiple_choice` dengan `selected_option_id` sudah **tidak dipakai lagi**. Jangan kaget kalau nemu sisa referensi tipe lama di kode/data — sumber kebenaran soal & jawaban sekarang ada di `quiz.service.js`.
+
+Untuk tiap soal, urutan benar disimpan di `option.order_index` — field ini (dan `is_correct`) **tidak pernah** dikirim ke client saat ambil soal (lihat `sanitizeQuestionForClient`), dan urutan `options` dalam response **diacak** tiap request, supaya jawaban tidak bisa ditebak dari urutan array. Benar/salah baru dihitung di server saat submit.
+
+**Alur pemakaian yang dimaksud (per kelompok ayat, bukan per soal):**
+1. Ambil soal 1 kelompok sekaligus lewat `GET /quiz/package` (atau lebih praktis lagi, lewat `GET /audio/surah/:surahId/groups` yang sudah menyertakan soal).
+2. User boleh dapat feedback instan per soal lewat `POST /quiz/attempt` — ini **cuma grading, tidak tersimpan ke DB, tidak memotong nyawa**.
+3. Setelah kelompok selesai (semua soal dijawab), kirim semuanya sekaligus ke `POST /quiz/group-attempt` — **di sinilah** jawaban benar-benar disimpan, nyawa dipotong 1x, dan `first_session_completed` di-set kalau ini kelompok pertama user.
+4. Baru setelah itu, tandai progress ayat lewat `POST /progress` dengan `stage: "quiz"` — endpoint ini sekarang **menolak** kalau belum ada `UserQuizAttempt` untuk ayat tsb (anti-cheat, lihat [Progress](#progress)).
 
 ### `GET /quiz/ayah/:ayahId?language_code=id`
-**Butuh login.** List soal kuis untuk 1 ayat, sesuai bahasa (`language_code`, default `"id"`).
+**Butuh login.** List soal kuis untuk 1 ayat saja (bukan 1 kelompok), sesuai bahasa (`language_code`, default `"id"`).
 
 **Response 200:**
 ```json
 {
   "data": [
     {
-      "id": 1,
-      "type": "multiple_choice",
-      "question_text": "Ayat pertama Al-Fatihah dimulai dengan lafaz apa?",
-      "options": [
-        { "id": 1, "option_text": "Bismillahirrahmanirrahim", "order_index": 0 },
-        { "id": 2, "option_text": "Alhamdulillah", "order_index": 1 }
-      ]
+      "id": "uuid",
+      "type": "drag_ayat",
+      "question_text": "Susun potongan berikut sesuai urutan ayat.",
+      "options": [{ "id": "uuid", "option_text": "بِسْمِ" }, { "id": "uuid", "option_text": "اللَّهِ" }]
     }
   ]
 }
 ```
 **Error khas:** `404` — kode bahasa tidak ditemukan.
 
+### `GET /quiz/package?ayah_ids=uuid1,uuid2,uuid3&language_code=id`
+**Butuh login.** Semua soal `drag_ayat` untuk **1 kelompok ayat sekaligus** (kelompok yang sama seperti dipakai di stage `listening` — array `ayah_ids` yang sama). Sekaligus menyisipkan status nyawa user, supaya frontend langsung tahu boleh mulai kuis atau tidak sebelum render layar.
+
+> Kalau butuh audio + teks Arab + soal dalam 1x panggilan sekaligus (bukan cuma soal), pakai `GET /audio/surah/:surahId/groups` — lihat [Audio](#audio).
+
+**Body:** tidak ada (query param saja). `ayah_ids` **wajib**.
+
+**Response 200:**
+```json
+{
+  "data": {
+    "surah": { "id": "uuid", "number": 1, "name_transliteration": "Al-Fatihah" },
+    "lives": { "is_premium": false, "current_lives": 1, "max_lives": 1, "unlimited": false, "next_regen_at": null },
+    "ayahs": [
+      { "ayah_id": "uuid", "ayah_number": 1, "questions": [{ "id": "uuid", "type": "drag_ayat", "question_text": "...", "options": [{ "id": "uuid", "option_text": "بِسْمِ" }] }] }
+    ]
+  }
+}
+```
+**Error khas:** `400` — `ayah_ids` tidak dikirim/kosong (`AYAH_IDS_REQUIRED`). `404` — kode bahasa tidak ditemukan.
+
 ### `POST /quiz/attempt`
-**Butuh login.** Submit jawaban 1 soal. Server yang menentukan benar/salah, bukan client.
+**Butuh login.** Grading **real-time 1 soal saja** (feedback instan benar/salah + urutan yang benar). **Tidak menulis apa pun ke database dan tidak memotong nyawa** — dipakai saat user masih mengerjakan soal satu-per-satu di dalam 1 kelompok. Jawaban baru benar-benar tersimpan lewat `POST /quiz/group-attempt` di akhir kelompok.
 
 **Body:**
 ```json
-{ "question_id": 1, "selected_option_id": 2, "time_taken_seconds": 4.1 }
+{ "question_id": "uuid", "submitted_order": ["opt-uuid-2", "opt-uuid-1", "opt-uuid-3"] }
 ```
+`submitted_order` = array `option.id`, urutan sesuai susunan yang dipilih user (bukan lagi 1 pilihan `selected_option_id` seperti tipe soal lama).
 
 **Response 200:**
 ```json
-{
-  "data": { "attempt_id": 15, "is_correct": false, "correct_option_id": 1 }
-}
+{ "data": { "is_correct": false, "correct_order": ["opt-uuid-1", "opt-uuid-2", "opt-uuid-3"] } }
 ```
-**Error khas:** `404` — soal tidak ditemukan. `400` — `selected_option_id` bukan opsi dari soal tersebut.
+**Error khas:** `404` — soal tidak ditemukan (`QUESTION_NOT_FOUND`). `422` — `submitted_order` kosong/bukan array UUID.
 
-### `GET /quiz/history`
-**Butuh login.** 50 riwayat jawaban terakhir user, terbaru dulu.
+### `POST /quiz/group-attempt`
+**Butuh login.** Submit **semua jawaban 1 kelompok ayat sekaligus** — ini endpoint yang benar-benar menyimpan hasil ke database. Nyawa dipotong **1x** di sini setelah seluruh kelompok selesai (benar atau salah semua tetap potong 1 nyawa, karena `max_lives` sekarang cuma 1 — lihat [Lives](#lives-nyawa)). Semua operasi (simpan attempt, potong nyawa, cek `first_session_completed`) dibungkus 1 transaksi database — kalau nyawa gagal dipotong (habis), seluruh attempt kelompok itu ikut dibatalkan (tidak ada attempt "yatim").
 
-**Response 200:**
+**Body:**
 ```json
 {
-  "data": [
-    { "id": 15, "is_correct": false, "time_taken_seconds": 4.1, "attempted_at": "...", "question": { "id": 1, "question_text": "...", "type": "multiple_choice" } }
+  "idempotency_key": "client-generated-uuid-opsional",
+  "answers": [
+    { "question_id": "uuid", "submitted_order": ["opt-uuid-2", "opt-uuid-1"], "time_taken_seconds": 4.1 }
   ]
 }
 ```
+| Field | Wajib | Keterangan |
+|---|---|---|
+| `answers` | ya | array jawaban, min. 1 |
+| `idempotency_key` | tidak, tapi **sangat disarankan** | key unik per submit kelompok (generate UUID di client). Kalau key yang sama dikirim ulang (double-tap tombol / retry jaringan), server balikin hasil yang **sudah tersimpan** tanpa memotong nyawa lagi kedua kalinya |
+
+**Response 200:**
+```json
+{
+  "data": {
+    "total_quiz": 5,
+    "correct_count": 4,
+    "score_percentage": 80,
+    "results": [{ "question_id": "uuid", "attempt_id": "uuid", "is_correct": true, "correct_order": ["opt-uuid-1", "opt-uuid-2"] }],
+    "lives": { "is_premium": false, "current_lives": 0, "max_lives": 1, "unlimited": false, "next_regen_at": "2026-07-03T18:00:00.000Z" },
+    "first_session_completed": true
+  }
+}
+```
+**Error khas:** `403` — nyawa sudah habis (`NO_LIVES_LEFT`, cek ini terjadi **sebelum** kelompok dianggap selesai — user tidak bisa submit kalau nyawa 0). `400` — `answers` kosong. `404` — ada `question_id` yang tidak ditemukan.
+
+### `GET /quiz/history?page=1&limit=20`
+**Butuh login.** Riwayat jawaban user, terbaru dulu, dengan pagination (`limit` maksimal 50).
+
+**Response 200:**
+```json
+{
+  "data": {
+    "attempts": [{ "id": "uuid", "is_correct": false, "time_taken_seconds": 4.1, "attempted_at": "...", "question": { "id": "uuid", "question_text": "...", "type": "drag_ayat" } }],
+    "pagination": { "page": 1, "limit": 20, "total": 45, "total_pages": 3 }
+  }
+}
+```
+
+---
+
+## Lives (nyawa)
+
+Sistem "nyawa" ala game mobile untuk membatasi percobaan kuis. Regen dihitung **lazy** (dari selisih waktu, bukan `cron`) — jadi nyawa tetap "pulih" walau user tidak membuka aplikasi sama sekali; tidak butuh scheduler terpisah.
+
+- User gratis: `max_lives` = 1. Nyawa habis kalau menyelesaikan 1 kelompok kuis (lihat `POST /quiz/group-attempt`). Regen otomatis 1 nyawa tiap **8 jam**, atau instan lewat nonton iklan.
+- User premium (`is_premium: true`): nyawa **unlimited** — `current_lives` selalu `null` dan tidak pernah dipotong. Status premium dicek tiap request; kalau `premium_expires_at` sudah lewat, otomatis "diturunkan" jadi free di database.
+- Status premium disimpan sederhana (field saja di tabel `UserLives`) — belum ada integrasi payment gateway; premium saat ini cuma bisa di-set manual lewat [Admin API](#admin-api--dashboard-web) (`PATCH /admin/users/:id/premium`).
+
+### `GET /lives`
+**Butuh login.** Status nyawa saat ini. Regen dihitung ulang (dan disimpan kalau berubah) setiap kali endpoint ini dipanggil.
+
+**Response 200 (user gratis):**
+```json
+{ "data": { "is_premium": false, "current_lives": 1, "max_lives": 1, "unlimited": false, "next_regen_at": null } }
+```
+**Response 200 (user premium):**
+```json
+{ "data": { "is_premium": true, "premium_expires_at": "2026-09-01T00:00:00.000Z", "current_lives": null, "max_lives": 1, "unlimited": true, "next_regen_at": null } }
+```
+
+### `POST /lives/watch-ad`
+**Butuh login.** Tambah 1 nyawa instan setelah user selesai nonton iklan (tidak mereset timer regen alami). Rate limit: **5 klaim / 10 menit / user** (bukan per IP — supaya adil untuk banyak user di jaringan/warnet yang sama).
+
+> **Catatan keamanan untuk yang melanjutkan:** rate limit ini cuma mencegah spam cepat. Verifikasi "user beneran sudah nonton iklan sampai selesai" (mis. AdMob Server-Side Verification) **belum diimplementasikan** — client saat ini bisa memanggil endpoint ini tanpa benar-benar menonton iklan. Perlu ditambahkan sebelum rilis produksi.
+
+**Response 200:**
+```json
+{ "data": { "is_premium": false, "unlimited": false, "current_lives": 1, "max_lives": 1, "added": true } }
+```
+Kalau nyawa sudah penuh, `added: false` dan `message: "Nyawa sudah penuh"` — tetap `200`, bukan error.
 
 ---
 
@@ -727,6 +939,8 @@ Sistem tracking hafalan. Setiap ayat punya 3 tahap: `listening` → `reading` �
 | `stage` | ya | `listening` \| `reading` \| `quiz` |
 | `score` | tidak | khusus quiz |
 | `duration_seconds` | tidak | |
+
+> **Anti-cheat untuk stage `quiz`:** endpoint ini **menolak** (`403 QUIZ_NOT_ATTEMPTED`) kalau belum ada `UserQuizAttempt` tersimpan untuk `ayah_id` tsb — artinya user wajib benar-benar submit jawaban lewat `POST /quiz/group-attempt` (lihat [Quiz](#quiz)) dulu sebelum progress `quiz` ayat itu bisa ditandai selesai. Sebelumnya client bisa langsung POST `stage: "quiz"` tanpa pernah mengerjakan soal, yang bikin level & leaderboard bisa digame.
 
 Kalau tahap `quiz` bikin **semua ayat dalam 1 surat selesai**, server otomatis cek dan proses kenaikan level (lihat bagian [Level](#level--leaderboard)).
 
@@ -821,6 +1035,27 @@ Sistem 15 tingkatan, tiap level butuh 2 juz selesai (semua ayat, semua tahap ter
 
 ---
 
+## Admin API & dashboard web
+
+Backend ini punya satu set endpoint terpisah (`/admin/*`) khusus untuk **dashboard admin web** (`admin-web/` — project React + Vite + TypeScript sendiri, bukan bagian dari app mobile). Dashboard ini dipakai tim internal untuk kelola user, konten Quran/kuis, aset, dan lihat analytics — **bukan** untuk end-user aplikasi.
+
+- Route lengkap ada di `src/modules/admin/admin.route.js` — dikelompokkan jadi 3 fase: **Fase 1** manajemen user (list/detail/premium/reset nyawa/reset progress/soft-delete/restore), **Fase 2** manajemen konten (CRUD surah/ayat/soal kuis, kelola aset), **Fase 3** analytics (overview, leaderboard, aktivitas kuis, pertumbuhan user).
+- **Autentikasi terpisah** dari user app: `POST /admin/login` (email/password akun ber-`role: ADMIN`, atau email yang terdaftar di env `ADMIN_EMAILS`) → dapat token JWT khusus admin (umur default 12 jam, lihat `ADMIN_TOKEN_EXPIRES_IN`). Token ini **tidak bisa** dipakai untuk endpoint `/auth/*` atau sebaliknya. Rate limit login admin lebih ketat: 5 percobaan/15 menit (vs 10 untuk user biasa).
+- Semua route di bawah `router.use(adminOnly)` (lihat `admin.route.js`) wajib header `Authorization: Bearer <admin-token>` **dan** role `ADMIN` — dicek di `src/middlewares/admin.js`.
+- Cara jadi admin: set `role='ADMIN'` langsung di tabel `User`, **atau** cukup tambahkan email ke `ADMIN_EMAILS` di `.env` (pisah koma) tanpa perlu ubah database sama sekali.
+
+**Cara jalankan dashboardnya (development):**
+```bash
+cd admin-web
+npm install
+npm run dev
+```
+Lihat `admin-web/README.md` untuk detail konfigurasi (base URL API, dll). Ada juga `start-admin.bat` di root project untuk shortcut Windows yang menjalankan backend + admin-web sekaligus.
+
+Detail request/response tiap endpoint admin **belum didokumentasikan lengkap di README ini** (business logic-nya ada di `src/modules/admin/admin.service.js`, sudah dikomentari cukup detail per fungsi) — kalau perlu didokumentasikan penuh seperti bagian-bagian di atas, itu kandidat kerjaan lanjutan yang baik.
+
+---
+
 ## Kode error
 
 | Status | Kapan terjadi |
@@ -865,8 +1100,8 @@ curl -X POST http://localhost:3000/auth/login \
   -H "Content-Type: application/json" \
   -d '{"email":"dummy.raka@hamim.test","password":"password123"}'
 
-# 7. Ambil soal kuis untuk ayat pertama Al-Fatihah (ayah_id sesuaikan hasil seed)
-curl http://localhost:3000/quiz/ayah/1 -H "Authorization: Bearer <TOKEN>"
+# 7. Ambil soal kuis untuk ayat pertama Al-Fatihah (ayah_id sesuaikan hasil seed — UUID, bukan angka)
+curl http://localhost:3000/quiz/ayah/<AYAH_UUID> -H "Authorization: Bearer <TOKEN>"
 
 # 8. Lihat daftar ikon aset
 curl http://localhost:3000/assets/icons -H "Authorization: Bearer <TOKEN>"
@@ -900,6 +1135,8 @@ curl -X DELETE http://localhost:3000/auth/account \
 ---
 
 ## Deploy (production)
+
+> **Catatan:** `GET /api-docs` (`src/docs/openapi.json`) berisi spec OpenAPI 3.0, tapi **cuma mencakup sebagian endpoint** (health, sebagian auth, lives, quiz/package & group-attempt, progress, sebagian level & assets) sebagai contoh — bukan spec lengkap semua endpoint di README ini. Kalau butuh spec OpenAPI yang benar-benar lengkap (mis. untuk codegen client), itu perlu dilengkapi menyusul; README ini tetap sumber dokumentasi paling lengkap & terkini.
 
 Backend siap dideploy sebagai Docker container (`Dockerfile` sudah disediakan) — langsung jalan di Railway, Render, VPS, atau platform apa pun yang mendukung Docker.
 
